@@ -1,1 +1,1 @@
-# Test Design System
+# Example Design System
