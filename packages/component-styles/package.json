@@ -1,0 +1,17 @@
+{
+  "name": "@x3r5e/component-styles",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danlevy1/example-design-system.git",
+    "directory": "packages/component-styles"
+  },
+  "keywords": [],
+  "author": "Daniel Levy (https://www.danlevy.info)",
+  "license": "MIT"
+}
