@@ -1,4 +1,10 @@
 {
+  "command": {
+    "publish": {
+      "ignoreChanges": [".gitignore", "*.md"],
+      "message": "Publish"
+    }
+  },
   "packages": [
     "packages/*"
   ],
