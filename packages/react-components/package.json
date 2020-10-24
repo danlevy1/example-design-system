@@ -17,5 +17,14 @@
   "keywords": [],
   "author": "Daniel Levy (https://www.danlevy.info)",
   "license": "MIT",
-  "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf"
+  "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
+    "eslint": "^7.12.0",
+    "eslint-plugin-compat": "^3.8.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.1.2"
+  }
 }

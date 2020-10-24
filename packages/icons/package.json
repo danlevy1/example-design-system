@@ -17,5 +17,9 @@
   "keywords": [],
   "author": "Daniel Levy (https://www.danlevy.info)",
   "license": "MIT",
-  "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf"
+  "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
+  "devDependencies": {
+    "eslint": "^7.12.0",
+    "prettier": "^2.1.2"
+  }
 }
