@@ -11,10 +11,11 @@
     "url": "https://github.com/danlevy1/example-design-system.git",
     "directory": "packages/design-tokens"
   },
-  "config": {
+  "publishConfig": {
     "access": "public"
   },
   "keywords": [],
   "author": "Daniel Levy (https://www.danlevy.info)",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf"
 }
