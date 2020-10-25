@@ -1,7 +1,7 @@
 {
   "command": {
     "publish": {
-      "ignoreChanges": [".gitignore", "*.md"],
+      "ignoreChanges": [".gitignore", ".prettierrc.json", ".eslintrc.json", "*.md"],
       "message": "Publish"
     }
   },
