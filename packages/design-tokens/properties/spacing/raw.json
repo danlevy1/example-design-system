@@ -1,0 +1,20 @@
+{
+    "raw": {
+        "spacing": {
+            "900": { "value": "80px" },
+            "800": { "value": "60px" },
+            "700": { "value": "40px" },
+            "600": { "value": "30px" },
+            "500": { "value": "24px" },
+            "400": { "value": "20px" },
+            "300": { "value": "16px" },
+            "200": { "value": "12px" },
+            "100": { "value": "10px" },
+            "75": { "value": "8px" },
+            "50": { "value": "6px" },
+            "25": { "value": "4px" },
+            "10": { "value": "2px" },
+            "base": { "value": "raw.font.size.100" }
+        }
+    }
+}

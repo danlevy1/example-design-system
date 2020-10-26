@@ -1,0 +1,15 @@
+{
+    "raw": {
+        "font": {
+            "weight": {
+                "600": { "value": "Black" },
+                "500": { "value": "Bold" },
+                "400": { "value": "Medium" },
+                "300": { "value": "Regular" },
+                "200": { "value": "Light" },
+                "100": { "value": "Thin" },
+                "base": { "value": "raw.font.weight.300" }
+            }
+        }
+    }
+}

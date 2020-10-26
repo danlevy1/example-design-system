@@ -1,0 +1,50 @@
+{
+    "raw": {
+        "drop": {
+            "shadow": {
+                "100": {
+                    "x": { "value": "2px" },
+                    "y": { "value": "2px" },
+                    "blur": { "value": "4px" },
+                    "spread": { "value": "0px" },
+                    "color": { "value": "#c0c0c0" }
+                },
+                "200": {
+                    "x": { "value": "3px" },
+                    "y": { "value": "3px" },
+                    "blur": { "value": "6px" },
+                    "spread": { "value": "0px" },
+                    "color": { "value": "#c0c0c0" }
+                },
+                "300": {
+                    "x": { "value": "4px" },
+                    "y": { "value": "4px" },
+                    "blur": { "value": "10px" },
+                    "spread": { "value": "0px" },
+                    "color": { "value": "#c0c0c0" }
+                },
+                "400": {
+                    "x": { "value": "6px" },
+                    "y": { "value": "6px" },
+                    "blur": { "value": "16px" },
+                    "spread": { "value": "0px" },
+                    "color": { "value": "#c0c0c0" }
+                },
+                "500": {
+                    "x": { "value": "6px" },
+                    "y": { "value": "6px" },
+                    "blur": { "value": "20px" },
+                    "spread": { "value": "0px" },
+                    "color": { "value": "#c0c0c0" }
+                },
+                "base": {
+                    "x": { "value": "raw.drop.shadow.300.x" },
+                    "y": { "value": "raw.drop.shadow.300.y" },
+                    "blur": { "value": "raw.drop.shadow.300.blur" },
+                    "spread": { "value": "raw.drop.shadow.300.spread" },
+                    "color": { "value": "#raw.drop.shadow.300.color" }
+                }
+            }
+        }
+    }
+}

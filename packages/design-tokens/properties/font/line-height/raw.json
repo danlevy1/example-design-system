@@ -1,0 +1,19 @@
+{
+    "raw": {
+        "line": {
+            "height": {
+                "900": { "value": "110px" },
+                "800": { "value": "80px" },
+                "700": { "value": "68px" },
+                "600": { "value": "54px" },
+                "500": { "value": "42px" },
+                "400": { "value": "28px" },
+                "300": { "value": "24px" },
+                "200": { "value": "20px" },
+                "100": { "value": "14px" },
+                "75": { "value": "12px" },
+                "base": { "value": "raw.line.height.200" }
+            }
+        }
+    }
+}
