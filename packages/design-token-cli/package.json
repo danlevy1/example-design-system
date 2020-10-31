@@ -18,6 +18,7 @@
     "author": "Daniel Levy (https://www.danlevy.info)",
     "license": "MIT",
     "devDependencies": {
+        "@x3r5e/design-tokens": "0.3.0",
         "eslint": "^7.12.1",
         "style-dictionary": "^2.10.2"
     }
