@@ -12,7 +12,7 @@
                 "200": { "value": "16px" },
                 "100": { "value": "12px" },
                 "75": { "value": "10px" },
-                "base": { "value": "raw.font.size.200" }
+                "base": { "value": "{raw.font.size.200.value}" }
             }
         }
     }

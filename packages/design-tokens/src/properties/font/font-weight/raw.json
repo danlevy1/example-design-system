@@ -2,13 +2,11 @@
     "raw": {
         "font": {
             "weight": {
-                "600": { "value": "Black" },
-                "500": { "value": "Bold" },
-                "400": { "value": "Medium" },
-                "300": { "value": "Regular" },
-                "200": { "value": "Light" },
-                "100": { "value": "Thin" },
-                "base": { "value": "raw.font.weight.300" }
+                "400": { "value": "bolder" },
+                "300": { "value": "bold" },
+                "200": { "value": "normal" },
+                "100": { "value": "lighter" },
+                "base": { "value": "{raw.font.weight.200.value}" }
             }
         }
     }

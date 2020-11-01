@@ -8,7 +8,7 @@
                 "300": { "value": "6px" },
                 "400": { "value": "8px" },
                 "500": { "value": "10px" },
-                "base": { "value": "raw.font.weight.200" }
+                "base": { "value": "{raw.border.radius.200.value}" }
             },
             "width": {
                 "100": { "value": "1px" },
@@ -16,7 +16,7 @@
                 "300": { "value": "3px" },
                 "400": { "value": "4px" },
                 "500": { "value": "5px" },
-                "base": { "value": "raw.font.weight.200" }
+                "base": { "value": "{raw.border.width.200.value}" }
             }
         }
     }

@@ -38,11 +38,11 @@
                     "color": { "value": "#c0c0c0" }
                 },
                 "base": {
-                    "x": { "value": "raw.drop.shadow.300.x" },
-                    "y": { "value": "raw.drop.shadow.300.y" },
-                    "blur": { "value": "raw.drop.shadow.300.blur" },
-                    "spread": { "value": "raw.drop.shadow.300.spread" },
-                    "color": { "value": "#raw.drop.shadow.300.color" }
+                    "x": { "value": "{raw.drop.shadow.300.x.value}" },
+                    "y": { "value": "{raw.drop.shadow.300.y.value}" },
+                    "blur": { "value": "{raw.drop.shadow.300.blur.value}" },
+                    "spread": { "value": "{raw.drop.shadow.300.spread.value}" },
+                    "color": { "value": "{raw.drop.shadow.300.color.value}" }
                 }
             }
         }

@@ -13,8 +13,7 @@
             "75": { "value": "8px" },
             "50": { "value": "6px" },
             "25": { "value": "4px" },
-            "10": { "value": "2px" },
-            "base": { "value": "raw.font.size.100" }
+            "10": { "value": "2px" }
         }
     }
 }
