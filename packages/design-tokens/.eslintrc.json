@@ -8,6 +8,9 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "rules": {
-    }
+    "globals": {
+        "require": true,
+        "__dirname": true
+    },
+    "rules": {}
 }
