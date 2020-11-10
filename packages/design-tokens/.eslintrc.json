@@ -10,7 +10,8 @@
     },
     "globals": {
         "require": true,
-        "__dirname": true
+        "__dirname": true,
+        "module": true
     },
     "rules": {}
 }
