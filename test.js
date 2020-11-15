@@ -1,5 +1,5 @@
 const { resolve } = require("path");
-const buildDesignTokens = require("./buildDesignTokens.js");
+const buildDesignTokens = require("./scripts/buildDesignTokens.js");
 
 const platformsTest = [
     {

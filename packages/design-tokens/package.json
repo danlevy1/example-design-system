@@ -4,7 +4,8 @@
     "description": "",
     "main": "dist/properties.json",
     "scripts": {
-        "build": "cd src/scripts && node mergeProperties.js"
+        "build": "ts-node ./src/scripts/mergeProperties.ts && tsc --project tsconfig.prod.json",
+        "prepublishOnly": "npm run build"
     },
     "repository": {
         "type": "git",
@@ -21,6 +22,8 @@
     "devDependencies": {
         "deepmerge": "^4.2.2",
         "eslint": "^7.12.0",
-        "style-dictionary": "^2.10.2"
+        "style-dictionary": "^2.10.2",
+        "ts-node": "^9.0.0",
+        "typescript": "^4.0.5"
     }
 }
