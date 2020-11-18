@@ -1,8 +1,5 @@
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
-import { buildDesignTokens } from "@x3r5e/design-tokens";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const { resolve } = require("path");
+const { buildDesignTokens } = require("@x3r5e/design-tokens");
 
 const platformsTest = [
     {

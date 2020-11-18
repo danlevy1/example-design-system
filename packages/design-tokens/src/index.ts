@@ -1,3 +1,3 @@
-import buildDesignTokens from "./buildDesignTokens";
+import buildDesignTokens from "./buildDesignTokens.js";
 
 export { buildDesignTokens };

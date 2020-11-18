@@ -1,7 +1,4 @@
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const { resolve } = require("path");
 
 const PLATFORM_OPTIONS = new Map([
     ["css", "css/variables"],
@@ -24,7 +21,7 @@ interface StyleDictionaryConfig {
 }
 
 const styleDictionaryConfig: StyleDictionaryConfig = {
-    source: [resolve(__dirname, "properties.json")],
+    source: [resolve(__dirname, "../properties.json")],
     platforms: {},
 };
 
@@ -89,8 +86,7 @@ const buildDesignTokens = async (platforms: Platform[]) => {
         addPlatformToConfig(platform);
     });
 
-    const styleDictionaryModule = await import("style-dictionary");
-    const styleDictionary = styleDictionaryModule.default.extend(
+    const styleDictionary = require("style-dictionary").extend(
         styleDictionaryConfig
     );
 

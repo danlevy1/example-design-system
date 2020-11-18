@@ -1,10 +1,6 @@
-// Package imports
-import { resolve, extname, dirname } from "path";
-import { readdir, stat, writeFile, mkdir } from "fs/promises";
-import { fileURLToPath } from "url";
-import merge from "deepmerge";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const { resolve, extname } = require("path");
+const { readdir, stat, writeFile, mkdir } = require("fs/promises");
+const merge = require("deepmerge");
 
 /**
  * Gets all files, including nested files, starting at the passed directory
@@ -60,13 +56,10 @@ const mergePropertyFiles = async (): Promise<string> => {
 
     const filePaths = await getFilePaths(rootPropertiesDirectory);
 
-    const files: object[] = await Promise.all(
-        filePaths.map(async (filePath) => {
-            const file = await import(filePath);
-            return file.default;
-        })
-    );
-
+    const files: object[] = filePaths.map((filePath) => {
+        const file = require(filePath);
+        return file;
+    });
     const mergedProperties: object = merge.all(files);
     const mergedPropertiesString = JSON.stringify(mergedProperties);
 

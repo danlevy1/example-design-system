@@ -2,11 +2,17 @@
     "name": "@x3r5e/design-tokens",
     "version": "0.3.0",
     "description": "",
-    "main": "dist/index.js",
+    "main": "dist/cjs/index.js",
     "types": "dist/index.d.ts",
-    "type": "module",
+    "module": "./dist/esm/index.js",
+    "files": [
+        "dist/"
+    ],
     "scripts": {
-        "build": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/scripts/mergeProperties.ts && tsc --project tsconfig.prod.json",
+        "build": "rm -rf ./dist && npm run merge-properties && npm run build:cjs && npm run build:esm",
+        "merge-properties": "ts-node ./src/scripts/mergeProperties.ts",
+        "build:cjs": "echo 'Building CommonJS format...' && tsc --project tsconfig.prod-cjs.json && echo 'Successfully built CommonJS format.'",
+        "build:esm": "echo 'Building ESModule format...' && tsc --project tsconfig.prod-esm.json && echo 'Successfully built ESModule format.'",
         "prepublishOnly": "npm run build"
     },
     "repository": {

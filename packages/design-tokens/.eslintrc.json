@@ -1,6 +1,6 @@
 {
     "env": {
-        "browser": true,
+        "browser": false,
         "es2021": true
     },
     "extends": "eslint:recommended",
@@ -10,8 +10,7 @@
     },
     "globals": {
         "require": true,
-        "__dirname": true,
-        "module": true
+        "__dirname": true
     },
     "rules": {}
 }
