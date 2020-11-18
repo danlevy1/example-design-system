@@ -1,13 +1,10 @@
 {
     "compilerOptions": {
-        "lib": ["ES2020"],
-        "module": "commonjs",
-        "moduleResolution": "node",
         "target": "ES2020",
-        "noImplicitAny": true
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "noImplicitThis": true,
+        "esModuleInterop": true
     },
-    "files": [
-        "./src/scripts/buildDesignTokens.ts",
-        "./src/scripts/mergeProperties.ts"
-    ]
+    "include": ["./src/**/*.ts"]
 }

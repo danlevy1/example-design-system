@@ -1,6 +1,5 @@
-// Package imports
 const { resolve, extname } = require("path");
-const { readdir, stat, writeFile, mkdir } = require("fs").promises;
+const { readdir, stat, writeFile, mkdir } = require("fs/promises");
 const merge = require("deepmerge");
 
 /**
@@ -28,12 +27,14 @@ const getFilePaths = async (directory: string): Promise<string[]> => {
             if (isDirectoryChildADirectory) {
                 return getFilePaths(directoryChildPath);
             } else {
-                const isJSONFile: boolean = extname(directoryChildPath);
+                const isJSONFile: boolean =
+                    extname(directoryChildPath) === ".json";
 
                 if (!isJSONFile) {
                     console.warn(
                         `The following file was not added to the list because its extension is not ".json": ${directoryChildPath}`
                     );
+                    return null;
                 } else {
                     return directoryChildPath;
                 }
@@ -57,9 +58,13 @@ const mergePropertyFiles = async (): Promise<string> => {
     const filePaths = await getFilePaths(rootPropertiesDirectory);
 
     const files: object[] = filePaths.map((filePath) => {
-        return require(filePath);
-    });
+        if (filePath) {
+            const file = require(filePath);
+            return file;
+        }
 
+        return null;
+    });
     const mergedProperties: object = merge.all(files);
     const mergedPropertiesString = JSON.stringify(mergedProperties);
 
