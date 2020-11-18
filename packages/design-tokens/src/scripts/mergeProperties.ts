@@ -34,6 +34,7 @@ const getFilePaths = async (directory: string): Promise<string[]> => {
                     console.warn(
                         `The following file was not added to the list because its extension is not ".json": ${directoryChildPath}`
                     );
+                    return null;
                 } else {
                     return directoryChildPath;
                 }
@@ -57,8 +58,12 @@ const mergePropertyFiles = async (): Promise<string> => {
     const filePaths = await getFilePaths(rootPropertiesDirectory);
 
     const files: object[] = filePaths.map((filePath) => {
-        const file = require(filePath);
-        return file;
+        if (filePath) {
+            const file = require(filePath);
+            return file;
+        }
+
+        return null;
     });
     const mergedProperties: object = merge.all(files);
     const mergedPropertiesString = JSON.stringify(mergedProperties);
