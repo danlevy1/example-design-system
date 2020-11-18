@@ -2,9 +2,11 @@
     "name": "@x3r5e/design-tokens",
     "version": "0.3.0",
     "description": "",
-    "main": "dist/properties.json",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "type": "module",
     "scripts": {
-        "build": "ts-node ./src/scripts/mergeProperties.ts && tsc --project tsconfig.prod.json",
+        "build": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/scripts/mergeProperties.ts && tsc --project tsconfig.prod.json",
         "prepublishOnly": "npm run build"
     },
     "repository": {

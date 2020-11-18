@@ -1,4 +1,7 @@
-const { resolve } = require("path");
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const PLATFORM_OPTIONS = new Map([
     ["css", "css/variables"],
@@ -80,17 +83,18 @@ const addPlatformToConfig = (platform: Platform) => {
  * Builds the design tokens for the specified platforms
  * @param platforms The platforms that the design tokens will be built for
  */
-const buildDesignTokens = (platforms: Platform[]) => {
+const buildDesignTokens = async (platforms: Platform[]) => {
     platforms.forEach((platform, index) => {
         validatePlatform(platform, index);
         addPlatformToConfig(platform);
     });
 
-    const StyleDictionary = require("style-dictionary").extend(
+    const styleDictionaryModule = await import("style-dictionary");
+    const styleDictionary = styleDictionaryModule.default.extend(
         styleDictionaryConfig
     );
 
-    StyleDictionary.registerTransformGroup({
+    styleDictionary.registerTransformGroup({
         name: "js",
         transforms: [
             "attribute/cti",
@@ -100,7 +104,7 @@ const buildDesignTokens = (platforms: Platform[]) => {
         ],
     });
 
-    StyleDictionary.buildAllPlatforms();
+    styleDictionary.buildAllPlatforms();
 };
 
-module.exports = buildDesignTokens;
+export default buildDesignTokens;
