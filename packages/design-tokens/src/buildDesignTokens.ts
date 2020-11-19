@@ -1,14 +1,21 @@
 const { resolve } = require("path");
 
-const PLATFORM_OPTIONS = new Map([
-    ["css", "css/variables"],
-    ["scss", "scss/variables"],
-    ["less", "less/variables"],
-    ["js", "javascript/es6"],
+enum PlatformOptions {
+    CSS = "css",
+    SCSS = "scss",
+    LESS = "less",
+    JS = "js",
+}
+
+const PLATFORM_FORMATS_MAP = new Map([
+    [PlatformOptions.CSS, "css/variables"],
+    [PlatformOptions.SCSS, "scss/variables"],
+    [PlatformOptions.LESS, "less/variables"],
+    [PlatformOptions.JS, "javascript/es6"],
 ]);
 
 interface Platform {
-    name: string;
+    name: PlatformOptions;
     destinationPath: string;
     destinationFilename: string;
 }
@@ -38,10 +45,10 @@ const validatePlatform = (platform: Platform, platformIndex: number) => {
         );
     }
 
-    if (!Array.from(PLATFORM_OPTIONS.keys()).includes(platform.name)) {
+    if (!Object.values(PlatformOptions).includes(platform.name)) {
         throw new Error(
-            `Platform at index "${platformIndex}" has an invalid ${`name`} property. Valid names are: ${Array.from(
-                PLATFORM_OPTIONS.keys()
+            `Platform at index "${platformIndex}" has an invalid ${`name`} property. Valid names are: ${Object.values(
+                PlatformOptions
             ).join(",")}`
         );
     }
@@ -70,7 +77,7 @@ const addPlatformToConfig = (platform: Platform) => {
         files: [
             {
                 destination: platform.destinationFilename,
-                format: PLATFORM_OPTIONS.get(platform.name),
+                format: PLATFORM_FORMATS_MAP.get(platform.name),
             },
         ],
     };
