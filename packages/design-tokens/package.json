@@ -29,6 +29,9 @@
     "license": "MIT",
     "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
     "devDependencies": {
+        "@babel/core": "^7.12.3",
+        "@babel/preset-env": "^7.12.1",
+        "@babel/preset-typescript": "^7.12.1",
         "@types/jest": "^26.0.15",
         "deepmerge": "^4.2.2",
         "eslint": "^7.12.0",
