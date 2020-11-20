@@ -2,7 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "lerna:link": "lerna link",
+        "lerna:bootstrap": "lerna bootstrap --hoist",
         "publish": "lerna publish"
     },
     "devDependencies": {
