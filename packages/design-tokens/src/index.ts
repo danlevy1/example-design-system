@@ -1,3 +1,6 @@
-import buildDesignTokens from "./buildDesignTokens.js";
+import buildDesignTokens, {
+    Platform,
+    PlatformOptions,
+} from "./buildDesignTokens.js";
 
-export { buildDesignTokens };
+export { buildDesignTokens, Platform, PlatformOptions };

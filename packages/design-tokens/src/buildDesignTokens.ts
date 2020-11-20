@@ -1,20 +1,21 @@
 const { resolve } = require("path");
+const styleDictionary = require("style-dictionary");
 
-enum PlatformOptions {
+export enum PlatformOptions {
     CSS = "css",
     SCSS = "scss",
     LESS = "less",
     JS = "js",
 }
 
-const PLATFORM_FORMATS_MAP = new Map([
+export const PLATFORM_FORMATS_MAP = new Map([
     [PlatformOptions.CSS, "css/variables"],
     [PlatformOptions.SCSS, "scss/variables"],
     [PlatformOptions.LESS, "less/variables"],
     [PlatformOptions.JS, "javascript/es6"],
 ]);
 
-interface Platform {
+export interface Platform {
     name: PlatformOptions;
     destinationPath: string;
     destinationFilename: string;
@@ -27,7 +28,7 @@ interface StyleDictionaryConfig {
     };
 }
 
-const styleDictionaryConfig: StyleDictionaryConfig = {
+export const styleDictionaryConfig: StyleDictionaryConfig = {
     source: [resolve(__dirname, "../properties.json")],
     platforms: {},
 };
@@ -59,9 +60,31 @@ const validatePlatform = (platform: Platform, platformIndex: number) => {
         );
     }
 
+    const destinationPathLastCharacterIndex =
+        platform.destinationPath.length - 1;
+    const isTrailingSlashInDestinationPath =
+        platform.destinationPath.charAt(destinationPathLastCharacterIndex) ===
+        "/";
+
+    if (!isTrailingSlashInDestinationPath) {
+        throw new Error(
+            `Platform at index "${platformIndex}" has an invalid ${`destinationPath`} property. The ${`destinationPath`} property should have a trailing slash (i.e. a "/" as the last character in the path).`
+        );
+    }
+
     if (!platform.destinationFilename) {
         throw new Error(
             `Platform at index "${platformIndex}" does not have a ${`destinationFilename`} property. Each platform should be of the form ${`{name: <paltform-name>, destinationPath: <absolute-path>, destinationFilename: <filename>}`}`
+        );
+    }
+
+    const isSlashInDestinationFilename = platform.destinationFilename.includes(
+        "/"
+    );
+
+    if (isSlashInDestinationFilename) {
+        throw new Error(
+            `Platform at index "${platformIndex}" has an invalid ${`destinationFilename`} property. The ${`destinationFilename`} property should not have a "/". The path to the filename should be included in the ${`destinationPath`} property.`
         );
     }
 };
@@ -91,21 +114,21 @@ const buildDesignTokens = async (platforms: Platform[]) => {
     platforms.forEach((platform, index) => {
         validatePlatform(platform, index);
         addPlatformToConfig(platform);
+
+        if (platform.name === PlatformOptions.JS) {
+            styleDictionary.registerTransformGroup({
+                name: "js",
+                transforms: [
+                    "attribute/cti",
+                    "name/cti/constant",
+                    "size/rem",
+                    "color/hex",
+                ],
+            });
+        }
     });
 
-    const styleDictionary = require("style-dictionary").extend(
-        styleDictionaryConfig
-    );
-
-    styleDictionary.registerTransformGroup({
-        name: "js",
-        transforms: [
-            "attribute/cti",
-            "name/cti/constant",
-            "size/rem",
-            "color/hex",
-        ],
-    });
+    styleDictionary.extend(styleDictionaryConfig);
 
     styleDictionary.buildAllPlatforms();
 };
