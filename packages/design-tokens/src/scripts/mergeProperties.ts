@@ -1,5 +1,5 @@
 const { resolve, extname } = require("path");
-const { readdir, stat, writeFile, mkdir } = require("fs/promises");
+const { readdir, readFile, stat, writeFile, mkdir } = require("fs").promises;
 const merge = require("deepmerge");
 
 /**
@@ -20,21 +20,27 @@ const getFilePaths = async (directory: string): Promise<string[]> => {
                 directoryChildName
             );
 
-            const isDirectoryChildADirectory: boolean = (
-                await stat(directoryChildPath)
-            ).isDirectory();
+            let isDirectoryChildADirectory: boolean;
+            try {
+                const directoryChildStats = await stat(directoryChildPath);
+                isDirectoryChildADirectory = directoryChildStats.isDirectory();
+            } catch (e) {
+                throw new Error(
+                    `Can't get file/directory stats for path ${directoryChildPath}.\n${e}`
+                );
+            }
 
             if (isDirectoryChildADirectory) {
-                return getFilePaths(directoryChildPath);
+                const nestedFilePaths = await getFilePaths(directoryChildPath);
+                return nestedFilePaths;
             } else {
                 const isJSONFile: boolean =
                     extname(directoryChildPath) === ".json";
 
                 if (!isJSONFile) {
-                    console.warn(
-                        `The following file was not added to the list because its extension is not ".json": ${directoryChildPath}`
+                    throw new Error(
+                        `The following file does not have the required extension ".json": ${directoryChildPath}`
                     );
-                    return null;
                 } else {
                     return directoryChildPath;
                 }
@@ -57,14 +63,17 @@ const mergePropertyFiles = async (): Promise<string> => {
 
     const filePaths = await getFilePaths(rootPropertiesDirectory);
 
-    const files: object[] = filePaths.map((filePath) => {
-        if (filePath) {
-            const file = require(filePath);
-            return file;
-        }
+    const files: object[] = await Promise.all(
+        filePaths.map(async (filePath) => {
+            if (filePath) {
+                const file = await readFile(filePath, "utf8");
+                return JSON.parse(file);
+            }
 
-        return null;
-    });
+            return null;
+        })
+    );
+
     const mergedProperties: object = merge.all(files);
     const mergedPropertiesString = JSON.stringify(mergedProperties);
 
@@ -89,11 +98,13 @@ const writeDistFile = async (mergedProperties: string): Promise<void> => {
     console.log("Successfully wrote to the dist directory.\n");
 };
 
-console.log("--- Running design token build script ---\n");
+const mergeProperties = async () => {
+    console.log("--- Running design token build script ---\n");
 
-mergePropertyFiles()
-    .then((mergedProperties) => writeDistFile(mergedProperties))
-    .then(() =>
-        console.log("--- Design token build script successfully completed ---")
-    )
-    .catch((error) => console.error(error));
+    const mergedProperties = await mergePropertyFiles();
+    await writeDistFile(mergedProperties);
+
+    console.log("--- Design token build script successfully completed ---");
+};
+
+module.exports = { mergeProperties };
