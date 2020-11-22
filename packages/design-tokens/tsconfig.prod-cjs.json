@@ -4,5 +4,6 @@
         "declaration": true,
         "module": "CommonJS",
         "outDir": "./dist/cjs"
-    }
+    },
+    "files": ["./src/index-cjs.ts"]
 }

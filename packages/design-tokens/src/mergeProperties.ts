@@ -1,6 +1,10 @@
-const { resolve, extname } = require("path");
-const { readdir, readFile, stat, writeFile, mkdir } = require("fs").promises;
-const merge = require("deepmerge");
+import { resolve, extname } from "path";
+import { readdir, readFile, stat, writeFile, mkdir } from "fs/promises";
+import merge from "deepmerge";
+// NOTE: For ts-node to run ESModules, the `dirName` TS file needs to be imported as `.js`. See https://github.com/TypeStrong/ts-node/issues/1007.
+import getDirname from "./utils/dirname.js";
+
+const __dirname = getDirname(import.meta.url);
 
 /**
  * Gets all files, including nested files, starting at the passed directory
@@ -59,7 +63,7 @@ const getFilePaths = async (directory: string): Promise<string[]> => {
 const mergePropertyFiles = async (): Promise<string> => {
     console.log("Merging properties...");
 
-    const rootPropertiesDirectory: string = resolve(__dirname, "../properties");
+    const rootPropertiesDirectory: string = resolve(__dirname, "./properties");
 
     const filePaths = await getFilePaths(rootPropertiesDirectory);
 
@@ -89,7 +93,7 @@ const mergePropertyFiles = async (): Promise<string> => {
 const writeDistFile = async (mergedProperties: string): Promise<void> => {
     console.log("Writing to the dist directory...");
 
-    const outputFilePath: string = resolve(__dirname, "../../dist");
+    const outputFilePath: string = resolve(__dirname, "../dist");
 
     await mkdir(outputFilePath, { recursive: true });
 
@@ -107,4 +111,4 @@ const mergeProperties = async () => {
     console.log("--- Design token build script successfully completed ---");
 };
 
-module.exports = { mergeProperties };
+export default mergeProperties;

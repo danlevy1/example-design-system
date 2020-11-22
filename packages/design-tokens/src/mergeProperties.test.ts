@@ -1,7 +1,7 @@
-const mock = require("mock-fs");
-const { resolve } = require("path");
-const { readFile } = require("fs").promises;
-const { mergeProperties } = require("./mergeProperties");
+import mock from "mock-fs";
+import { resolve } from "path";
+import { readFile } from "fs/promises";
+import mergeProperties from "./mergeProperties";
 
 describe("Merge Properties", () => {
     /*
@@ -42,9 +42,7 @@ describe("Merge Properties", () => {
             },
         });
 
-        await expect(
-            mergeProperties(resolve(__dirname, "../properties"))
-        ).rejects.toThrowError();
+        await expect(mergeProperties()).rejects.toThrowError();
     });
 
     it("Does not throw an error if the root directory is empty", async () => {
@@ -52,9 +50,7 @@ describe("Merge Properties", () => {
             [`${resolve(__dirname, "../properties")}`]: {},
         });
 
-        await expect(
-            mergeProperties(resolve(__dirname, "../properties"))
-        ).resolves.not.toThrowError();
+        await expect(mergeProperties()).resolves.not.toThrowError();
     });
 
     it("Does not throw an error if the root directory is empty", async () => {
@@ -75,9 +71,7 @@ describe("Merge Properties", () => {
             },
         });
 
-        await expect(
-            mergeProperties(resolve(__dirname, "../properties"))
-        ).resolves.not.toThrowError();
+        await expect(mergeProperties()).resolves.not.toThrowError();
     });
 
     it("Deep merges all JSON files", async () => {
@@ -100,7 +94,7 @@ describe("Merge Properties", () => {
             },
         });
 
-        await mergeProperties(resolve(__dirname, "../properties"));
+        await mergeProperties();
 
         const file = await readFile(
             resolve(__dirname, "../../dist/properties.json"),

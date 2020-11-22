@@ -2,8 +2,9 @@
     "name": "@x3r5e/design-tokens",
     "version": "0.3.0",
     "description": "",
-    "main": "dist/cjs/index.js",
-    "types": "dist/cjs/index.d.ts",
+    "type": "module",
+    "main": "dist/cjs/index-cjs.js",
+    "types": "dist/cjs/index-cjs.d.ts",
     "module": "./dist/esm/index.js",
     "files": [
         "dist/"
@@ -11,7 +12,7 @@
     "scripts": {
         "test": "jest",
         "build": "rm -rf ./dist && npm run merge-properties && npm run build:cjs && npm run build:esm",
-        "merge-properties": "ts-node -e 'require(\"./src/scripts/mergeProperties.ts\").mergeProperties()'",
+        "merge-properties": "node --loader ts-node/esm ./src/scripts/mergePropertiesRunner.ts",
         "build:cjs": "echo 'Building CommonJS format...' && tsc --project tsconfig.prod-cjs.json && echo 'Successfully built CommonJS format.'",
         "build:esm": "echo 'Building ESModule format...' && tsc --project tsconfig.prod-esm.json && echo 'Successfully built ESModule format.'",
         "prepublishOnly": "npm run build"

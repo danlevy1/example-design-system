@@ -1,24 +1,21 @@
-import { resolve } from "path";
-import styleDictionary from "style-dictionary";
-import getDirname from "./utils/dirname";
+const { resolve } = require("path");
+const styleDictionary = require("style-dictionary");
 
-const __dirname = getDirname(import.meta.url);
-
-export enum PlatformOptions {
+enum PlatformOptions {
     CSS = "css",
     SCSS = "scss",
     LESS = "less",
     JS = "js",
 }
 
-export const PLATFORM_FORMATS_MAP = new Map([
+const PLATFORM_FORMATS_MAP = new Map([
     [PlatformOptions.CSS, "css/variables"],
     [PlatformOptions.SCSS, "scss/variables"],
     [PlatformOptions.LESS, "less/variables"],
     [PlatformOptions.JS, "javascript/es6"],
 ]);
 
-export interface Platform {
+interface Platform {
     name: PlatformOptions;
     destinationPath: string;
     destinationFilename: string;
@@ -31,7 +28,7 @@ interface StyleDictionaryConfig {
     };
 }
 
-export const styleDictionaryConfig: StyleDictionaryConfig = {
+const styleDictionaryConfig: StyleDictionaryConfig = {
     source: [resolve(__dirname, "../properties.json")],
     platforms: {},
 };
