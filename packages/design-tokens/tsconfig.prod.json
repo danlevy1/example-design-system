@@ -4,5 +4,5 @@
         "declaration": true
     },
     "exclude": ["./src/**/*.ts"],
-    "files": ["./src/index.ts"]
+    "files": ["./src/index.ts", "./src/package-types/style-dictionary.d.ts"]
 }

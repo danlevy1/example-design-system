@@ -1,25 +1,30 @@
-const { resolve, extname } = require("path");
-const { readdir, readFile, stat, writeFile, mkdir } = require("fs/promises");
-const merge = require("deepmerge");
+import { resolve, extname } from "path";
+import { readdir, readFile, stat, writeFile, mkdir } from "fs/promises";
+import merge from "deepmerge";
 
 /**
  * Gets all files, including nested files, starting at the passed directory
  * Original source: https://stackoverflow.com/a/45130990/6063755
- * @param {String} directory - The directory to begin recursing from
- * @returns {Promise<String[]>} An array of file paths
+ * @param directory - The directory to begin recursing from
+ * @returns An array of file paths
  */
-const getFilePaths = async (directory) => {
+const getFilePaths = async (directory: string): Promise<string[]> => {
     // Gets the subdirectories and files one level deep inside of the passed directory
-    const directoryChildrenNames = await readdir(directory);
+    const directoryChildrenNames: string[] = await readdir(directory);
 
     // Gets all of the nested files (unlimited depth) as multi-dimensional array
-    const filePaths = await Promise.all(
+    const filePaths: (string | string[])[] = await Promise.all(
         directoryChildrenNames.map(async (directoryChildName) => {
-            const directoryChildPath = resolve(directory, directoryChildName);
+            const directoryChildPath: string = resolve(
+                directory,
+                directoryChildName
+            );
 
-            let isDirectoryChildADirectory;
+            let isDirectoryChildADirectory: boolean;
             try {
-                const directoryChildStats = await stat(directoryChildPath);
+                const directoryChildStats: {
+                    isDirectory: () => boolean;
+                } = await stat(directoryChildPath);
                 isDirectoryChildADirectory = directoryChildStats.isDirectory();
             } catch (e) {
                 throw new Error(
@@ -50,16 +55,15 @@ const getFilePaths = async (directory) => {
 
 /**
  * Deep merges properties from all property files into one JSON string
- * @returns {Promise<string>} A JSON formatted string of all properties
+ * @param outputDir - The directory of the input property files
+ * @returns A JSON formatted string of all properties
  */
-const mergePropertyFiles = async () => {
+const mergePropertyFiles = async (inputDir: string): Promise<string> => {
     console.log("Merging properties...");
 
-    const rootPropertiesDirectory = resolve(__dirname, "../properties");
+    const filePaths = await getFilePaths(inputDir);
 
-    const filePaths = await getFilePaths(rootPropertiesDirectory);
-
-    const files = await Promise.all(
+    const files: object[] = await Promise.all(
         filePaths.map(async (filePath) => {
             if (filePath) {
                 const file = await readFile(filePath, "utf8");
@@ -70,7 +74,7 @@ const mergePropertyFiles = async () => {
         })
     );
 
-    const mergedProperties = merge.all(files);
+    const mergedProperties: object = merge.all(files);
     const mergedPropertiesString = JSON.stringify(mergedProperties);
 
     console.log("Successfully merged properties.\n");
@@ -80,28 +84,30 @@ const mergePropertyFiles = async () => {
 
 /**
  * Writes the given JSON formatted string to a dist file
- * @param {String} mergedProperties A JSON formatted string of all properties
- * @returns {Promise<void>}
+ * @param outputDir - The directory to output the merged properties file to
+ * @param mergedProperties A JSON formatted string of all properties
  */
-const writeDistFile = async (mergedProperties) => {
+const writeDistFile = async (mergedProperties: string, outputDir: string) => {
     console.log("Writing to the dist directory...");
 
-    const outputFilePath = resolve(__dirname, "../../dist");
-
-    await mkdir(outputFilePath, { recursive: true });
-
-    await writeFile(`${outputFilePath}/properties.json`, mergedProperties);
+    await mkdir(outputDir, { recursive: true });
+    await writeFile(`${outputDir}/properties.json`, mergedProperties);
 
     console.log("Successfully wrote to the dist directory.\n");
 };
 
-const mergeProperties = async () => {
+/**
+ * Merges design token properties into a single file.
+ * @param inputDir - The directory of the input property files
+ * @param outputDir - The directory to output the merged properties file to
+ */
+const mergeProperties = async (inputDir: string, outputDir: string) => {
     console.log("--- Running design token build script ---\n");
 
-    const mergedProperties = await mergePropertyFiles();
-    await writeDistFile(mergedProperties);
+    const mergedProperties = await mergePropertyFiles(inputDir);
+    await writeDistFile(mergedProperties, outputDir);
 
     console.log("--- Design token build script successfully completed ---");
 };
 
-module.exports = mergeProperties;
+export default mergeProperties;

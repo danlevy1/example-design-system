@@ -3,9 +3,9 @@ import { fileURLToPath } from "url";
 
 /**
  * Gets the ESM equivalent of `__dirname`
- * @param {String} fileURL - The URL to get the path from
+ * @param fileURL - The URL to get the path from
  */
-const getDirname = (fileURL) => {
+const getDirname = (fileURL: string) => {
     const DIRNAME = dirname(fileURLToPath(fileURL));
     return DIRNAME;
 };

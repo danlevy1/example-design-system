@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import styleDictionary from "style-dictionary";
-import getDirname from "../utils/dirname.js";
+import getDirname from "../utils/dirname";
 
 const DIRNAME = getDirname(import.meta.url);
 
@@ -24,14 +24,7 @@ export interface Platform {
     destinationFilename: string;
 }
 
-interface StyleDictionaryConfig {
-    source: string[];
-    platforms: {
-        [platformName: string]: any;
-    };
-}
-
-export const styleDictionaryConfig: StyleDictionaryConfig = {
+export const styleDictionaryConfig: styleDictionary.StyleDictionaryConfig = {
     source: [resolve(DIRNAME, "./properties.json")],
     platforms: {},
 };

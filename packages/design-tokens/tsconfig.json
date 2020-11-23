@@ -4,7 +4,8 @@
         "module": "ESNext",
         "moduleResolution": "node",
         "noImplicitThis": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "noImplicitAny": true
     },
-    "include": ["./src/**/*.ts"]
+    "include": ["./src/**/*.ts", "./src/**/*.d.ts"]
 }

@@ -1,7 +1,12 @@
-const mock = require("mock-fs");
-const { resolve } = require("path");
-const { readFile } = require("fs/promises");
-const mergeProperties = require("./mergeProperties");
+import mock from "mock-fs";
+import { resolve } from "path";
+import { readFile } from "fs/promises";
+import getDirname from "../utils/dirname";
+import mergeProperties from "./mergeProperties";
+
+const DIRNAME = getDirname(import.meta.url);
+const inputDir = resolve(DIRNAME, "../properties");
+const outputDir = resolve(DIRNAME, "../../dist");
 
 describe("Merge Properties", () => {
     /*
@@ -42,7 +47,9 @@ describe("Merge Properties", () => {
             },
         });
 
-        await expect(mergeProperties()).rejects.toThrowError();
+        await expect(
+            mergeProperties(inputDir, outputDir)
+        ).rejects.toThrowError();
     });
 
     it("Does not throw an error if the root directory is empty", async () => {
@@ -50,7 +57,9 @@ describe("Merge Properties", () => {
             [`${resolve(__dirname, "../properties")}`]: {},
         });
 
-        await expect(mergeProperties()).resolves.not.toThrowError();
+        await expect(
+            mergeProperties(inputDir, outputDir)
+        ).resolves.not.toThrowError();
     });
 
     it("Does not throw an error if a nested directory is empty", async () => {
@@ -71,7 +80,9 @@ describe("Merge Properties", () => {
             },
         });
 
-        await expect(mergeProperties()).resolves.not.toThrowError();
+        await expect(
+            mergeProperties(inputDir, outputDir)
+        ).resolves.not.toThrowError();
     });
 
     it("Deep merges all JSON files", async () => {
@@ -94,7 +105,7 @@ describe("Merge Properties", () => {
             },
         });
 
-        await mergeProperties();
+        await mergeProperties(inputDir, outputDir);
 
         const file = await readFile(
             resolve(__dirname, "../../dist/properties.json"),
@@ -104,17 +115,17 @@ describe("Merge Properties", () => {
         const validDeepMergeObject = {
             raw: {
                 color: {
-                    purple: { 100: { value: "#a9a5be" } },
-                    blue: { 100: { value: "#a9c6cf" } },
-                    green: { 100: { value: "#c6dad5" } },
-                    black: { 100: { value: "#888888" } },
-                    white: { 100: { value: "#f2f2f2" } },
+                    purple: { "100": { value: "#a9a5be" } },
+                    blue: { "100": { value: "#a9c6cf" } },
+                    green: { "100": { value: "#c6dad5" } },
+                    black: { "100": { value: "#888888" } },
+                    white: { "100": { value: "#f2f2f2" } },
                 },
                 font: {
-                    size: { 100: { value: "12px" } },
-                    weight: { 100: { value: "lighter" } },
+                    size: { "100": { value: "12px" } },
+                    weight: { "100": { value: "lighter" } },
                 },
-                line: { height: { 100: { value: "14px" } } },
+                line: { height: { "100": { value: "14px" } } },
             },
         };
 
