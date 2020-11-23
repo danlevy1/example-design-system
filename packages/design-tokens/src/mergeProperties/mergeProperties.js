@@ -1,9 +1,6 @@
-import { resolve, extname } from "path";
-import { readdir, readFile, stat, writeFile, mkdir } from "fs/promises";
-import merge from "deepmerge";
-import getDirname from "../utils/dirname.js";
-
-const DIRNAME = getDirname(import.meta.url);
+const { resolve, extname } = require("path");
+const { readdir, readFile, stat, writeFile, mkdir } = require("fs/promises");
+const merge = require("deepmerge");
 
 /**
  * Gets all files, including nested files, starting at the passed directory
@@ -58,7 +55,7 @@ const getFilePaths = async (directory) => {
 const mergePropertyFiles = async () => {
     console.log("Merging properties...");
 
-    const rootPropertiesDirectory = resolve(DIRNAME, "../properties");
+    const rootPropertiesDirectory = resolve(__dirname, "../properties");
 
     const filePaths = await getFilePaths(rootPropertiesDirectory);
 
@@ -89,7 +86,7 @@ const mergePropertyFiles = async () => {
 const writeDistFile = async (mergedProperties) => {
     console.log("Writing to the dist directory...");
 
-    const outputFilePath = resolve(DIRNAME, "../../dist");
+    const outputFilePath = resolve(__dirname, "../../dist");
 
     await mkdir(outputFilePath, { recursive: true });
 
@@ -107,4 +104,4 @@ const mergeProperties = async () => {
     console.log("--- Design token build script successfully completed ---");
 };
 
-export default mergeProperties;
+module.exports = mergeProperties;

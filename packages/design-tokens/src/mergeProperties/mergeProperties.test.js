@@ -1,7 +1,7 @@
-import mock from "mock-fs";
-import { resolve } from "path";
-import { readFile } from "fs/promises";
-import mergeProperties from "./mergeProperties";
+const mock = require("mock-fs");
+const { resolve } = require("path");
+const { readFile } = require("fs/promises");
+const mergeProperties = require("./mergeProperties");
 
 describe("Merge Properties", () => {
     /*

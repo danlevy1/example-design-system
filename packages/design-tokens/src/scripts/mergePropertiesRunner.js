@@ -1,5 +1,3 @@
-import mergeProperties from "../mergeProperties/mergeProperties.js";
+const mergeProperties = require("../mergeProperties/mergeProperties.js");
 
 mergeProperties();
-
-export {};
