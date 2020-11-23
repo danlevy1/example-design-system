@@ -1,6 +1,6 @@
 // NOTE: Remove "type": "module" from `package.json` before importing or running this file
 const { resolve } = require("path");
-const { buildDesignTokens } = require("@x3r5e/design-tokens/dist/index.js");
+const { buildDesignTokens } = require("@x3r5e/design-tokens");
 
 const DIRNAME = __dirname;
 

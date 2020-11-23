@@ -1,6 +1,6 @@
 // NOTE: Add "type": "module" to `package.json` before importing or running this file
 import { resolve, dirname } from "path";
-import { buildDesignTokens } from "@x3r5e/design-tokens/dist/index.esm.js";
+import { buildDesignTokens } from "@x3r5e/design-tokens/dist/index.mjs";
 import { fileURLToPath } from "url";
 
 const getDirname = (fileURL) => {
