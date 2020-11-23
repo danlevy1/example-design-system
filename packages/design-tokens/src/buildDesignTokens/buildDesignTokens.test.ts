@@ -1,5 +1,5 @@
-import styleDictionary from "style-dictionary";
-import buildDesignTokens, {
+import {
+    buildDesignTokens,
     Platform,
     PlatformOptions,
     PLATFORM_FORMATS_MAP,
@@ -9,14 +9,13 @@ import buildDesignTokens, {
 describe("Build Design Tokens", () => {
     describe("Platform Validation", () => {
         it("Throws an error when the platform does not have a name property", async () => {
-            // @ts-ignore
-            const platform: Platform = {
+            const platform: Partial<Platform> = {
                 destinationPath: "./src/",
                 destinationFilename: "test.css",
             };
 
             try {
-                await buildDesignTokens([platform]);
+                await buildDesignTokens([platform as Platform]);
             } catch (e) {
                 expect(e).toBeInstanceOf(Error);
             }
@@ -38,14 +37,13 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform does not have a destination path property", async () => {
-            // @ts-ignore
-            const platform: Platform = {
+            const platform: Partial<Platform> = {
                 name: PlatformOptions.CSS,
                 destinationFilename: "test.css",
             };
 
             try {
-                await buildDesignTokens([platform]);
+                await buildDesignTokens([platform as Platform]);
             } catch (e) {
                 expect(e).toBeInstanceOf(Error);
             }
@@ -66,14 +64,13 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform does not have a destination filename property", async () => {
-            // @ts-ignore
-            const platform: Platform = {
+            const platform: Partial<Platform> = {
                 name: PlatformOptions.CSS,
                 destinationPath: "./src/",
             };
 
             try {
-                await buildDesignTokens([platform]);
+                await buildDesignTokens([platform as Platform]);
             } catch (e) {
                 expect(e).toBeInstanceOf(Error);
             }

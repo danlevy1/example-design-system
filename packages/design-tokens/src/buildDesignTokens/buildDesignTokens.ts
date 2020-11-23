@@ -1,8 +1,8 @@
 import { resolve } from "path";
 import styleDictionary from "style-dictionary";
-import getDirname from "./utils/dirname";
+import getDirname from "../utils/dirname.js";
 
-const __dirname = getDirname(import.meta.url);
+const DIRNAME = getDirname(import.meta.url);
 
 export enum PlatformOptions {
     CSS = "css",
@@ -32,7 +32,7 @@ interface StyleDictionaryConfig {
 }
 
 export const styleDictionaryConfig: StyleDictionaryConfig = {
-    source: [resolve(__dirname, "../properties.json")],
+    source: [resolve(DIRNAME, "./properties.json")],
     platforms: {},
 };
 
@@ -113,7 +113,7 @@ const addPlatformToConfig = (platform: Platform) => {
  * Builds the design tokens for the specified platforms
  * @param platforms The platforms that the design tokens will be built for
  */
-const buildDesignTokens = async (platforms: Platform[]) => {
+export const buildDesignTokens = async (platforms: Platform[]) => {
     platforms.forEach((platform, index) => {
         validatePlatform(platform, index);
         addPlatformToConfig(platform);
@@ -131,9 +131,9 @@ const buildDesignTokens = async (platforms: Platform[]) => {
         }
     });
 
-    styleDictionary.extend(styleDictionaryConfig);
+    const styleDictionaryWithOptions = styleDictionary.extend(
+        styleDictionaryConfig
+    );
 
-    styleDictionary.buildAllPlatforms();
+    styleDictionaryWithOptions.buildAllPlatforms();
 };
-
-export default buildDesignTokens;

@@ -1,7 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "./dist/esm"
+        "declaration": true
     },
     "exclude": ["./src/**/*.ts"],
     "files": ["./src/index.ts"]

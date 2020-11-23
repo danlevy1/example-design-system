@@ -2,20 +2,18 @@
     "name": "@x3r5e/design-tokens",
     "version": "0.3.0",
     "description": "",
-    "type": "module",
-    "main": "dist/cjs/index-cjs.js",
-    "types": "dist/cjs/index-cjs.d.ts",
-    "module": "./dist/esm/index.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "module": "dist/index.esm.js",
     "files": [
-        "dist/"
+        "dist"
     ],
     "scripts": {
-        "test": "jest",
-        "build": "rm -rf ./dist && npm run merge-properties && npm run build:cjs && npm run build:esm",
-        "merge-properties": "node --loader ts-node/esm ./src/scripts/mergePropertiesRunner.ts",
-        "build:cjs": "echo 'Building CommonJS format...' && tsc --project tsconfig.prod-cjs.json && echo 'Successfully built CommonJS format.'",
-        "build:esm": "echo 'Building ESModule format...' && tsc --project tsconfig.prod-esm.json && echo 'Successfully built ESModule format.'",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run build",
+        "build": "rm -rf ./dist && npm run merge-properties && npm run compile",
+        "merge-properties": "node ./src/scripts/mergePropertiesRunner.js",
+        "compile": "rollup -c",
+        "test": "jest"
     },
     "repository": {
         "type": "git",
@@ -33,12 +31,16 @@
         "@babel/core": "^7.12.3",
         "@babel/preset-env": "^7.12.1",
         "@babel/preset-typescript": "^7.12.1",
+        "@rollup/plugin-commonjs": "^16.0.0",
+        "@rollup/plugin-json": "^4.1.0",
         "@types/jest": "^26.0.15",
         "@types/node": "^14.14.9",
         "deepmerge": "^4.2.2",
         "eslint": "^7.12.0",
         "jest": "^26.6.3",
         "mock-fs": "^4.13.0",
+        "rollup": "^2.33.3",
+        "rollup-plugin-typescript2": "^0.29.0",
         "style-dictionary": "^2.10.2",
         "ts-node": "^9.0.0",
         "typescript": "^4.0.5"

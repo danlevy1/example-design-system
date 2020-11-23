@@ -1,3 +1,3 @@
-import buildDesignTokens from "./buildDesignTokens.js";
+import { buildDesignTokens } from "./buildDesignTokens/buildDesignTokens.js";
 
-export default buildDesignTokens;
+export { buildDesignTokens };

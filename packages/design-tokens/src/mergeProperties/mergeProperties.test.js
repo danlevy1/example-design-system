@@ -53,7 +53,7 @@ describe("Merge Properties", () => {
         await expect(mergeProperties()).resolves.not.toThrowError();
     });
 
-    it("Does not throw an error if the root directory is empty", async () => {
+    it("Does not throw an error if a nested directory is empty", async () => {
         mock({
             [`${resolve(__dirname, "../properties")}`]: {
                 color: {
@@ -104,17 +104,17 @@ describe("Merge Properties", () => {
         const validDeepMergeObject = {
             raw: {
                 color: {
-                    purple: { "100": { value: "#a9a5be" } },
-                    blue: { "100": { value: "#a9c6cf" } },
-                    green: { "100": { value: "#c6dad5" } },
-                    black: { "100": { value: "#888888" } },
-                    white: { "100": { value: "#f2f2f2" } },
+                    purple: { 100: { value: "#a9a5be" } },
+                    blue: { 100: { value: "#a9c6cf" } },
+                    green: { 100: { value: "#c6dad5" } },
+                    black: { 100: { value: "#888888" } },
+                    white: { 100: { value: "#f2f2f2" } },
                 },
                 font: {
-                    size: { "100": { value: "12px" } },
-                    weight: { "100": { value: "lighter" } },
+                    size: { 100: { value: "12px" } },
+                    weight: { 100: { value: "lighter" } },
                 },
-                line: { height: { "100": { value: "14px" } } },
+                line: { height: { 100: { value: "14px" } } },
             },
         };
 
