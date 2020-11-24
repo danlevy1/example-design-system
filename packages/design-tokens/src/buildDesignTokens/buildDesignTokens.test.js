@@ -1,29 +1,27 @@
-import {
+const {
     buildDesignTokens,
-    Platform,
     PlatformOptions,
     PLATFORM_FORMATS_MAP,
     styleDictionaryConfig,
-} from "./buildDesignTokens";
+} = require("./buildDesignTokens");
 
 describe("Build Design Tokens", () => {
     describe("Platform Validation", () => {
         it("Throws an error when the platform does not have a name property", async () => {
-            const platform: Partial<Platform> = {
+            const platform = {
                 destinationPath: "./src/",
                 destinationFilename: "test.css",
             };
 
             try {
-                await buildDesignTokens([platform as Platform]);
+                await buildDesignTokens([platform]);
             } catch (e) {
                 expect(e).toBeInstanceOf(Error);
             }
         });
 
         it("Throws an error when the platform has an invalid name property", async () => {
-            const platform: Platform = {
-                // @ts-ignore
+            const platform = {
                 name: "ts",
                 destinationPath: "./src/",
                 destinationFilename: "test.css",
@@ -37,20 +35,20 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform does not have a destination path property", async () => {
-            const platform: Partial<Platform> = {
+            const platform = {
                 name: PlatformOptions.CSS,
                 destinationFilename: "test.css",
             };
 
             try {
-                await buildDesignTokens([platform as Platform]);
+                await buildDesignTokens([platform]);
             } catch (e) {
                 expect(e).toBeInstanceOf(Error);
             }
         });
 
         it("Throws an error when the platform's destination path property does not have a trailing slash", async () => {
-            const platform: Platform = {
+            const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: "./src",
                 destinationFilename: "test.css",
@@ -64,20 +62,20 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform does not have a destination filename property", async () => {
-            const platform: Partial<Platform> = {
+            const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: "./src/",
             };
 
             try {
-                await buildDesignTokens([platform as Platform]);
+                await buildDesignTokens([platform]);
             } catch (e) {
                 expect(e).toBeInstanceOf(Error);
             }
         });
 
         it("Throws an error when the platform's 'destination filename property has a slash", async () => {
-            const platform: Platform = {
+            const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: "./src/",
                 destinationFilename: "src/test.css",
@@ -91,7 +89,7 @@ describe("Build Design Tokens", () => {
         });
 
         it("Does not throw an error when the platform is valid", async () => {
-            const platform: Platform = {
+            const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: "./src/",
                 destinationFilename: "test.css",
@@ -113,7 +111,7 @@ describe("Build Design Tokens", () => {
                 PLATFORM_NAME
             );
 
-            const platform: Platform = {
+            const platform = {
                 name: PLATFORM_NAME,
                 destinationPath: "./src/",
                 destinationFilename: "test.css",

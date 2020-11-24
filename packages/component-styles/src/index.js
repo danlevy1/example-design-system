@@ -1,6 +1,5 @@
-// NOTE: Add "type": "module" to `package.json` before importing or running this file
 import { resolve, dirname } from "path";
-import { buildDesignTokens } from "@x3r5e/design-tokens/dist/index.mjs";
+import { buildDesignTokens, PlatformOptions } from "@x3r5e/design-tokens";
 import { fileURLToPath } from "url";
 
 const getDirname = (fileURL) => {
@@ -12,22 +11,22 @@ const DIRNAME = getDirname(import.meta.url);
 
 const platformsTest = [
     {
-        name: "css",
+        name: PlatformOptions.CSS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.css",
     },
     {
-        name: "scss",
+        name: PlatformOptions.SCSS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.scss",
     },
     {
-        name: "less",
+        name: PlatformOptions.LESS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.less",
     },
     {
-        name: "js",
+        name: PlatformOptions.JS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.js",
     },

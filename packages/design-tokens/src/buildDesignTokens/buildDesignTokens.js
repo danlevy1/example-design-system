@@ -1,48 +1,50 @@
-import { resolve } from "path";
-import styleDictionary from "style-dictionary";
-import getDirname from "../utils/dirname.js";
+// dirname is used during the build process for the ESM output (see replace plugin in Rollup config)
+/* eslint-disable-next-line no-unused-vars */
+const { resolve, dirname } = require("path");
+// fileURLToPath is used during the build process for the ESM output (see replace plugin in Rollup config)
+/* eslint-disable-next-line no-unused-vars */
+const { fileURLToPath } = require("url");
+const styleDictionary = require("style-dictionary");
 
-const DIRNAME = getDirname(import.meta.url);
+/**
+ * Platforms that design tokens can be built for.
+ * @readonly
+ * @enum {String}
+ */
+const PlatformOptions = {
+    CSS: "css",
+    SCSS: "scss",
+    LESS: "less",
+    JS: "js",
+};
 
-export enum PlatformOptions {
-    CSS = "css",
-    SCSS = "scss",
-    LESS = "less",
-    JS = "js",
-}
-
-export const PLATFORM_FORMATS_MAP = new Map([
+const PLATFORM_FORMATS_MAP = new Map([
     [PlatformOptions.CSS, "css/variables"],
     [PlatformOptions.SCSS, "scss/variables"],
     [PlatformOptions.LESS, "less/variables"],
     [PlatformOptions.JS, "javascript/es6"],
 ]);
 
-export interface Platform {
-    name: PlatformOptions;
-    destinationPath: string;
-    destinationFilename: string;
-}
-
-interface StyleDictionaryConfig {
-    source: string[];
-    platforms: {
-        [platformName: string]: any;
-    };
-}
-
-export const styleDictionaryConfig: StyleDictionaryConfig = {
-    source: [resolve(DIRNAME, "./properties.json")],
+const styleDictionaryConfig = {
+    source: [resolve(__dirname, "./properties.json")],
     platforms: {},
 };
 
 /**
- * Throws an error if any of the platform properites are invalid
- * @param platform - The platform that the design tokens will be built for
- * @param platformIndex - The index of the given platform in the platforms array
- * @returns An error if there is an invalid property, or undefined if all properties are valid
+ * Information for the platform that the design tokens will be built for.
+ * @typedef {Object} Platform
+ * @property {PlatformOptions} name The platform to build design tokens for.
+ * @property {String} destinationPath The absolute path to the destination directory where the design tokens file will be generated. The path needs a trailing "/".
+ * @property {String} destinationFilename The filename for the generated design tokens.
  */
-const validatePlatform = (platform: Platform, platformIndex: number) => {
+
+/**
+ * Throws an error if any of the platform properites are invalid.
+ * @param {Platform} platform - The platform that the design tokens will be built for.
+ * @param {Number} platformIndex - The index of the given platform in the platforms array.
+ * @returns An error if there is an invalid property, or undefined if all properties are valid.
+ */
+const validatePlatform = (platform, platformIndex) => {
     if (!platform.name) {
         throw new Error(
             `Platform at index "${platformIndex}" does not have a ${`name`} property. Each platform should be of the form ${`{name: <paltform-name>, destinationPath: <absolute-path>, destinationFilename: <filename>}`}`
@@ -93,10 +95,10 @@ const validatePlatform = (platform: Platform, platformIndex: number) => {
 };
 
 /**
- * Adds the given platform to the design token build config
- * @param platform - The platform that the design tokens will be built for
+ * Adds the given platform to the design token build config.
+ * @param {Platform} platform - The platform that the design tokens will be built for.
  */
-const addPlatformToConfig = (platform: Platform) => {
+const addPlatformToConfig = (platform) => {
     styleDictionaryConfig.platforms[platform.name] = {
         transformGroup: platform.name,
         buildPath: platform.destinationPath,
@@ -110,10 +112,10 @@ const addPlatformToConfig = (platform: Platform) => {
 };
 
 /**
- * Builds the design tokens for the specified platforms
- * @param platforms The platforms that the design tokens will be built for
+ * Builds the design tokens for the specified platforms.
+ * @param {Platform[]} platforms - The platforms that the design tokens will be built for.
  */
-export const buildDesignTokens = async (platforms: Platform[]) => {
+const buildDesignTokens = async (platforms) => {
     platforms.forEach((platform, index) => {
         validatePlatform(platform, index);
         addPlatformToConfig(platform);
@@ -136,4 +138,11 @@ export const buildDesignTokens = async (platforms: Platform[]) => {
     );
 
     styleDictionaryWithOptions.buildAllPlatforms();
+};
+
+module.exports = {
+    buildDesignTokens,
+    PlatformOptions,
+    PLATFORM_FORMATS_MAP,
+    styleDictionaryConfig,
 };

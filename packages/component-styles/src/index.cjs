@@ -1,27 +1,26 @@
-// NOTE: Remove "type": "module" from `package.json` before importing or running this file
 const { resolve } = require("path");
-const { buildDesignTokens } = require("@x3r5e/design-tokens");
+const { buildDesignTokens, PlatformOptions } = require("@x3r5e/design-tokens");
 
 const DIRNAME = __dirname;
 
 const platformsTest = [
     {
-        name: "css",
+        name: PlatformOptions.CSS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.css",
     },
     {
-        name: "scss",
+        name: PlatformOptions.SCSS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.scss",
     },
     {
-        name: "less",
+        name: PlatformOptions.LESS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.less",
     },
     {
-        name: "js",
+        name: PlatformOptions.JS,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.js",
     },

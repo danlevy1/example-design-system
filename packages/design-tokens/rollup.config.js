@@ -1,17 +1,12 @@
-import typescript from "rollup-plugin-typescript2";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
+import replace from "@rollup/plugin-replace";
 import pkg from "./package.json";
 
-const input = "src/index.ts";
-const plugins = [
-    json(),
-    commonjs(),
-    typescript({
-        typescript: require("typescript"),
-        tsconfig: "./tsconfig.prod.json",
-    }),
-];
+console.log(pkg.types);
+
+const input = "src/index.js";
+const plugins = [json(), commonjs()];
 const external = [
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
@@ -27,7 +22,12 @@ export default [
             file: pkg.module,
             format: "es",
         },
-        plugins,
+        plugins: [
+            replace({
+                __dirname: "dirname(fileURLToPath(import.meta.url))",
+            }),
+            ...plugins,
+        ],
         external,
     },
     {
