@@ -6,6 +6,10 @@ import { fileURLToPath } from "url";
  * @param fileURL - The URL to get the path from
  */
 const getDirname = (fileURL: string) => {
+    if (typeof __dirname !== "undefined" && fileURL === __dirname) {
+        return fileURL;
+    }
+
     const DIRNAME = dirname(fileURLToPath(fileURL));
     return DIRNAME;
 };
