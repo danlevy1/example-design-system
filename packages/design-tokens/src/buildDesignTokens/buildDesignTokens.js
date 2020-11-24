@@ -25,11 +25,6 @@ const PLATFORM_FORMATS_MAP = new Map([
     [PlatformOptions.JS, "javascript/es6"],
 ]);
 
-const styleDictionaryConfig = {
-    source: [resolve(__dirname, "./properties.json")],
-    platforms: {},
-};
-
 /**
  * Information for the platform that the design tokens will be built for.
  * @typedef {Object} Platform
@@ -97,9 +92,10 @@ const validatePlatform = (platform, platformIndex) => {
 /**
  * Adds the given platform to the design token build config.
  * @param {Platform} platform - The platform that the design tokens will be built for.
+ * @param {Object} config - The Style Dictionary config.
  */
-const addPlatformToConfig = (platform) => {
-    styleDictionaryConfig.platforms[platform.name] = {
+const addPlatformToConfig = (platform, config) => {
+    config.platforms[platform.name] = {
         transformGroup: platform.name,
         buildPath: platform.destinationPath,
         files: [
@@ -114,11 +110,36 @@ const addPlatformToConfig = (platform) => {
 /**
  * Builds the design tokens for the specified platforms.
  * @param {Platform[]} platforms - The platforms that the design tokens will be built for.
+ * @param {string[]=} sourcePaths - An array of property file paths. Absolute paths and path globs are accepted. See https://github.com/isaacs/node-glob for more information about globs.
  */
-const buildDesignTokens = async (platforms) => {
+const buildDesignTokens = async (
+    platforms,
+    sourcePaths = [resolve(__dirname, "./properties.json")]
+) => {
+    const styleDictionaryConfig = {
+        source: sourcePaths,
+        platforms: {},
+    };
+
+    if (!platforms) {
+        throw new Error("No platforms were provided.");
+    }
+
+    if (!Array.isArray(platforms)) {
+        throw new Error(
+            "The value provided to `platforms` is not of type array."
+        );
+    }
+
+    if (!Array.isArray(sourcePaths)) {
+        throw new Error(
+            "The value provided `sourcePaths` is not of type array."
+        );
+    }
+
     platforms.forEach((platform, index) => {
         validatePlatform(platform, index);
-        addPlatformToConfig(platform);
+        addPlatformToConfig(platform, styleDictionaryConfig);
 
         if (platform.name === PlatformOptions.JS) {
             styleDictionary.registerTransformGroup({
@@ -143,6 +164,4 @@ const buildDesignTokens = async (platforms) => {
 module.exports = {
     buildDesignTokens,
     PlatformOptions,
-    PLATFORM_FORMATS_MAP,
-    styleDictionaryConfig,
 };

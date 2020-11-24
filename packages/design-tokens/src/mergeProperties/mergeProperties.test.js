@@ -6,7 +6,7 @@ const mergeProperties = require("./mergeProperties");
 describe("Merge Properties", () => {
     /*
      * console.log statements are mocked to be hidden from the output.
-     * To call console.log in the test, instead call `originalConsoleLog(..).
+     * 🚨🚨 To call console.log in a test, instead call `originalConsoleLog(..) 🚨🚨
      */
     const originalConsoleLog = console.log;
 
@@ -118,6 +118,6 @@ describe("Merge Properties", () => {
             },
         };
 
-        await expect(file).toBe(JSON.stringify(validDeepMergeObject));
+        expect(file).toBe(JSON.stringify(validDeepMergeObject));
     });
 });
