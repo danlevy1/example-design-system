@@ -3,6 +3,7 @@ const { promisify } = require("util");
 const rimraf = require("rimraf");
 const { readFile } = require("fs/promises");
 const { buildDesignTokens, PlatformOptions } = require("../buildDesignTokens");
+const { assert } = require("console");
 const rimrafPromise = promisify(rimraf);
 
 describe("Build Design Tokens", () => {
@@ -26,6 +27,8 @@ describe("Build Design Tokens", () => {
 
     describe("Platform Validation", () => {
         it("Throws an error when no platforms are provided", async () => {
+            expect.assertions(1);
+
             try {
                 await buildDesignTokens();
             } catch (e) {
@@ -34,6 +37,8 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the first argument of `buildDesignTokens` not of type array", async () => {
+            expect.assertions(1);
+
             const platform = {
                 destinationPath: `${resolve(__dirname, "./tokens")}/`,
                 destinationFilename: "tokens.css",
@@ -47,6 +52,8 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the second argument of `buildDesignTokens` not of type array", async () => {
+            expect.assertions(1);
+
             const platform = {
                 destinationPath: `${resolve(__dirname, "./tokens")}/`,
                 destinationFilename: "tokens.css",
@@ -60,6 +67,8 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform does not have a name property", async () => {
+            expect.assertions(1);
+
             const platform = {
                 destinationPath: `${resolve(__dirname, "./tokens")}/`,
                 destinationFilename: "tokens.css",
@@ -73,6 +82,8 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform has an invalid name property", async () => {
+            expect.assertions(1);
+
             const platform = {
                 name: "ts",
                 destinationPath: `${resolve(__dirname, "./tokens")}/`,
@@ -87,6 +98,8 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform does not have a destination path property", async () => {
+            expect.assertions(1);
+
             const platform = {
                 name: PlatformOptions.CSS,
                 destinationFilename: "tokens.css",
@@ -99,21 +112,28 @@ describe("Build Design Tokens", () => {
             }
         });
 
-        it("Throws an error when the platform's destination path property does not have a trailing slash", async () => {
+        it("Logs a warning when the platform's destination path property does not have a trailing slash", async () => {
+            const originalConsoleWarn = console.warn;
+            console.warn = jest.fn();
+
+            expect.assertions(1);
+
             const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: resolve(__dirname, "./tokens"),
                 destinationFilename: "tokens.css",
             };
 
-            try {
-                await buildDesignTokens([platform]);
-            } catch (e) {
-                expect(e).toBeInstanceOf(Error);
-            }
+            await buildDesignTokens([platform]);
+
+            expect(console.warn).toHaveBeenCalledTimes(1);
+
+            console.warn = originalConsoleWarn;
         });
 
         it("Throws an error when the platform does not have a destination filename property", async () => {
+            expect.assertions(1);
+
             const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: `${resolve(__dirname, "./tokens")}/`,
@@ -127,6 +147,8 @@ describe("Build Design Tokens", () => {
         });
 
         it("Throws an error when the platform's 'destination filename property has a slash", async () => {
+            expect.assertions(1);
+
             const platform = {
                 name: PlatformOptions.CSS,
                 destinationPath: `${resolve(__dirname, "./tokens")}/`,

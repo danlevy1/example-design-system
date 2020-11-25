@@ -67,9 +67,10 @@ const validatePlatform = (platform, platformIndex) => {
         "/";
 
     if (!isTrailingSlashInDestinationPath) {
-        throw new Error(
-            `Platform at index "${platformIndex}" has an invalid ${`destinationPath`} property. The ${`destinationPath`} property should have a trailing slash (i.e. a "/" as the last character in the path).`
+        console.warn(
+            `The ${`destinationPath`} property for platform at index "${platformIndex}" should have a trailing slash (i.e. a "/" as the last character in the path). We added a trailing slash for you, but we recommend adding it yourself.`
         );
+        platform.destinationPath += "/";
     }
 
     if (!platform.destinationFilename) {
@@ -141,6 +142,7 @@ const buildDesignTokens = async (
         validatePlatform(platform, index);
         addPlatformToConfig(platform, styleDictionaryConfig);
 
+        // Creates a JS transform group
         if (platform.name === PlatformOptions.JS) {
             styleDictionary.registerTransformGroup({
                 name: "js",
