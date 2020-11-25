@@ -15,14 +15,27 @@ const PlatformOptions = {
     CSS: "css",
     SCSS: "scss",
     LESS: "less",
-    JS: "js",
+    ESM: "esm",
+    CJS: "cjs",
+    JSON: "json",
 };
 
 const PLATFORM_FORMATS_MAP = new Map([
     [PlatformOptions.CSS, "css/variables"],
     [PlatformOptions.SCSS, "scss/variables"],
     [PlatformOptions.LESS, "less/variables"],
-    [PlatformOptions.JS, "javascript/es6"],
+    [PlatformOptions.ESM, "javascript/es6"],
+    [PlatformOptions.CJS, "javascript/cjs"],
+    [PlatformOptions.JSON, "json/nested"],
+]);
+
+const PLATFORM_TRANSFORM_GROUPS_MAP = new Map([
+    [PlatformOptions.CSS, "css"],
+    [PlatformOptions.SCSS, "scss"],
+    [PlatformOptions.LESS, "less"],
+    [PlatformOptions.ESM, "js"],
+    [PlatformOptions.CJS, "js"],
+    [PlatformOptions.JSON, "json"],
 ]);
 
 /**
@@ -97,7 +110,7 @@ const validatePlatform = (platform, platformIndex) => {
  */
 const addPlatformToConfig = (platform, config) => {
     config.platforms[platform.name] = {
-        transformGroup: platform.name,
+        transformGroup: PLATFORM_TRANSFORM_GROUPS_MAP.get(platform.name),
         buildPath: platform.destinationPath,
         files: [
             {
@@ -108,6 +121,27 @@ const addPlatformToConfig = (platform, config) => {
     };
 };
 
+const fileHeader = (options, commentStyle) => {
+    var to_ret = "";
+    // for backward compatibility we need to have the user explicitly hide them
+    var showFileHeader = options ? options.showFileHeader : true;
+    if (showFileHeader) {
+        if (commentStyle === "short") {
+            to_ret += "\n";
+            to_ret += "// Do not edit directly\n";
+            to_ret += "// Generated on " + new Date().toUTCString() + "\n";
+            to_ret += "\n";
+        } else {
+            to_ret += "/**\n";
+            to_ret += " * Do not edit directly\n";
+            to_ret += " * Generated on " + new Date().toUTCString() + "\n";
+            to_ret += " */\n\n";
+        }
+    }
+
+    return to_ret;
+};
+
 /**
  * Builds the design tokens for the specified platforms.
  * @param {Platform[]} platforms - The platforms that the design tokens will be built for.
@@ -115,7 +149,8 @@ const addPlatformToConfig = (platform, config) => {
  */
 const buildDesignTokens = async (
     platforms,
-    sourcePaths = [resolve(__dirname, "./properties.json")]
+    // The default source path is based on the production version of this file in the dist folder
+    sourcePaths = [resolve(__dirname, "./properties/**/*.json")]
 ) => {
     const styleDictionaryConfig = {
         source: sourcePaths,
@@ -141,19 +176,50 @@ const buildDesignTokens = async (
     platforms.forEach((platform, index) => {
         validatePlatform(platform, index);
         addPlatformToConfig(platform, styleDictionaryConfig);
+    });
 
-        // Creates a JS transform group
-        if (platform.name === PlatformOptions.JS) {
-            styleDictionary.registerTransformGroup({
-                name: "js",
-                transforms: [
-                    "attribute/cti",
-                    "name/cti/constant",
-                    "size/rem",
-                    "color/hex",
-                ],
-            });
-        }
+    // Creates JS transform group
+    styleDictionary.registerTransformGroup({
+        name: "js",
+        transforms: [
+            "attribute/cti",
+            "name/cti/constant",
+            "size/rem",
+            "color/hex",
+        ],
+    });
+
+    // Creates a JSON transform group
+    styleDictionary.registerTransformGroup({
+        name: "json",
+        transforms: ["attribute/cti", "name/cti/kebab"],
+    });
+
+    // Creates a CJS format
+    styleDictionary.registerFormat({
+        name: "javascript/cjs",
+        formatter: function (dictionary) {
+            return (
+                fileHeader(this.options) +
+                "module.exports = {\n" +
+                dictionary.allProperties
+                    .map(function (prop) {
+                        var to_ret_prop =
+                            "  " +
+                            prop.name +
+                            ": " +
+                            JSON.stringify(prop.value) +
+                            ",";
+                        if (prop.comment)
+                            to_ret_prop = to_ret_prop.concat(
+                                " // " + prop.comment
+                            );
+                        return to_ret_prop;
+                    })
+                    .join("\n") +
+                "\n}"
+            );
+        },
     });
 
     const styleDictionaryWithOptions = styleDictionary.extend(
