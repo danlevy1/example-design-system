@@ -25,7 +25,7 @@ npm install --save @x3r5e/design-tokens
 
 The design tokens library offers a simple API for those who are either looking to test the package out or don't have a complex use case. For advanced use-cases, your only technical constraint is that the tokens are in JSON fromat.
 
-### Simple - Using the APU
+### Simple - Using the API
 
 The API currently creates one (1) file with every design token for each platform you want to build for. The API is available in CommonJS format or ES Module format. The API is also TypeScript-ready. For the documentation here, we assume you are using JavaScript and CommonJS, but the code is very similar if you choose to use ES Modules.
 
