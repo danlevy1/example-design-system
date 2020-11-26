@@ -112,25 +112,6 @@ describe("Build Design Tokens", () => {
             }
         });
 
-        it("Logs a warning when the platform's destination path property does not have a trailing slash", async () => {
-            const originalConsoleWarn = console.warn;
-            console.warn = jest.fn();
-
-            expect.assertions(1);
-
-            const platform = {
-                name: PlatformOptions.CSS,
-                destinationPath: resolve(__dirname, "./tokens"),
-                destinationFilename: "tokens.css",
-            };
-
-            await buildDesignTokens([platform]);
-
-            expect(console.warn).toHaveBeenCalledTimes(1);
-
-            console.warn = originalConsoleWarn;
-        });
-
         it("Throws an error when the platform does not have a destination filename property", async () => {
             expect.assertions(1);
 

@@ -42,7 +42,7 @@ const PLATFORM_TRANSFORM_GROUPS_MAP = new Map([
  * Information for the platform that the design tokens will be built for.
  * @typedef {Object} Platform
  * @property {PlatformOptions} name The platform to build design tokens for.
- * @property {String} destinationPath The absolute path to the destination directory where the design tokens file will be generated. The path needs a trailing "/".
+ * @property {String} destinationPath The absolute path to the destination directory where the design tokens file will be generated. The path does not need a trailing "/".
  * @property {String} destinationFilename The filename for the generated design tokens.
  */
 
@@ -80,9 +80,6 @@ const validatePlatform = (platform, platformIndex) => {
         "/";
 
     if (!isTrailingSlashInDestinationPath) {
-        console.warn(
-            `The ${`destinationPath`} property for platform at index "${platformIndex}" should have a trailing slash (i.e. a "/" as the last character in the path). We added a trailing slash for you, but we recommend adding it yourself.`
-        );
         platform.destinationPath += "/";
     }
 
