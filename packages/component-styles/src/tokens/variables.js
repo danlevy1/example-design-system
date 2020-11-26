@@ -1,6 +1,6 @@
 /**
  * Do not edit directly
- * Generated on Wed, 25 Nov 2020 03:04:28 GMT
+ * Generated on Thu, 26 Nov 2020 02:20:06 GMT
  */
 
 export const RAW_BORDER_RADIUS_100 = "2px";

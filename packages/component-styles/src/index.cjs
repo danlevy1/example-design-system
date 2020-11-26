@@ -20,9 +20,19 @@ const platformsTest = [
         destinationFilename: "variables.less",
     },
     {
-        name: PlatformOptions.JS,
+        name: PlatformOptions.ESM,
         destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
         destinationFilename: "variables.js",
+    },
+    {
+        name: PlatformOptions.CJS,
+        destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
+        destinationFilename: "variables.cjs",
+    },
+    {
+        name: PlatformOptions.JSON,
+        destinationPath: `${resolve(DIRNAME, "./tokens")}/`,
+        destinationFilename: "variables.json",
     },
 ];
 

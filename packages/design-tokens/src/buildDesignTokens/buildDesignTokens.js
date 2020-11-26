@@ -31,8 +31,8 @@ const PLATFORM_FORMATS_MAP = new Map([
 
 const PLATFORM_TRANSFORM_GROUPS_MAP = new Map([
     [PlatformOptions.CSS, "css"],
-    [PlatformOptions.SCSS, "scss"],
-    [PlatformOptions.LESS, "less"],
+    [PlatformOptions.SCSS, "css"],
+    [PlatformOptions.LESS, "css"],
     [PlatformOptions.ESM, "js"],
     [PlatformOptions.CJS, "js"],
     [PlatformOptions.JSON, "json"],
@@ -142,6 +142,58 @@ const fileHeader = (options, commentStyle) => {
     return to_ret;
 };
 
+const createTransformGroups = (styleDictionary) => {
+    /*
+     * Creates the CSS transform group.
+     * The CSS transform group can be used for CSS pre-processors as well.
+     */
+    styleDictionary.registerTransformGroup({
+        name: "css",
+        transforms: ["attribute/cti", "name/cti/kebab"],
+    });
+
+    // Creates the JS transform group
+    styleDictionary.registerTransformGroup({
+        name: "js",
+        transforms: ["attribute/cti", "name/cti/constant"],
+    });
+
+    // Creates the JSON transform group
+    styleDictionary.registerTransformGroup({
+        name: "json",
+        transforms: [],
+    });
+};
+
+const createFormats = (styleDictionary) => {
+    // Creates the CJS format
+    styleDictionary.registerFormat({
+        name: "javascript/cjs",
+        formatter: function (dictionary) {
+            return (
+                fileHeader(this.options) +
+                "module.exports = {\n" +
+                dictionary.allProperties
+                    .map(function (prop) {
+                        var to_ret_prop =
+                            "  " +
+                            prop.name +
+                            ": " +
+                            JSON.stringify(prop.value) +
+                            ",";
+                        if (prop.comment)
+                            to_ret_prop = to_ret_prop.concat(
+                                " // " + prop.comment
+                            );
+                        return to_ret_prop;
+                    })
+                    .join("\n") +
+                "\n}"
+            );
+        },
+    });
+};
+
 /**
  * Builds the design tokens for the specified platforms.
  * @param {Platform[]} platforms - The platforms that the design tokens will be built for.
@@ -178,49 +230,9 @@ const buildDesignTokens = async (
         addPlatformToConfig(platform, styleDictionaryConfig);
     });
 
-    // Creates JS transform group
-    styleDictionary.registerTransformGroup({
-        name: "js",
-        transforms: [
-            "attribute/cti",
-            "name/cti/constant",
-            "size/rem",
-            "color/hex",
-        ],
-    });
+    createTransformGroups(styleDictionary);
 
-    // Creates a JSON transform group
-    styleDictionary.registerTransformGroup({
-        name: "json",
-        transforms: ["attribute/cti", "name/cti/kebab"],
-    });
-
-    // Creates a CJS format
-    styleDictionary.registerFormat({
-        name: "javascript/cjs",
-        formatter: function (dictionary) {
-            return (
-                fileHeader(this.options) +
-                "module.exports = {\n" +
-                dictionary.allProperties
-                    .map(function (prop) {
-                        var to_ret_prop =
-                            "  " +
-                            prop.name +
-                            ": " +
-                            JSON.stringify(prop.value) +
-                            ",";
-                        if (prop.comment)
-                            to_ret_prop = to_ret_prop.concat(
-                                " // " + prop.comment
-                            );
-                        return to_ret_prop;
-                    })
-                    .join("\n") +
-                "\n}"
-            );
-        },
-    });
+    createFormats(styleDictionary);
 
     const styleDictionaryWithOptions = styleDictionary.extend(
         styleDictionaryConfig
