@@ -69,14 +69,14 @@ const cssPlatform = {
 };
 ```
 
-`Platform.destinationPath` expects absolute path to the destination directory where the design tokens file will be generated. The path needs a trailing "/". [Required]
+`Platform.destinationPath` expects absolute path to the destination directory where the design tokens file will be generated. The path does not need a trailing "/". [Required]
 
 ```javascript
 // Example
 const path = require("path");
 
 const cssPlatform = {
-    destinationPath: `${__dirname}/`, // Notice the trailing slash at the end
+    destinationPath: __dirname,
 };
 ```
 
@@ -97,7 +97,7 @@ const { buildDesignTokens, PlatformOptions } = require("@x3r5e/design-tokens");
 
 const cssPlatform = {
     name: PlatformOptions.CSS,
-    destinationPath: `${__dirname}/`,
+    destinationPath: __dirname,
     destinationFilename: "tokens.css",
 };
 
