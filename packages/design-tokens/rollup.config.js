@@ -6,8 +6,6 @@ import del from "rollup-plugin-delete";
 import cleanup from "rollup-plugin-cleanup";
 import pkg from "./package.json";
 
-console.log(pkg.types);
-
 const input = "src/index.js";
 const plugins = [
     json(),

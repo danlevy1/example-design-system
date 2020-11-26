@@ -16,8 +16,8 @@
     },
     "scripts": {
         "prepublishOnly": "npm run build",
-        "build": "rollup -c && tsc",
-        "test": "echo 🚨🚨 Some test files mock console.log, so you might need to use the original console.log for the log to appear in the terminal 🚨🚨 && jest"
+        "build": "rollup -c && node ./src/scripts/buildTypes.js",
+        "test": "node ./src/scripts/testWarning.js && jest"
     },
     "repository": {
         "type": "git",
@@ -37,6 +37,7 @@
         "@rollup/plugin-replace": "^2.3.4",
         "@types/jest": "^26.0.15",
         "@types/node": "^14.14.9",
+        "chalk": "^4.1.0",
         "deepmerge": "^4.2.2",
         "eslint": "^7.12.0",
         "jest": "^26.6.3",
@@ -48,5 +49,6 @@
         "rollup-plugin-delete": "^2.0.0",
         "style-dictionary": "^2.10.2",
         "typescript": "^4.0.5"
-    }
+    },
+    "dependencies": {}
 }
