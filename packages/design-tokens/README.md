@@ -141,6 +141,10 @@ mergeTokensAndResolveAliases()
 
 If you need to create your own build process, we recommend checking out [Style Dictionary](https://amzn.github.io/style-dictionary/) as it is very flexible.
 
+## Examples
+
+See the [examples](https://github.com/danlevy1/example-design-system/tree/main/packages/design-tokens/src/examples) folder.
+
 ## Contributing
 
 We are not currently accepting contributions to this repository.
