@@ -2,7 +2,8 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "lerna:bootstrap": "lerna bootstrap --hoist",
+        "bootstrap": "lerna bootstrap --hoist",
+        "changed-pkgs": "lerna changed",
         "publish": "lerna publish"
     },
     "devDependencies": {
