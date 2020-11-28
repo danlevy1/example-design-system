@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/design-tokens",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
@@ -15,7 +15,9 @@
         "default": "./dist/index.js"
     },
     "scripts": {
-        "prepublishOnly": "npm run build",
+        "preversion": "npm run test && npm run build",
+        "postversion": "npm publish",
+        "postpublish": "node ./src/scripts/postpublish",
         "build": "rollup -c && node ./src/scripts/buildTypes.js",
         "test": "node ./src/scripts/testWarning.js && jest"
     },
