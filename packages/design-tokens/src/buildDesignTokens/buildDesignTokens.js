@@ -158,7 +158,7 @@ const createTransformGroups = (styleDictionary) => {
     // Creates the JSON transform group
     styleDictionary.registerTransformGroup({
         name: "json",
-        transforms: [],
+        transforms: ["attribute/cti", "name/cti/kebab"],
     });
 };
 
