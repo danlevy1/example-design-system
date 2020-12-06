@@ -1,4 +1,4 @@
-const executeShellCommand = require("./executeShellCommand");
+const executeShellCommand = require("../../../../scripts/executeShellCommand");
 const chalk = require("chalk");
 const tsconfig = require("../../tsconfig.json");
 

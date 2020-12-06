@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "bootstrap": "lerna bootstrap --hoist",
-        "changed-pkgs": "lerna changed",
+        "changed": "lerna changed",
         "publish": "lerna publish"
     },
     "devDependencies": {
