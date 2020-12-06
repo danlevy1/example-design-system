@@ -1,24 +1,28 @@
 {
-  "name": "@x3r5e/icons",
-  "version": "0.4.0",
-  "description": "",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/danlevy1/example-design-system.git",
-    "directory": "packages/icons"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [],
-  "author": "Daniel Levy (https://www.danlevy.info)",
-  "license": "MIT",
-  "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
-  "devDependencies": {
-    "eslint": "^7.12.0"
-  }
+    "name": "@x3r5e/icons",
+    "version": "0.4.2",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "preversion": "npm run test && npm run build",
+        "postversion": "npm publish",
+        "postpublish": "PACKAGE_NAME=icons node ../../scripts/postpublish",
+        "build": "",
+        "test": ""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/danlevy1/example-design-system.git",
+        "directory": "packages/icons"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "keywords": [],
+    "author": "Daniel Levy (https://www.danlevy.info)",
+    "license": "MIT",
+    "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
+    "devDependencies": {
+        "eslint": "^7.12.0"
+    }
 }
