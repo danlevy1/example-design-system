@@ -10,10 +10,10 @@ const packageNameAndVersion = `${packageName}@${packageVersion}`;
 const postpublish = async () => {
     await executeShellCommand("git add package.json package-lock.json");
     await executeShellCommand(
-        `git tag -a ${packageNameAndVersion} -m "Release ${packageNameAndVersion}"`
+        `git commit -m 'Publish ${packageNameAndVersion}'`
     );
     await executeShellCommand(
-        `git commit -m 'Publish ${packageNameAndVersion}'`
+        `git tag -a ${packageNameAndVersion} -m "${packageNameAndVersion}"`
     );
     await executeShellCommand(`git push --follow-tags`);
 };
