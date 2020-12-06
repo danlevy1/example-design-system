@@ -1,0 +1,87 @@
+version: 2.1
+
+parameters:
+    run-design-tokens:
+        type: boolean
+        default: false
+    run-component-styles:
+        type: boolean
+        default: false
+    run-icons:
+        type: boolean
+        default: false
+    run-react-components:
+        type: boolean
+        default: false
+
+workflows:
+    version: 2
+    ci:
+        jobs:
+            - trigger-workflows-job
+    design_tokens:
+        when: << pipeline.parameters.run_design_tokens >>
+        jobs:
+            - design-tokens-job
+    component_styles:
+        when: << pipeline.parameters.run_component_styles >>
+        jobs:
+            - component-styles-job
+    icons:
+        when: << pipeline.parameters.run_icons >>
+        jobs:
+            - icons-job
+    react_components:
+        when: << pipeline.parameters.run_react_components >>
+        jobs:
+            - react-components-job
+
+jobs:
+    trigger-workflows-job:
+        docker:
+            - image: circleci/node:10
+        steps:
+            - checkout
+            - run:
+                  name: Trigger Workflows
+                  command: node ./.circleci/triggerWorkflows.js
+    design-tokens-job:
+        docker:
+            - image: circleci/node:10
+        working_directory: ~/packages/design-tokens
+        setps:
+            - checkout
+            - run:
+                  name: Print working directory
+                  command: |
+                      echo pwd
+    component-styles-job:
+        docker:
+            - image: circleci/node:10
+        working_directory: ~/packages/component-styles
+        setps:
+            - checkout
+            - run:
+                  name: Print working directory
+                  command: |
+                      echo pwd
+    icons-job:
+        docker:
+            - image: circleci/node:10
+        working_directory: ~/packages/icons
+        setps:
+            - checkout
+            - run:
+                  name: Print working directory
+                  command: |
+                      echo pwd
+    react-components-job:
+        docker:
+            - image: circleci/node:10
+        working_directory: ~/packages/react-components
+        setps:
+            - checkout
+            - run:
+                  name: Print working directory
+                  command: |
+                      echo pwd
