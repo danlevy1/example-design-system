@@ -1,11 +1,15 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "",
     "main": "dist/index.js",
     "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "preversion": "npm run test && npm run build",
+        "postversion": "npm publish",
+        "postpublish": "PACKAGE_NAME=component-styles node ../../scripts/postpublish",
+        "build": "",
+        "test": ""
     },
     "repository": {
         "type": "git",
