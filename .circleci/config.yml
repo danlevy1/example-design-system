@@ -19,20 +19,20 @@ workflows:
     ci:
         jobs:
             - trigger-workflows-job
-    design_tokens:
-        when: << pipeline.parameters.run_design_tokens >>
+    design-tokens:
+        when: << pipeline.parameters.run-design-tokens >>
         jobs:
             - design-tokens-job
-    component_styles:
-        when: << pipeline.parameters.run_component_styles >>
+    component-styles:
+        when: << pipeline.parameters.run-component-styles >>
         jobs:
             - component-styles-job
     icons:
-        when: << pipeline.parameters.run_icons >>
+        when: << pipeline.parameters.run-icons >>
         jobs:
             - icons-job
-    react_components:
-        when: << pipeline.parameters.run_react_components >>
+    react-components:
+        when: << pipeline.parameters.run-react-components >>
         jobs:
             - react-components-job
 
@@ -49,7 +49,7 @@ jobs:
         docker:
             - image: circleci/node:10
         working_directory: ~/packages/design-tokens
-        setps:
+        steps:
             - checkout
             - run:
                   name: Print working directory
@@ -59,7 +59,7 @@ jobs:
         docker:
             - image: circleci/node:10
         working_directory: ~/packages/component-styles
-        setps:
+        steps:
             - checkout
             - run:
                   name: Print working directory
@@ -69,7 +69,7 @@ jobs:
         docker:
             - image: circleci/node:10
         working_directory: ~/packages/icons
-        setps:
+        steps:
             - checkout
             - run:
                   name: Print working directory
@@ -79,7 +79,7 @@ jobs:
         docker:
             - image: circleci/node:10
         working_directory: ~/packages/react-components
-        setps:
+        steps:
             - checkout
             - run:
                   name: Print working directory
