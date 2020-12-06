@@ -49,7 +49,7 @@ const triggerWorkflows = async () => {
     };
 
     const response = await requestPromise(options);
-    console.log(response.statusCode);
+    console.log(response.body);
 };
 
 triggerWorkflows();
