@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/design-tokens",
-    "version": "0.10.0",
+    "version": "0.10.4",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
@@ -17,7 +17,7 @@
     "scripts": {
         "preversion": "npm run test && npm run build",
         "postversion": "npm publish",
-        "postpublish": "node ./src/scripts/postpublish",
+        "postpublish": "PACKAGE_NAME=design-tokens node ../../scripts/postpublish",
         "build": "rollup -c && node ./src/scripts/buildTypes.js",
         "test": "node ./src/scripts/testWarning.js && jest"
     },
