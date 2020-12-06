@@ -43,5 +43,3 @@ const platformsTest = [
 ];
 
 buildDesignTokens(platformsTest);
-
-console.log("TEST");
