@@ -3,7 +3,6 @@
     "private": true,
     "scripts": {
         "bootstrap": "lerna bootstrap --hoist",
-        "changed": "lerna changed",
         "publish": "lerna publish"
     },
     "devDependencies": {

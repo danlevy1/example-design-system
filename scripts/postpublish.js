@@ -8,14 +8,25 @@ const packageVersion = pkg.version;
 const packageNameAndVersion = `${packageName}@${packageVersion}`;
 
 const postpublish = async () => {
-    await executeShellCommand("git add package.json package-lock.json");
-    await executeShellCommand(
+    let stdout;
+
+    stdout = await executeShellCommand(
+        "git add package.json package-lock.json"
+    );
+    console.log(stdout);
+
+    stdout = await executeShellCommand(
         `git commit -m 'Publish ${packageNameAndVersion}'`
     );
-    await executeShellCommand(
+    console.log(stdout);
+
+    stdout = await executeShellCommand(
         `git tag -a ${packageNameAndVersion} -m "${packageNameAndVersion}"`
     );
-    await executeShellCommand(`git push --follow-tags`);
+    console.log(stdout);
+
+    stdout = await executeShellCommand(`git push --follow-tags`);
+    console.log(stdout);
 };
 
 postpublish();

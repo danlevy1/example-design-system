@@ -26,7 +26,9 @@ const logTsconfigBuildInfo = () => {
 
 const buildTypesFiles = async () => {
     try {
-        await executeShellCommand("tsc");
+        const stdout = await executeShellCommand("tsc");
+        console.log(stdout);
+
         logTsconfigBuildInfo();
     } catch (e) {
         console.error(e);
