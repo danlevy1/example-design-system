@@ -42,8 +42,6 @@ const triggerWorkflows = async () => {
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(parameters),
-        json: true,
     };
 
     const response = await requestPromise(options);
