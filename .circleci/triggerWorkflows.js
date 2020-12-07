@@ -52,9 +52,9 @@ const triggerWorkflows = async () => {
     // console.log(response.body, response.statusCode);
 
     const stdout = await executeShellCommand(
-        "curl --request GET \
-        --url 'https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline?circle-token=$CIRCLECI_TOKEN' \
-        --header 'accept: application/json'"
+        `curl --request GET \
+        --url 'https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline?circle-token=${process.env.CIRCLECI_TOKEN}' \
+        --header 'accept: application/json'`
     );
 
     console.log(stdout);
