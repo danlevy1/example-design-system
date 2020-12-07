@@ -48,10 +48,7 @@ jobs:
                   command: npm ci
             - run:
                   name: Trigger Workflows
-                  command: |
-                  curl --request GET \
-                    --url 'https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline?circle-token=$PERSONAL_TOKEN' \
-                    --header 'accept: application/json'
+                  command: CIRCLE_CI_TOKEN=$PERSONAL_TOKEN node ./.circleci/triggerWorkflows.js
     design-tokens-job:
         docker:
             - image: circleci/node:10
