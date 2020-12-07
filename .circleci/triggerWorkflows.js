@@ -30,11 +30,13 @@ const getChangedPackages = async () => {
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
 
-    const parameters = {};
+    const parametersObject = { parameters: {} };
 
     changedPackages.forEach((changedPackage) => {
-        parameters[`run-${changedPackage}`] = true;
+        parametersObject.parameters[`run-${changedPackage}`] = true;
     });
+
+    console.log(parametersObject);
 
     const options = {
         method: "POST",
@@ -42,7 +44,7 @@ const triggerWorkflows = async () => {
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(parameters),
+        body: JSON.stringify(parametersObject),
         json: true,
     };
 
