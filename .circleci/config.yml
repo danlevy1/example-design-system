@@ -41,7 +41,7 @@ jobs:
         docker:
             - image: circleci/node:10
         steps:
-            - run: echo ${CIRCLECI_TOKEN}
+            - run: echo $CIRCLECI_TOKEN
             - checkout
             - run:
                   name: Install npm Dependencies
