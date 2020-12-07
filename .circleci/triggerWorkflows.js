@@ -38,7 +38,7 @@ const triggerWorkflows = async () => {
 
     changedPackages.forEach((changedPackage) => {
         const changedPackageWithoutScope = changedPackage.substring(
-            x.indexOf("/") + 1
+            changedPackage.indexOf("/") + 1
         );
         parametersObject.parameters[`run-${changedPackageWithoutScope}`] = true;
     });
