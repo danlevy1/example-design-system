@@ -7,8 +7,10 @@ const executeShellCommand = require("../scripts/executeShellCommand");
 const getChangedPackages = async () => {
     try {
         const stdout = await executeShellCommand(
-            "./node_modules/.bin/lerna changed"
+            "../node_modules/.bin/lerna changed"
         );
+
+        console.log("X");
 
         const changedPackages = stdout
             .split("\n")
@@ -24,6 +26,8 @@ const getChangedPackages = async () => {
 
             return changedPackages;
         }
+
+        throw e;
     }
 };
 
@@ -33,7 +37,9 @@ const triggerWorkflows = async () => {
     const parametersObject = { parameters: {} };
 
     changedPackages.forEach((changedPackage) => {
-        const changedPackageWithoutScope = changedPackage.substring("/");
+        const changedPackageWithoutScope = changedPackage.substring(
+            x.indexOf("/") + 1
+        );
         parametersObject.parameters[`run-${changedPackageWithoutScope}`] = true;
     });
 
