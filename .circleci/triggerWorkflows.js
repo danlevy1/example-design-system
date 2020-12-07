@@ -54,7 +54,7 @@ const triggerWorkflows = async () => {
     const stdout = await executeShellCommand(
         "curl --request POST \
         --url https://circleci.com/api/v2/project/gh/CircleCI-Public/api-preview-docs/pipeline \
-        --header 'authorization: Basic $CIRCLECI_PERSONAL_TOKEN' \
+        --header 'authorization: $PERSONAL_TOKEN' \
         --header 'content-type: application/json' \
         --data '{}'"
     );
