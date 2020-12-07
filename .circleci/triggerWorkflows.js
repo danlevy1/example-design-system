@@ -39,7 +39,7 @@ const triggerWorkflows = async () => {
     const options = {
         method: "POST",
         url:
-            "https://circleci.com/api/v2/project/github/danlevy1/example-design-system",
+            "https://circleci.com/api/v2/project/gh/danlevy1/example-design-system",
         headers: {
             "content-type": "application/json",
             authorization: "Circle-Token: ${CIRCLECI_TOKEN}",
@@ -49,7 +49,7 @@ const triggerWorkflows = async () => {
     };
 
     const response = await requestPromise(options);
-    console.log(response.body);
+    console.log(response.body, response.statusCode);
 };
 
 triggerWorkflows();
