@@ -7,7 +7,7 @@ const executeShellCommand = require("../scripts/executeShellCommand");
 const getChangedPackages = async () => {
     try {
         const stdout = await executeShellCommand(
-            "../node_modules/.bin/lerna changed"
+            "./node_modules/.bin/lerna changed"
         );
 
         console.log("X");
