@@ -36,28 +36,28 @@ const triggerWorkflows = async () => {
         parameters[`run-${changedPackage}`] = true;
     });
 
-    // const options = {
-    //     method: "POST",
-    //     url:
-    //         "https://circleci.com/api/v2/project/gh/danlevy1/example-design-system",
-    //     headers: {
-    //         "content-type": "application/json",
-    //         authorization: "Basic Circle-Token: ${CIRCLECI_TOKEN}",
-    //     },
-    //     body: JSON.stringify(parameters),
-    //     json: true,
-    // };
+    const options = {
+        method: "POST",
+        url:
+            "https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline",
+        headers: {
+            "content-type": "application/json",
+            authorization: "Basic Circle-Token: $CIRCLECI_TOKEN",
+        },
+        body: JSON.stringify(parameters),
+        json: true,
+    };
 
-    // const response = await requestPromise(options);
-    // console.log(response.body, response.statusCode);
+    const response = await requestPromise(options);
+    console.log(response.body, response.statusCode);
 
-    const stdout = await executeShellCommand(
-        'curl -u $CIRCLECI_TOKEN: -X POST --header "Content-Type: application/json" -d ' +
-            JSON.stringify(parameters) +
-            " https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline"
-    );
+    // const stdout = await executeShellCommand(
+    //     'curl -u $CIRCLECI_TOKEN: -X POST --header "Content-Type: application/json" -d ' +
+    //         JSON.stringify(parameters) +
+    //         " https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline"
+    // );
 
-    console.log(stdout);
+    // console.log(stdout);
 };
 
 triggerWorkflows();
