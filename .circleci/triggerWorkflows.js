@@ -52,9 +52,11 @@ const triggerWorkflows = async () => {
     // console.log(response.body, response.statusCode);
 
     const stdout = await executeShellCommand(
-        'curl -u $CIRCLECI_TOKEN: -X POST --header "Content-Type: application/json" -d ' +
-            JSON.stringify(parameters) +
-            " https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline"
+        "curl --request POST \
+        --url https://circleci.com/api/v2/project/gh/CircleCI-Public/api-preview-docs/pipeline \
+        --header 'authorization: Basic $CIRCLECI_PERSONAL_TOKEN' \
+        --header 'content-type: application/json' \
+        --data '{}'"
     );
 
     console.log(stdout);
