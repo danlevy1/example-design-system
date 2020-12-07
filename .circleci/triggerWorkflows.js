@@ -52,7 +52,7 @@ const triggerWorkflows = async () => {
     // console.log(response.body, response.statusCode);
 
     const stdout = await executeShellCommand(
-        'curl -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d ' +
+        'curl -u $CIRCLECI_TOKEN: -X POST --header "Content-Type: application/json" -d ' +
             JSON.stringify(parameters) +
             " https://circleci.com/api/v2/project/:project_slug/pipeline"
     );
