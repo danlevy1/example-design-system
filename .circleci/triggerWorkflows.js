@@ -39,7 +39,7 @@ const triggerWorkflows = async () => {
     const options = {
         method: "POST",
         url:
-            "https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline",
+            "https://circleci.com/api/v2/project/github/danlevy1/example-design-system/pipeline",
         headers: {
             "content-type": "application/json",
             authorization: "Basic Circle-Token: $CIRCLECI_TOKEN",
