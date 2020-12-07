@@ -42,7 +42,7 @@ const triggerWorkflows = async () => {
             "https://circleci.com/api/v2/project/github/danlevy1/example-design-system/pipeline",
         headers: {
             "content-type": "application/json",
-            authorization: "Basic Circle-Token: $CIRCLECI_TOKEN",
+            authorization: "Basic Circle-Token: $CIRCLECI_PERSONAL_TOKEN",
         },
         body: JSON.stringify(parameters),
         json: true,
