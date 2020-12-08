@@ -43,7 +43,7 @@ workflows:
 jobs:
     trigger-workflows-job:
         docker:
-            - image: circleci/node:10
+            - image: circleci/node:14
         steps:
             - checkout
             - run:
@@ -54,7 +54,7 @@ jobs:
                   command: CIRCLECI_API_TOKEN=$PERSONAL_TOKEN node ./.circleci/triggerWorkflows.js
     design-tokens-job:
         docker:
-            - image: circleci/node:10
+            - image: circleci/node:14
         working_directory: ~/project/packages/design-tokens
         steps:
             - checkout:
@@ -67,7 +67,7 @@ jobs:
                   command: npm test
     component-styles-job:
         docker:
-            - image: circleci/node:10
+            - image: circleci/node:14
         working_directory: ~/project/packages/component-styles
         steps:
             - checkout:
@@ -80,7 +80,7 @@ jobs:
                   command: npm test
     icons-job:
         docker:
-            - image: circleci/node:10
+            - image: circleci/node:14
         working_directory: ~/project/packages/icons
         steps:
             - checkout:
@@ -93,7 +93,7 @@ jobs:
                   command: npm test
     react-components-job:
         docker:
-            - image: circleci/node:10
+            - image: circleci/node:14
         working_directory: ~/project/packages/react-components
         steps:
             - checkout:
