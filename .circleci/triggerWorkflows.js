@@ -38,8 +38,7 @@ const triggerWorkflows = async () => {
         const changedPackageWithoutScope = changedPackage.substring(
             changedPackage.indexOf("/") + 1
         );
-        parametersObject.parameters[`run-${changedPackageWithoutScope}`] =
-            "true";
+        parametersObject.parameters[`run-${changedPackageWithoutScope}`] = true;
     });
 
     console.log(parametersObject);
@@ -50,7 +49,7 @@ const triggerWorkflows = async () => {
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(parametersObject),
+        body: parametersObject,
         json: true,
     };
 
