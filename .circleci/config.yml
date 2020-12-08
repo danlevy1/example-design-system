@@ -59,7 +59,7 @@ jobs:
         steps:
             - checkout
             - run: pwd
-            - run: cat ./package.json
+            - run: cat ~/packages/design-tokens/package.json
             - run:
                   name: Tests
                   command: npm test
