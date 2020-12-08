@@ -32,7 +32,7 @@ const getChangedPackages = async () => {
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
 
-    const parametersObject = { parameters: {} };
+    const parametersObject = { parameters: { "trigger-workflows": false } };
 
     changedPackages.forEach((changedPackage) => {
         const changedPackageWithoutScope = changedPackage.substring(

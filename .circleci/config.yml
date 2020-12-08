@@ -1,6 +1,9 @@
 version: 2.1
 
 parameters:
+    trigger-workflows:
+        type: boolean
+        default: true
     run-design-tokens:
         type: boolean
         default: false
@@ -17,6 +20,7 @@ parameters:
 workflows:
     version: 2
     ci:
+        when: << pipeline.parameters.trigger-workflows >>
         jobs:
             - trigger-workflows-job
     design-tokens:
