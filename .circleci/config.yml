@@ -51,7 +51,7 @@ jobs:
                   command: npm ci
             - run:
                   name: Trigger Workflows
-                  command: CIRCLECI_TOKEN=$CIRCLECI_API_TOKEN node ./.circleci/triggerWorkflows.js
+                  command: CIRCLECI_API_TOKEN=$PERSONAL_TOKEN node ./.circleci/triggerWorkflows.js
     design-tokens-job:
         docker:
             - image: circleci/node:10
