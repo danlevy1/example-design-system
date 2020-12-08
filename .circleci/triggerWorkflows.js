@@ -14,13 +14,10 @@ const getChangedPackages = async () => {
             .split("\n")
             .filter((packageName) => packageName !== "");
 
-        console.log("Changed Packages:", changedPackages);
-
         return changedPackages;
     } catch (e) {
         if (e.stderr.includes("No changed packages found")) {
             const changedPackages = [];
-            console.log("Changed Packages:", changedPackages);
 
             return changedPackages;
         }
@@ -41,8 +38,6 @@ const triggerWorkflows = async () => {
         parametersObject.parameters[`run-${changedPackageWithoutScope}`] = true;
     });
 
-    console.log(parametersObject);
-
     const options = {
         method: "POST",
         url: `https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline?circle-token=${process.env.CIRCLECI_API_TOKEN}`,
@@ -54,7 +49,17 @@ const triggerWorkflows = async () => {
     };
 
     const response = await requestPromise(options);
-    console.log(response.body, response.statusCode);
+
+    if (!String(response.statusCode).startsWith("2")) {
+        throw new Error(
+            `CircleCI workflow trigger returned a bad status code: ${response.statusCode}. ${response.body}`
+        );
+    }
+
+    console.log(
+        "Workflow(s) triggered for the following packages:",
+        changedPackages.split(", ")
+    );
 };
 
 triggerWorkflows();

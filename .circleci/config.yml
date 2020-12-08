@@ -60,8 +60,7 @@ jobs:
             - checkout
             - run:
                   name: Print working directory
-                  command: |
-                      pwd
+                  command: npm test
     component-styles-job:
         docker:
             - image: circleci/node:10
