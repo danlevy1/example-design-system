@@ -59,7 +59,10 @@ jobs:
         steps:
             - checkout
             - run:
-                  name: Print working directory
+                  name: Install npm Dependencies
+                  command: npm ci
+            - run:
+                  name: Tests
                   command: npm test
     component-styles-job:
         docker:
