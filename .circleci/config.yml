@@ -45,14 +45,13 @@ jobs:
         docker:
             - image: circleci/node:10
         steps:
-            - run: echo $TEST
             - checkout
             - run:
                   name: Install npm Dependencies
                   command: npm ci
             - run:
                   name: Trigger Workflows
-                  command: CIRCLECI_TOKEN=$PERSONAL_TOKEN node ./.circleci/triggerWorkflows.js
+                  command: CIRCLECI_TOKEN=$CIRCLECI_API_TOKEN node ./.circleci/triggerWorkflows.js
     design-tokens-job:
         docker:
             - image: circleci/node:10
@@ -62,7 +61,7 @@ jobs:
             - run:
                   name: Print working directory
                   command: |
-                      echo pwd
+                      pwd
     component-styles-job:
         docker:
             - image: circleci/node:10
@@ -72,7 +71,7 @@ jobs:
             - run:
                   name: Print working directory
                   command: |
-                      echo pwd
+                      pwd
     icons-job:
         docker:
             - image: circleci/node:10
@@ -82,7 +81,7 @@ jobs:
             - run:
                   name: Print working directory
                   command: |
-                      echo pwd
+                      pwd
     react-components-job:
         docker:
             - image: circleci/node:10
@@ -92,4 +91,4 @@ jobs:
             - run:
                   name: Print working directory
                   command: |
-                      echo pwd
+                      pwd
