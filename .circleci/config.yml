@@ -57,8 +57,8 @@ jobs:
             - image: circleci/node:10
         working_directory: ~/packages/design-tokens
         steps:
-            - checkout
-                path: ~/packages/design-tokens
+            - checkout:
+                  path: ~/packages/design-tokens
             - run: cat ./package.json
             - run:
                   name: Tests
