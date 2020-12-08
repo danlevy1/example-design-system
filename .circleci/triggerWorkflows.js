@@ -10,8 +10,6 @@ const getChangedPackages = async () => {
             "./node_modules/.bin/lerna changed"
         );
 
-        console.log("X");
-
         const changedPackages = stdout
             .split("\n")
             .filter((packageName) => packageName !== "");
@@ -40,7 +38,8 @@ const triggerWorkflows = async () => {
         const changedPackageWithoutScope = changedPackage.substring(
             changedPackage.indexOf("/") + 1
         );
-        parametersObject.parameters[`run-${changedPackageWithoutScope}`] = true;
+        parametersObject.parameters[`run-${changedPackageWithoutScope}`] =
+            "true";
     });
 
     console.log(parametersObject);
