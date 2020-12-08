@@ -59,38 +59,48 @@ jobs:
         steps:
             - checkout:
                   path: ~/project
-            - run: pwd
-            - run: cat package.json
+            - run:
+                  name: Install npm Dependencies
+                  command: npm ci
             - run:
                   name: Tests
                   command: npm test
     component-styles-job:
         docker:
             - image: circleci/node:10
-        working_directory: ~/packages/component-styles
+        working_directory: ~/project/packages/component-styles
         steps:
-            - checkout
+            - checkout:
+                  path: ~/project
             - run:
-                  name: Print working directory
-                  command: |
-                      pwd
+                  name: Install npm Dependencies
+                  command: npm ci
+            - run:
+                  name: Tests
+                  command: npm test
     icons-job:
         docker:
             - image: circleci/node:10
-        working_directory: ~/packages/icons
+        working_directory: ~/project/packages/icons
         steps:
-            - checkout
+            - checkout:
+                  path: ~/project
             - run:
-                  name: Print working directory
-                  command: |
-                      pwd
+                  name: Install npm Dependencies
+                  command: npm ci
+            - run:
+                  name: Tests
+                  command: npm test
     react-components-job:
         docker:
             - image: circleci/node:10
-        working_directory: ~/packages/react-components
+        working_directory: ~/project/packages/react-components
         steps:
-            - checkout
+            - checkout:
+                  path: ~/project
             - run:
-                  name: Print working directory
-                  command: |
-                      pwd
+                  name: Install npm Dependencies
+                  command: npm ci
+            - run:
+                  name: Tests
+                  command: npm test
