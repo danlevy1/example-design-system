@@ -58,7 +58,7 @@ const triggerWorkflows = async () => {
 
     console.log(
         "Workflow(s) triggered for the following packages:",
-        changedPackages.split(", ")
+        changedPackages.join()
     );
 };
 
