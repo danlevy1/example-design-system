@@ -58,9 +58,7 @@ jobs:
         working_directory: ~/packages/design-tokens
         steps:
             - checkout
-            - run:
-                  name: Install npm Dependencies
-                  command: npm ci
+            - run: cat ./package.json
             - run:
                   name: Tests
                   command: npm test
