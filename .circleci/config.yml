@@ -55,11 +55,11 @@ jobs:
     design-tokens-job:
         docker:
             - image: circleci/node:10
-        working_directory: ~/packages/design-tokens
+        working_directory: ~/project/packages/design-tokens
         steps:
             - checkout
             - run: pwd
-            - run: cat /home/circleci/packages/design-tokens/package.json
+            - run: cat package.json
             - run:
                   name: Tests
                   command: npm test
