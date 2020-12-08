@@ -59,7 +59,7 @@ jobs:
         steps:
             - checkout
             - run: pwd
-            - run: cat ~/packages/design-tokens/package.json
+            - run: cat /home/circleci/packages/design-tokens/package.json
             - run:
                   name: Tests
                   command: npm test
