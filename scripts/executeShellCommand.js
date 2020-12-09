@@ -1,4 +1,4 @@
-const { exitCode } = require("process");
+const { exit } = require("process");
 const { promisify } = require("util");
 const exec = promisify(require("child_process").exec);
 
@@ -7,7 +7,7 @@ const executeShellCommand = async (command) => {
 
     if (stderr) {
         console.log(stderr);
-        exitCode(1);
+        exit(1);
     }
 
     return stdout;
