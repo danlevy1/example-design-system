@@ -50,13 +50,22 @@ const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
 
     const parametersObject = { parameters: { "trigger-workflows": false } };
+    let numChangedPackages = 0;
 
     changedPackages.forEach((changedPackage) => {
         // const changedPackageWithoutScope = changedPackage.substring(
         //     changedPackage.indexOf("/") + 1
         // );
+        numChangedPackages++;
         parametersObject.parameters[`run-${changedPackage}`] = true;
     });
+
+    if (numChangedPackages === 0) {
+        console.log(
+            "None of the packages have changed. Skipping package workflows."
+        );
+        return;
+    }
 
     const options = {
         method: "POST",
