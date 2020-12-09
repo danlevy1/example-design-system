@@ -8,16 +8,11 @@ const executeShellCommand = require("../scripts/executeShellCommand");
 const getChangedPackages = async () => {
     const packageNames = await readdir("./packages");
 
-    // console.log(packageNames);
-
     const changedPackages = [];
-
-    const x = await executeShellCommand("git status");
-    console.log(x);
 
     for (const packageName of packageNames) {
         const stdout = await executeShellCommand(
-            `git diff main -- ./packages/${packageName}`
+            `git diff origin/main -- ./packages/${packageName}`
         );
 
         if (stdout !== "") {
@@ -26,28 +21,6 @@ const getChangedPackages = async () => {
     }
 
     return changedPackages;
-
-    // try {
-    //     const stdout = await executeShellCommand(
-    //         "./node_modules/.bin/lerna changed"
-    //     );
-
-    //     const changedPackages = stdout
-    //         .split("\n")
-    //         .filter((packageName) => packageName !== "");
-
-    //     return changedPackages;
-    // } catch (e) {
-    //     if (e.stderr.includes("No changed packages found")) {
-    //         const changedPackages = [];
-
-    //         return changedPackages;
-    //     }
-
-    //     throw e;
-    // }
-
-    // git diff main -- packages/design-tokens
 };
 
 // getChangedPackages().then((x) => console.log(x));
@@ -59,9 +32,6 @@ const triggerWorkflows = async () => {
     let numChangedPackages = 0;
 
     changedPackages.forEach((changedPackage) => {
-        // const changedPackageWithoutScope = changedPackage.substring(
-        //     changedPackage.indexOf("/") + 1
-        // );
         numChangedPackages++;
         parametersObject.parameters[`run-${changedPackage}`] = true;
     });
