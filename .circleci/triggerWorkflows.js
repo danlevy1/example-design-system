@@ -5,13 +5,13 @@ const requestPromise = promisify(request);
 const executeShellCommand = require("../scripts/executeShellCommand");
 
 const getChangedPackages = async () => {
-    const packageNames = await readdir("../packages");
+    const packageNames = await readdir("./packages");
 
     const changedPackages = [];
 
     for (const packageName of packageNames) {
         const stdout = await executeShellCommand(
-            `git diff main -- ../packages/${packageName}`
+            `git diff main -- ./packages/${packageName}`
         );
 
         if (stdout !== "") {
