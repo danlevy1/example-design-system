@@ -15,6 +15,7 @@ const getChangedPackages = async () => {
         );
 
         if (stdout === "") {
+            console.log(stdout);
             changedPackages.push(packageName);
         }
     });
