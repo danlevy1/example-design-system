@@ -7,13 +7,13 @@ const executeShellCommand = require("../scripts/executeShellCommand");
 const getChangedPackages = async () => {
     const packageNames = await readdir("./packages");
 
-    console.log(packageNames);
+    // console.log(packageNames);
 
     const changedPackages = [];
 
     for (const packageName of packageNames) {
         const stdout = await executeShellCommand(
-            `git diff main -- ./packages/${packageName}`
+            `git diff main -- ../packages/${packageName}`
         );
 
         if (stdout !== "") {
