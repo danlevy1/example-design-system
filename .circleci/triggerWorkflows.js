@@ -12,9 +12,10 @@ const getChangedPackages = async () => {
 
     const changedPackages = [];
 
+    const x = await executeShellCommand("git status");
+    console.log(x);
+
     for (const packageName of packageNames) {
-        const x = await executeShellCommand("ls");
-        console.log(x);
         const stdout = await executeShellCommand(
             `git diff main -- ./packages/${packageName}`
         );
