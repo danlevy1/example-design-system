@@ -1,3 +1,4 @@
+const { resolve } = require("path");
 const request = require("request");
 const { promisify } = require("util");
 const { readdir } = require("fs").promises;
@@ -7,14 +8,13 @@ const executeShellCommand = require("../scripts/executeShellCommand");
 const getChangedPackages = async () => {
     const packageNames = await readdir("./packages");
 
-    const x = await readdir(".");
-    console.log(x);
-
     // console.log(packageNames);
 
     const changedPackages = [];
 
     for (const packageName of packageNames) {
+        const x = await executeShellCommand("ls");
+        console.log(x);
         const stdout = await executeShellCommand(
             `git diff main -- ./packages/${packageName}`
         );
