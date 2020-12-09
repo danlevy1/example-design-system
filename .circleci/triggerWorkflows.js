@@ -1,30 +1,50 @@
 const request = require("request");
 const { promisify } = require("util");
+const { readdir } = require("fs").promises;
 const requestPromise = promisify(request);
 const executeShellCommand = require("../scripts/executeShellCommand");
-// const chalk = require("chalk");
 
 const getChangedPackages = async () => {
-    try {
+    const packageNames = await readdir("../packages");
+
+    const changedPackages = [];
+
+    packageNames.forEach(async (packageName) => {
         const stdout = await executeShellCommand(
-            "./node_modules/.bin/lerna changed"
+            `git diff main -- packages/${packageName}`
         );
 
-        const changedPackages = stdout
-            .split("\n")
-            .filter((packageName) => packageName !== "");
-
-        return changedPackages;
-    } catch (e) {
-        if (e.stderr.includes("No changed packages found")) {
-            const changedPackages = [];
-
-            return changedPackages;
+        if (stdout === "") {
+            changedPackages.push(packageName);
         }
+    });
 
-        throw e;
-    }
+    return changedPackages;
+
+    // try {
+    //     const stdout = await executeShellCommand(
+    //         "./node_modules/.bin/lerna changed"
+    //     );
+
+    //     const changedPackages = stdout
+    //         .split("\n")
+    //         .filter((packageName) => packageName !== "");
+
+    //     return changedPackages;
+    // } catch (e) {
+    //     if (e.stderr.includes("No changed packages found")) {
+    //         const changedPackages = [];
+
+    //         return changedPackages;
+    //     }
+
+    //     throw e;
+    // }
+
+    // git diff main -- packages/design-tokens
 };
+
+// getChangedPackages().then((x) => console.log(x));
 
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
@@ -32,10 +52,10 @@ const triggerWorkflows = async () => {
     const parametersObject = { parameters: { "trigger-workflows": false } };
 
     changedPackages.forEach((changedPackage) => {
-        const changedPackageWithoutScope = changedPackage.substring(
-            changedPackage.indexOf("/") + 1
-        );
-        parametersObject.parameters[`run-${changedPackageWithoutScope}`] = true;
+        // const changedPackageWithoutScope = changedPackage.substring(
+        //     changedPackage.indexOf("/") + 1
+        // );
+        parametersObject.parameters[`run-${changedPackage}`] = true;
     });
 
     const options = {
