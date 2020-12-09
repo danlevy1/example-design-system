@@ -44,7 +44,7 @@ const getChangedPackages = async () => {
     // git diff main -- packages/design-tokens
 };
 
-// getChangedPackages().then((x) => console.log(x));
+getChangedPackages().then((x) => console.log(x));
 
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
@@ -92,4 +92,4 @@ const triggerWorkflows = async () => {
     );
 };
 
-triggerWorkflows();
+// triggerWorkflows();
