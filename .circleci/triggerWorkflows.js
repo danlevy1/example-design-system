@@ -14,8 +14,7 @@ const getChangedPackages = async () => {
             `git diff main -- packages/${packageName}`
         );
 
-        if (stdout === "") {
-            console.log(stdout);
+        if (stdout !== "") {
             changedPackages.push(packageName);
         }
     });
