@@ -5,7 +5,7 @@ const requestPromise = promisify(request);
 const executeShellCommand = require("../scripts/executeShellCommand");
 
 const getChangedPackages = async () => {
-    const packageNames = await readdir("../packages");
+    const packageNames = await readdir("./packages");
 
     const changedPackages = [];
 
