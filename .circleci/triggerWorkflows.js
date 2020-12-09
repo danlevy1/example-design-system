@@ -7,6 +7,8 @@ const executeShellCommand = require("../scripts/executeShellCommand");
 const getChangedPackages = async () => {
     const packageNames = await readdir("./packages");
 
+    console.log(packageNames);
+
     const changedPackages = [];
 
     for (const packageName of packageNames) {
