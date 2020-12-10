@@ -51,7 +51,7 @@ jobs:
                   command: npm ci
             - run:
                   name: Trigger Workflows
-                  command: CIRCLECI_API_TOKEN=$PERSONAL_TOKEN node --unhandled-rejections=strict ./.circleci/triggerWorkflows.js
+                  command: CIRCLECI_API_TOKEN=$PERSONAL_TOKEN GIT_BRANCH=$CIRCLE_BRANCH node --unhandled-rejections=strict ./.circleci/triggerWorkflows.js
     design-tokens-job:
         docker:
             - image: circleci/node:14

@@ -28,12 +28,12 @@ const getChangedPackages = async () => {
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
 
-    const parametersObject = { parameters: { "trigger-workflows": false } };
+    const parameters = { parameters: { "trigger-workflows": false } };
     let numChangedPackages = 0;
 
     changedPackages.forEach((changedPackage) => {
         numChangedPackages++;
-        parametersObject.parameters[`run-${changedPackage}`] = true;
+        parameters.parameters[`run-${changedPackage}`] = true;
     });
 
     if (numChangedPackages === 0) {
@@ -50,7 +50,10 @@ const triggerWorkflows = async () => {
             "content-type": "application/json",
             "Circle-Token": process.env.CIRCLECI_API_TOKEN,
         },
-        body: parametersObject,
+        body: {
+            branch: process.env.GIT_BRANCH,
+            parameters,
+        },
         json: true,
     };
 
