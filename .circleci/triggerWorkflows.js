@@ -43,6 +43,8 @@ const triggerWorkflows = async () => {
         return;
     }
 
+    console.log("process.env.GIT_BRANCH");
+
     const options = {
         method: "POST",
         url: `https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline`,
@@ -61,7 +63,9 @@ const triggerWorkflows = async () => {
 
     if (!String(response.statusCode).startsWith("2")) {
         throw new Error(
-            `CircleCI workflow trigger returned a bad status code: ${response.statusCode}. ${response.body}`
+            `CircleCI workflow trigger returned a bad status code: ${
+                response.statusCode
+            }. ${JSON.stringify(response.body)}`
         );
     }
 
