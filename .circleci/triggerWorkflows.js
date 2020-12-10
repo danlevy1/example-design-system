@@ -28,12 +28,12 @@ const getChangedPackages = async () => {
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
 
-    const parameters = { parameters: { "trigger-workflows": false } };
+    const parameters = { "trigger-workflows": false };
     let numChangedPackages = 0;
 
     changedPackages.forEach((changedPackage) => {
         numChangedPackages++;
-        parameters.parameters[`run-${changedPackage}`] = true;
+        parameters[`run-${changedPackage}`] = true;
     });
 
     if (numChangedPackages === 0) {
