@@ -23,17 +23,15 @@ const getChangedPackages = async () => {
     return changedPackages;
 };
 
-// getChangedPackages().then((x) => console.log(x));
-
 const triggerWorkflows = async () => {
     const changedPackages = await getChangedPackages();
 
-    const parameters = { parameters: { "trigger-workflows": false } };
+    const parameters = { "trigger-workflows": false };
     let numChangedPackages = 0;
 
     changedPackages.forEach((changedPackage) => {
         numChangedPackages++;
-        parameters.parameters[`run-${changedPackage}`] = true;
+        parameters[`run-${changedPackage}`] = true;
     });
 
     if (numChangedPackages === 0) {
@@ -61,7 +59,9 @@ const triggerWorkflows = async () => {
 
     if (!String(response.statusCode).startsWith("2")) {
         throw new Error(
-            `CircleCI workflow trigger returned a bad status code: ${response.statusCode}. ${response.body}`
+            `CircleCI workflow trigger returned a bad status code: ${
+                response.statusCode
+            }. ${JSON.stringify(response.body)}`
         );
     }
 
