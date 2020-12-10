@@ -25,7 +25,7 @@ const PLATFORM_FORMATS_MAP = new Map([
     [PlatformOptions.SCSS, "scss/variables"],
     [PlatformOptions.LESS, "less/variables"],
     [PlatformOptions.ESM, "javascript/es6"],
-    [PlatformOptions.CJS, "javascript/cjs"],
+    [PlatformOptions.CJS, "javascript/module-flat"],
     [PlatformOptions.JSON, "json/nested"],
 ]);
 
@@ -118,27 +118,6 @@ const addPlatformToConfig = (platform, config) => {
     };
 };
 
-const fileHeader = (options, commentStyle) => {
-    var to_ret = "";
-    // for backward compatibility we need to have the user explicitly hide them
-    var showFileHeader = options ? options.showFileHeader : true;
-    if (showFileHeader) {
-        if (commentStyle === "short") {
-            to_ret += "\n";
-            to_ret += "// Do not edit directly\n";
-            to_ret += "// Generated on " + new Date().toUTCString() + "\n";
-            to_ret += "\n";
-        } else {
-            to_ret += "/**\n";
-            to_ret += " * Do not edit directly\n";
-            to_ret += " * Generated on " + new Date().toUTCString() + "\n";
-            to_ret += " */\n\n";
-        }
-    }
-
-    return to_ret;
-};
-
 const createTransformGroups = (styleDictionary) => {
     /*
      * Creates the CSS transform group.
@@ -159,35 +138,6 @@ const createTransformGroups = (styleDictionary) => {
     styleDictionary.registerTransformGroup({
         name: "json",
         transforms: ["attribute/cti", "name/cti/kebab"],
-    });
-};
-
-const createFormats = (styleDictionary) => {
-    // Creates the CJS format
-    styleDictionary.registerFormat({
-        name: "javascript/cjs",
-        formatter: function (dictionary) {
-            return (
-                fileHeader(this.options) +
-                "module.exports = {\n" +
-                dictionary.allProperties
-                    .map(function (prop) {
-                        var to_ret_prop =
-                            "  " +
-                            prop.name +
-                            ": " +
-                            JSON.stringify(prop.value) +
-                            ",";
-                        if (prop.comment)
-                            to_ret_prop = to_ret_prop.concat(
-                                " // " + prop.comment
-                            );
-                        return to_ret_prop;
-                    })
-                    .join("\n") +
-                "\n}"
-            );
-        },
     });
 };
 
@@ -228,8 +178,6 @@ const buildDesignTokens = async (
     });
 
     createTransformGroups(styleDictionary);
-
-    createFormats(styleDictionary);
 
     const styleDictionaryWithOptions = styleDictionary.extend(
         styleDictionaryConfig
