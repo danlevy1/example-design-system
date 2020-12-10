@@ -186,6 +186,8 @@ const buildDesignTokens = async (
     styleDictionaryWithOptions.buildAllPlatforms();
 };
 
+console.log("CALL");
+
 module.exports = {
     buildDesignTokens,
     PlatformOptions,
