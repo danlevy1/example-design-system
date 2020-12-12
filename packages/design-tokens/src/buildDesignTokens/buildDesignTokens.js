@@ -1,9 +1,4 @@
-// dirname is used during the build process for the ESM output (see replace plugin in Rollup config)
-/* eslint-disable-next-line no-unused-vars */
-const { resolve, dirname } = require("path");
-// fileURLToPath is used during the build process for the ESM output (see replace plugin in Rollup config)
-/* eslint-disable-next-line no-unused-vars */
-const { fileURLToPath } = require("url");
+const { resolve } = require("path");
 const styleDictionary = require("style-dictionary");
 
 /**
