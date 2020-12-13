@@ -49,6 +49,7 @@ jobs:
         docker:
             - image: circleci/node:14
         steps:
+            - checkout
             - run:
                   name: Run Release(s)
                   command: node --unhandled-rejections=strict ./.circleci/runReleases.js
