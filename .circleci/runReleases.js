@@ -65,6 +65,8 @@ const runReleases = async () => {
         previousPackageVersions,
     } = await getPackageVersions();
 
+    console.log(currentPackageVersions, previousPackageVersions);
+
     const packagesToPublish = getPackagesToPublish(
         currentPackageVersions,
         previousPackageVersions
