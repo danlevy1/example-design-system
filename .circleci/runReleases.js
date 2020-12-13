@@ -14,10 +14,15 @@ const getPackageVersions = async () => {
         "git rev-list --min-parents=2 --max-count=1 --skip=1 HEAD"
     );
 
-    const stdout = await executeShellCommand(
+    const gitFetchStdout = await executeShellCommand(
+        `git fetch git@github.com:danlevy1/example-design-system.git ${previousMergeCommitSha}`
+    );
+    console.log(gitFetchStdout);
+
+    const previousMergeCommitCheckoutStdout = await executeShellCommand(
         `git checkout ${previousMergeCommitSha}`
     );
-    console.log(stdout);
+    console.log(previousMergeCommitCheckoutStdout);
 
     const previousPackageNames = await readdir("./packages");
     const previousPackageVersions = new Map();
@@ -27,8 +32,8 @@ const getPackageVersions = async () => {
         previousPackageVersions.set(packageName, pkg.version);
     }
 
-    const stdout3 = await executeShellCommand("git checkout main");
-    console.log(stdout3);
+    const checkoutMainStdout = await executeShellCommand("git checkout main");
+    console.log(checkoutMainStdout);
 
     return { currentPackageVersions, previousPackageVersions };
 };
