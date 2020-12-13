@@ -23,10 +23,10 @@ workflows:
         when: << pipeline.parameters.trigger-workflows >>
         jobs:
             - trigger-workflows-job
-            - run-release
-                filters:
-                    branches:
-                        only: main
+            - run-release:
+                  filters:
+                      branches:
+                          only: main
     design-tokens:
         when: << pipeline.parameters.run-design-tokens >>
         jobs:
