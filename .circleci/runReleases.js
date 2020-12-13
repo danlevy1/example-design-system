@@ -6,7 +6,7 @@ const getPackageVersions = async () => {
     const currentPackageVersions = new Map();
 
     for (const packageName of currentPackageNames) {
-        const pkg = require(`./packages/${packageName}/package.json`);
+        const pkg = require(`../packages/${packageName}/package.json`);
         currentPackageVersions.set(packageName, pkg.version);
     }
 
@@ -23,7 +23,7 @@ const getPackageVersions = async () => {
     const previousPackageVersions = new Map();
 
     for (const packageName of previousPackageNames) {
-        const pkg = require(`./packages/${packageName}/package.json`);
+        const pkg = require(`../packages/${packageName}/package.json`);
         previousPackageVersions.set(packageName, pkg.version);
     }
 
