@@ -15,7 +15,7 @@ const getPackageVersions = async () => {
     );
 
     const previousMergeCommitCheckoutStdout = await executeShellCommand(
-        `git checkout ${previousMergeCommitSha}`
+        `git checkout -f ${previousMergeCommitSha}`
     );
     console.log(previousMergeCommitCheckoutStdout);
 
