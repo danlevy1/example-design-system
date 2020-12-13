@@ -46,6 +46,8 @@ workflows:
 
 jobs:
     run-release:
+        docker:
+            - image: circleci/node:14
         steps:
             - run: echo "Running becaause branch is main"
     trigger-workflows-job:
