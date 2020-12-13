@@ -23,6 +23,10 @@ workflows:
         when: << pipeline.parameters.trigger-workflows >>
         jobs:
             - trigger-workflows-job
+            - run-release
+                filters:
+                    branches:
+                        only: main
     design-tokens:
         when: << pipeline.parameters.run-design-tokens >>
         jobs:
@@ -41,6 +45,9 @@ workflows:
             - react-components-job
 
 jobs:
+    run-release:
+        steps:
+            - run: echo "Running becaause branch is main"
     trigger-workflows-job:
         docker:
             - image: circleci/node:14
