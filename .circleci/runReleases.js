@@ -2,7 +2,7 @@ const { readdir } = require("fs").promises;
 const executeShellCommand = require("../scripts/executeShellCommand");
 
 const getPackageVersions = async () => {
-    const packageNames = await readdir("../packages");
+    const packageNames = await readdir("./packages");
 
     const packageVersions = await Promise.all(
         packageNames.map(async (packageName) => {
