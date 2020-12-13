@@ -14,15 +14,15 @@ const getPackageVersions = async () => {
         "git rev-list --min-parents=2 --max-count=1 --skip=1 HEAD"
     );
 
-    const gitPullStdout = await executeShellCommand(
-        `git pull origin ${previousMergeCommitSha}`
-    );
-    console.log(gitPullStdout);
-
     const previousMergeCommitCheckoutStdout = await executeShellCommand(
         `git checkout ${previousMergeCommitSha}`
     );
     console.log(previousMergeCommitCheckoutStdout);
+
+    const gitPullStdout = await executeShellCommand(
+        `git pull origin ${previousMergeCommitSha}`
+    );
+    console.log(gitPullStdout);
 
     const previousPackageNames = await readdir("./packages");
     const previousPackageVersions = new Map();
