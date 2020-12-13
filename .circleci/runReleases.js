@@ -1,8 +1,4 @@
-const { resolve } = require("path");
-const request = require("request");
-const { promisify } = require("util");
 const { readdir } = require("fs").promises;
-const requestPromise = promisify(request);
 const executeShellCommand = require("../scripts/executeShellCommand");
 
 const getPackageVersions = async () => {
