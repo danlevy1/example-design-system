@@ -15,7 +15,7 @@ const getPackageVersions = async () => {
     );
 
     const gitPullStdout = await executeShellCommand(
-        `git pull git@github.com:danlevy1/example-design-system.git ${previousMergeCommitSha}`
+        `git pull origin ${previousMergeCommitSha}`
     );
     console.log(gitPullStdout);
 
