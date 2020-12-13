@@ -2,57 +2,38 @@ const { readdir } = require("fs").promises;
 const executeShellCommand = require("../scripts/executeShellCommand");
 
 const getPackageVersions = async () => {
-    const currentPackageNames = await readdir("./packages");
-    const currentPackageVersions = new Map();
+    const packageNames = await readdir("../packages");
 
-    for (const packageName of currentPackageNames) {
-        const pkg = require(`../packages/${packageName}/package.json`);
-        currentPackageVersions.set(packageName, pkg.version);
-    }
+    const packageVersions = await Promise.all(
+        packageNames.map(async (packageName) => {
+            const localPackage = require(`../packages/${packageName}/package.json`);
 
-    const previousMergeCommitSha = await executeShellCommand(
-        "git rev-list --min-parents=2 --max-count=1 --skip=1 HEAD"
+            const package = { name: packageName };
+            package.localVersion = localPackage.version;
+
+            const publishedPackageVersion = await executeShellCommand(
+                `npm view @x3r5e/${packageName} version`
+            ).then((publishedPackageVersion) =>
+                publishedPackageVersion.replace("\n", "")
+            );
+            package.publishedVersion = publishedPackageVersion;
+
+            return package;
+        })
     );
 
-    const previousMergeCommitCheckoutStdout = await executeShellCommand(
-        `git checkout -f ${previousMergeCommitSha}`
-    );
-    console.log(previousMergeCommitCheckoutStdout);
-
-    const gitPullStdout = await executeShellCommand(
-        `git pull origin ${previousMergeCommitSha}`
-    );
-    console.log(gitPullStdout);
-
-    const previousPackageNames = await readdir("./packages");
-    const previousPackageVersions = new Map();
-
-    for (const packageName of previousPackageNames) {
-        const pkg = require(`../packages/${packageName}/package.json`);
-        previousPackageVersions.set(packageName, pkg.version);
-    }
-
-    const checkoutMainStdout = await executeShellCommand("git checkout main");
-    console.log(checkoutMainStdout);
-
-    return { currentPackageVersions, previousPackageVersions };
+    return packageVersions;
 };
 
-const getPackagesToPublish = (
-    currentPackageVersions,
-    previousPackageVersions
-) => {
+const getPackagesToPublish = (packageVersions) => {
     const packagesToPublish = new Map();
 
-    currentPackageVersions.forEach((currentPackageVersion, packageName) => {
-        if (previousPackageVersions.has(packageName)) {
-            const previousPackageVersion = previousPackageVersions.get(
-                packageName
+    packageVersions.forEach((package) => {
+        if (package.localVersion !== package.publishedVersion) {
+            packagesToPublish.set(
+                `${"@x3r5e"}/package.name`,
+                package.localVersion
             );
-
-            if (currentPackageVersion !== previousPackageVersion) {
-                packagesToPublish.set(packageName, currentPackageVersion);
-            }
         }
     });
 
@@ -60,17 +41,9 @@ const getPackagesToPublish = (
 };
 
 const runReleases = async () => {
-    const {
-        currentPackageVersions,
-        previousPackageVersions,
-    } = await getPackageVersions();
+    const packageVersions = await getPackageVersions();
 
-    console.log(currentPackageVersions, previousPackageVersions);
-
-    const packagesToPublish = getPackagesToPublish(
-        currentPackageVersions,
-        previousPackageVersions
-    );
+    const packagesToPublish = getPackagesToPublish(packageVersions);
 
     console.log(packagesToPublish);
 };
