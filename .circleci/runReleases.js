@@ -31,7 +31,7 @@ const getPackagesToPublish = (packageVersions) => {
     packageVersions.forEach((package) => {
         if (package.localVersion !== package.publishedVersion) {
             packagesToPublish.set(
-                `${"@x3r5e"}/package.name`,
+                `${"@x3r5e"}/${package.name}`,
                 package.localVersion
             );
         }
