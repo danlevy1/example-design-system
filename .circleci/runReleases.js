@@ -14,10 +14,10 @@ const getPackageVersions = async () => {
         "git rev-list --min-parents=2 --max-count=1 --skip=1 HEAD"
     );
 
-    const gitFetchStdout = await executeShellCommand(
-        `git fetch git@github.com:danlevy1/example-design-system.git ${previousMergeCommitSha}`
+    const gitPullStdout = await executeShellCommand(
+        `git pull git@github.com:danlevy1/example-design-system.git ${previousMergeCommitSha}`
     );
-    console.log(gitFetchStdout);
+    console.log(gitPullStdout);
 
     const previousMergeCommitCheckoutStdout = await executeShellCommand(
         `git checkout ${previousMergeCommitSha}`
