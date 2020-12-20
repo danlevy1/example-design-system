@@ -185,5 +185,3 @@ module.exports = {
     buildDesignTokens,
     PlatformOptions,
 };
-
-console.log();
