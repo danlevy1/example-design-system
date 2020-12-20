@@ -15,7 +15,7 @@
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
-        "build": "rollup -c && node --unhandled-rejections=strict ./src/scripts/buildTypes.js",
+        "build": "rollup -c && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "test": "chmod u+x ./src/scripts/testWarning.sh && ./src/scripts/testWarning.sh && jest"
     },
     "repository": {
