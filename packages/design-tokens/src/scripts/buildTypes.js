@@ -4,29 +4,34 @@ const tsconfig = require("../../tsconfig.json");
 
 const logEmittedFiles = (emittedFilesPaths) => {
     emittedFilesPaths.forEach((emittedFilePath, index) => {
-        console.log(chalk`{green ${index + 1}. {bold ${emittedFilePath}}}`);
+        process.stderr.write(
+            chalk`{green ${index + 1}. {bold ${emittedFilePath}}}\n`
+        );
     });
 
-    console.log();
+    process.stderr.write("\n");
 };
 
 const buildTypesFiles = async () => {
     const tsConfigEntryFile = tsconfig.files[0];
 
-    console.log(
-        chalk`\n{cyanBright Generating TypeScript declaration files based on entry file {bold ${tsConfigEntryFile}}...}`
+    process.stderr.write(
+        chalk`\n{cyanBright Generating TypeScript declaration files based on entry file {bold ${tsConfigEntryFile}}...}\n`
     );
 
     try {
         const startTime = Date.now();
 
-        const stdout = await executeShellCommand("tsc --listEmittedFiles");
+        const [stdout] = await executeShellCommand(
+            "tsc --listEmittedFiles",
+            true
+        );
 
         const endTime = Date.now();
         const ellapsedTime = endTime - startTime;
 
-        console.log(
-            chalk`{green Created the following declaration files in {bold ${ellapsedTime}ms}:}`
+        process.stderr.write(
+            chalk`{green Created the following declaration files in {bold ${ellapsedTime}ms}:}\n`
         );
 
         const emittedFilePaths = stdout

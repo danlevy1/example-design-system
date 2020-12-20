@@ -14,8 +14,8 @@
     },
     "scripts": {
         "prepublishOnly": "npm run build",
-        "postpublish": "chmod +x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh design-tokens",
-        "build": "rollup -c && node --unhandled-rejections=strict ./src/scripts/buildTypes.js && echo 'Build Done'",
+        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
+        "build": "rollup -c && node --unhandled-rejections=strict ./src/scripts/buildTypes.js",
         "test": "node --unhandled-rejections=strict ./src/scripts/testWarning.js && jest"
     },
     "repository": {
