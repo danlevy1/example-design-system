@@ -2,13 +2,13 @@
 set -e
 
 getPackageVersions () {
-    local packageNames=(`ls ../packages`)
+    local packageNames=(`ls ./packages`)
     local packageVersions=()
 
     for i in "${packageNames[@]}"
     do
         local name=$i
-        local localVersion=$( jq -r .version ../packages/$name/package.json )
+        local localVersion=$( jq -r .version ./packages/$name/package.json )
         local publishedVersion=$( npm view @x3r5e/$name version)
 
         packageVersions+=($( jq -nc \

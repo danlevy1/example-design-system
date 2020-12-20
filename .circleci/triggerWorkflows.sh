@@ -3,11 +3,11 @@ set -e
 
 getChangedPackages () {
     local changedPackages=()
-    local packageNames=($( ls ../packages ))
+    local packageNames=($( ls ./packages ))
 
     for i in "${packageNames[@]}"
     do
-        local output=$( git diff origin/main -- ../packages/$i )
+        local output=$( git diff origin/main -- ./packages/$i )
         
         if [[ $output ]]
         then
