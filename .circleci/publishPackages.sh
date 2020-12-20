@@ -45,5 +45,6 @@ packagesToPublish=($(getPackagesToPublish "${packageVersions[@]}"))
 
 for packageName in ${packagesToPublish[@]}
 do
-    npm publish --dry-run ../packages/$packageName
+    echo Turn on publishing when ready
+    # npm publish --dry-run ../packages/$packageName
 done
