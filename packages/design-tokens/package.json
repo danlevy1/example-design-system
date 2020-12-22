@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/design-tokens",
-    "version": "0.10.6",
+    "version": "0.10.7",
     "description": "",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
@@ -24,8 +24,7 @@
         "directory": "packages/design-tokens"
     },
     "publishConfig": {
-        "access": "public",
-        "registry": "https://registry.npmjs.org/@x3r5e"
+        "access": "public"
     },
     "keywords": [],
     "author": "Daniel Levy (https://www.danlevy.info)",

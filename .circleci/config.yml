@@ -56,10 +56,7 @@ jobs:
             - checkout
             - run:
                   name: Authenticate with npm
-                  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-            - run:
-                  name: Publish Packages
-                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh
+                  command: npm whoami
     trigger-workflows-job:
         docker:
             - image: circleci/node:14
