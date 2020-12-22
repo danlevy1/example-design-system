@@ -54,9 +54,6 @@ jobs:
         steps:
             - checkout
             - run:
-                  name: Install npm Dependencies
-                  command: npm ci
-            - run:
                   name: Publish Packages
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh
     trigger-workflows-job:
