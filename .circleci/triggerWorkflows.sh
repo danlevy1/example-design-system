@@ -61,7 +61,7 @@ responseStatusCode=${triggerPipelineResponse##*http_code:}
 
 if [[ $responseStatusCode != 2* ]]
 then
-    printf "${RED}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode\n${END}"
+    printf "${GREEN}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode\n${END}"
     echo Response: $responseMessage
     exit 1
 fi
