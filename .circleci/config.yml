@@ -1,7 +1,7 @@
 version: 2.1
 
 parameters:
-    trigger-workflows:
+    run-ci-triggers:
         type: boolean
         default: true
     run-design-tokens:
@@ -20,9 +20,12 @@ parameters:
 workflows:
     version: 2
     ci:
-        when: << pipeline.parameters.trigger-workflows >>
+        when: << pipeline.parameters.run-ci-triggers >>
         jobs:
-            - trigger-workflows-job
+            - trigger-workflows-job:
+                  filters:
+                      branches:
+                          ignore: main
             - publish-packages:
                   filters:
                       branches:
@@ -45,7 +48,7 @@ workflows:
             - react-components-job
 
 jobs:
-    publish-packages:
+    publish-packages-job:
         docker:
             - image: circleci/node:14
         steps:

@@ -38,7 +38,7 @@ then
     exit 0
 fi
 
-pipelineParameters=$( jq -nc '{"trigger-workflows": false} | .[$ARGS.positional[]] = true' --args "${changedPackageNames[@]/#/run-}" )
+pipelineParameters=$( jq -nc '{"run-ci-triggers": false} | .[$ARGS.positional[]] = true' --args "${changedPackageNames[@]/#/run-}" )
 
 triggerPipelineRequestBody=$( jq -nc \
                                  --argjson pipelineParameters "$pipelineParameters" \

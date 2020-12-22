@@ -48,8 +48,15 @@ getPackageNamesToPublish () {
 packageVersions=($( getPackageVersions ))
 packageNamesToPublish=($( getPackageNamesToPublish "${packageVersions[@]}" ))
 
+# If none of the packages have had their version changed, skip publishing
+if [ -z "$packageNamesToPublish" ]
+then
+    echo None of the packages have had their version change. Skipping publish.
+    exit 0
+fi
+
 for packageName in ${packageNamesToPublish[@]}
 do
-    echo Turn on publishing when ready
+    echo "Turn on publishing for $packageName when ready"
     # npm publish --dry-run ../packages/$packageName
 done
