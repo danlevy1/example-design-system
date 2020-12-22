@@ -27,8 +27,6 @@ args=("$@")
 circle_token=${args[0]}
 git_branch_name=${args[1]}
 
-echo ============ RUNNING WORKFLOW TRIGGER SCRIPT ============
-
 changedPackageNames=($( getChangedPackageNames ))
 
 # If none of the packages have changed, do not trigger a pipeline
