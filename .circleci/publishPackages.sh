@@ -60,8 +60,25 @@ then
     exit 0
 fi
 
-for packageName in ${packageNamesToPublish[@]}
-do
-    printf "${GREEN}Turn on publishing for ${BOLD}$packageName ${GREEN}when ready\n${END}"
-    # npm publish --dry-run ../packages/$packageName
-done
+if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
+then
+        npm publish --dry-run ./packages/design-tokens
+fi
+
+if [[ "${packageNamesToPublish[@]}" =~ "icons" ]]
+then
+        npm publish --dry-run ./packages/icons
+fi
+
+if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
+then
+        npm install --save-dev --prefix ./packages/component-styles @x3r5e/design-tokens@latest
+        npm publish --dry-run ./packages/component-styles
+fi
+
+if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
+then
+        npm install --save-dev --prefix ./packages/react-components @x3r5e/icons@latest
+        npm install --save-dev --prefix ./packages/react-components @x3r5e/component-styles@latest
+        npm publish --dry-run ./packages/react-components
+fi
