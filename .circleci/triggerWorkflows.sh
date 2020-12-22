@@ -66,4 +66,4 @@ then
     exit 1
 fi
 
-printf "Workflow(s) triggered for the following package(s): ${BOLD}${changedPackageNames[*]}${END}"
+printf "${GREEN}Workflow(s) triggered for the following package(s): ${BOLD}${changedPackageNames[*]}${END}"
