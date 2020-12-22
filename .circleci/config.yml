@@ -59,7 +59,7 @@ jobs:
                   command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
             - run:
                   name: Publish Packages
-                  command: echo .npmrc
+                  command: cat .npmrc
     trigger-workflows-job:
         docker:
             - image: circleci/node:14
