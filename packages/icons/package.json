@@ -4,7 +4,7 @@
     "description": "",
     "main": "dist/index.js",
     "scripts": {
-        "postpublish": "chmod +x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
+        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "",
         "test": ""
     },

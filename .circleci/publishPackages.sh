@@ -2,6 +2,7 @@
 set -e
 
 # Command line output formats
+CYAN_BRIGHT='\033[0;96m'
 GREEN='\033[0;32m'
 BOLD='\033[1m'
 END='\e[0m'
@@ -62,43 +63,42 @@ fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
 then
-        echo ======== PUBLISHING @x3r5e/design-tokens ========
+        printf "${CYAN_BRIGHT}\n\n======== PUBLISHING @x3r5e/design-tokens ========\n\n${END}"
         cd ./packages/design-tokens
         npm ci
         npm publish --dry-run
         cd ../..
-        echo ======== @x3r5e/design-tokens PUBLISHED ========
+        printf "${GREEN}\n\n======== @x3r5e/design-tokens PUBLISHED ========\n\n${END}"
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "icons" ]]
 then
-        echo ======== PUBLISHING @x3r5e/icons ========
+        printf "${CYAN_BRIGHT}\n\n======== PUBLISHING @x3r5e/icons ========\n\n${END}"
         cd ./packages/icons
         npm ci
         npm publish --dry-run
         cd ../..
-        echo ======== @x3r5e/icons PUBLISHED ========
+        printf "${GREEN}\n\n======== @x3r5e/icons PUBLISHED ========\n\n${END}"
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
 then
-        echo ======== PUBLISHING @x3r5e/component-styles ========
+        printf "${CYAN_BRIGHT}\n\n======== PUBLISHING @x3r5e/component-styles ========\n\n${END}"
         cd ./packages/component-styles
         npm ci
         npm install --save-dev @x3r5e/design-tokens@latest
         npm publish --dry-run
         cd ../..
-        echo ======== @x3r5e/component-styles PUBLISHED ========
+        printf "${GREEN}\n\n======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
 then
-        echo ======== PUBLISHING @x3r5e/react-components ========
+        printf "${CYAN_BRIGHT}\n\n======== PUBLISHING @x3r5e/react-components ========\n\n${END}"
         cd ./packages/react-components
         npm ci
-        npm install --save @x3r5e/icons@latest
-        npm install --save @x3r5e/component-styles@latest
+        npm install --save @x3r5e/icons@latest @x3r5e/component-styles@latest
         npm publish --dry-run
         cd ../..
-        echo ======== @x3r5e/react-components PUBLISHED ========
+        printf "${GREEN}\n\n======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
 fi
