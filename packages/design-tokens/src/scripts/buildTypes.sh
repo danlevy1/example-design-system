@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e
 
+# Description: Builds TypeScript type declaration files.
+
 tsConfigEntryFile=$( jq -r .files[0] tsconfig.json )
 
+# Command line output formats
 CYAN_BRIGHT='\033[0;96m'
 GREEN='\033[0;32m'
 BOLD='\033[1m'

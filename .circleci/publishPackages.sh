@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
+# Returns an array of JSON objects, where each object is of the following shape:
+# { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
 getPackageVersions () {
-    local packageNames=(`ls ./packages`)
+    local packageNames=($( ls ./packages ))
     local packageVersions=()
 
-    for i in "${packageNames[@]}"
+    for packageName in "${packageNames[@]}"
     do
-        local name=$i
+        local name=$packageName
         local localVersion=$( jq -r .version ./packages/$name/package.json )
         local publishedVersion=$( npm view @x3r5e/$name version)
 
@@ -21,18 +23,21 @@ getPackageVersions () {
     echo ${packageVersions[@]}
 }
 
-getPackagesToPublish () {
+# Accepts an array of package version JSON objects, where each object is of the following shape:
+# { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
+# Returns an array of package names that need to be published
+getPackageNamesToPublish () {
     local packageVersions=("$@")
     local packagesToPublish=()
 
-    for i in "${packageVersions[@]}"
+    for packageVersion in "${packageVersions[@]}"
     do        
-        local localVersion=$( jq -r .localVersion <<< $i)
-        local publishedVersion=$( jq -r .publishedVersion <<< $i )
+        local localVersion=$( jq -r .localVersion <<< $packageVersion)
+        local publishedVersion=$( jq -r .publishedVersion <<< $packageVersion )
 
         if [ $localVersion != $publishedVersion ]
         then
-            local name=$( jq -r .name <<< $i )
+            local name=$( jq -r .name <<< $packageVersion )
             packagesToPublish+=($name)
         fi
     done
@@ -40,10 +45,10 @@ getPackagesToPublish () {
     echo ${packagesToPublish[@]}
 }
 
-packageVersions=($(getPackageVersions))
-packagesToPublish=($(getPackagesToPublish "${packageVersions[@]}"))
+packageVersions=($( getPackageVersions ))
+packageNamesToPublish=($( getPackageNamesToPublish "${packageVersions[@]}" ))
 
-for packageName in ${packagesToPublish[@]}
+for packageName in ${packageNamesToPublish[@]}
 do
     echo Turn on publishing when ready
     # npm publish --dry-run ../packages/$packageName
