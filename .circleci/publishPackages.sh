@@ -66,7 +66,7 @@ then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/design-tokens ========\n${END}"
         cd ./packages/design-tokens
         npm ci
-        npm publish
+        npm publish --access public
         cd ../..
         printf "${GREEN}======== @x3r5e/design-tokens PUBLISHED ========\n\n${END}"
 fi
@@ -76,7 +76,7 @@ then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/icons ========\n${END}"
         cd ./packages/icons
         npm ci
-        npm publish
+        npm publish --access public
         cd ../..
         printf "${GREEN}======== @x3r5e/icons PUBLISHED ========\n\n${END}"
 fi
@@ -87,7 +87,7 @@ then
         cd ./packages/component-styles
         npm ci
         npm install --save-dev @x3r5e/design-tokens@latest
-        npm publish
+        npm publish --access public
         cd ../..
         printf "${GREEN}======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
 fi
@@ -98,7 +98,7 @@ then
         cd ./packages/react-components
         npm ci
         npm install --save @x3r5e/icons@latest @x3r5e/component-styles@latest
-        npm publish
+        npm publish --access public
         cd ../..
         printf "${GREEN}======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
 fi
