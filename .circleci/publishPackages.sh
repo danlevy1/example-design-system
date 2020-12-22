@@ -62,35 +62,43 @@ fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
 then
+        echo ======== PUBLISHING @x3r5e/design-tokens ========
         cd ./packages/design-tokens
         npm ci
         npm publish --dry-run
         cd ../..
+        echo ======== @x3r5e/design-tokens PUBLISHED ========
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "icons" ]]
 then
+        echo ======== PUBLISHING @x3r5e/icons ========
         cd ./packages/icons
         npm ci
         npm publish --dry-run
         cd ../..
+        echo ======== @x3r5e/icons PUBLISHED ========
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
 then
+        echo ======== PUBLISHING @x3r5e/component-styles ========
         cd ./packages/component-styles
         npm ci
         npm install --save-dev @x3r5e/design-tokens@latest
         npm publish --dry-run
         cd ../..
+        echo ======== @x3r5e/component-styles PUBLISHED ========
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
 then
+        echo ======== PUBLISHING @x3r5e/react-components ========
         cd ./packages/react-components
         npm ci
         npm install --save @x3r5e/icons@latest
         npm install --save @x3r5e/component-styles@latest
         npm publish --dry-run
         cd ../..
+        echo ======== @x3r5e/react-components PUBLISHED ========
 fi
