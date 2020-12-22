@@ -38,7 +38,7 @@ changedPackageNames=($( getChangedPackageNames ))
 # If none of the packages have changed, do not trigger a pipeline
 if [ -z "$changedPackageNames" ]
 then
-    printf "${GREEN}None of the packages have changed. Skipping package workflows.${END}"
+    printf "${GREEN}None of the packages have changed. Skipping package workflows.\n${END}"
     exit 0
 fi
 
@@ -61,9 +61,9 @@ responseStatusCode=${triggerPipelineResponse##*http_code:}
 
 if [[ $responseStatusCode != 2* ]]
 then
-    printf "${RED}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode${END}"
+    printf "${RED}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode\n${END}"
     echo Response: $responseMessage
     exit 1
 fi
 
-printf "${GREEN}Workflow(s) triggered for the following package(s): ${BOLD}${changedPackageNames[*]}${END}"
+printf "${GREEN}Workflow(s) triggered for the following package(s): ${BOLD}${changedPackageNames[*]}\n${END}"
