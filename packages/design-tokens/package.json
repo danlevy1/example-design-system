@@ -24,7 +24,8 @@
         "directory": "packages/design-tokens"
     },
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://registry.npmjs.org/@x3r5e"
     },
     "keywords": [],
     "author": "Daniel Levy (https://www.danlevy.info)",
