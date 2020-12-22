@@ -52,7 +52,7 @@ triggerPipelineRequestBody=$( jq -nc \
 # Triggers a CircleCI pipeline
 triggerPipelineResponse=$( curl --silent --write-out "\nhttp_code:%{http_code}" --request POST \
     --url https://circleci.com/api/v2/project/gh/danlevy1/example-design-system/pipeline \
-    --header "Circle-Token: $circle_toke" \
+    --header "Circle-Token: $circle_token" \
     --header "content-type: application/json" \
     --data "$triggerPipelineRequestBody" )
 
