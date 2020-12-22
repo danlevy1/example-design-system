@@ -5,9 +5,7 @@
     "main": "dist/index.js",
     "type": "module",
     "scripts": {
-        "preversion": "npm run test && npm run build",
-        "postversion": "npm publish",
-        "postpublish": "PACKAGE_NAME=component-styles node ../../scripts/postpublish",
+        "postpublish": "chmod +x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "",
         "test": ""
     },

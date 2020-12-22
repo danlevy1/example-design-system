@@ -13,11 +13,10 @@
         "default": "./dist/index.js"
     },
     "scripts": {
-        "preversion": "npm run test && npm run build",
-        "postversion": "npm publish",
-        "postpublish": "PACKAGE_NAME=design-tokens node ../../scripts/postpublish",
-        "build": "rollup -c && node ./src/scripts/buildTypes.js",
-        "test": "node ./src/scripts/testWarning.js && jest"
+        "prepublishOnly": "npm run build",
+        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
+        "build": "rollup -c && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
+        "test": "chmod u+x ./src/scripts/testWarning.sh && ./src/scripts/testWarning.sh && jest"
     },
     "repository": {
         "type": "git",

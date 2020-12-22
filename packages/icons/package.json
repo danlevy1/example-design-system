@@ -4,9 +4,7 @@
     "description": "",
     "main": "dist/index.js",
     "scripts": {
-        "preversion": "npm run test && npm run build",
-        "postversion": "npm publish",
-        "postpublish": "PACKAGE_NAME=icons node ../../scripts/postpublish",
+        "postpublish": "chmod +x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "",
         "test": ""
     },
