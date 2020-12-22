@@ -4,6 +4,12 @@ set -e
 # Description: Triggers a CircleCI pipeline that runs a workflow for each package that has changed.
 # A change is a diff in the code in the package's `src` directory between the current commit in the checked out branch and the the latest commit in the `main` branch.
 
+# Command line output formats
+RED='\031[0;32m'
+GREEN='\033[0;32m'
+BOLD='\033[1m'
+END='\e[0m'
+
 # Returns an array of package names that have changed since the last commit to main
 getChangedPackageNames () {
     local changedPackageNames=()
@@ -32,7 +38,7 @@ changedPackageNames=($( getChangedPackageNames ))
 # If none of the packages have changed, do not trigger a pipeline
 if [ -z "$changedPackageNames" ]
 then
-    echo None of the packages have changed. Skipping package workflows.
+    printf "${GREEN}None of the packages have changed. Skipping package workflows.${END}"
     exit 0
 fi
 
@@ -55,9 +61,9 @@ responseStatusCode=${triggerPipelineResponse##*http_code:}
 
 if [[ $responseStatusCode != 2* ]]
 then
-    echo "CircleCI pipeline trigger returned a bad status code: $responseStatusCode"
+    printf "${RED}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode${END}"
     echo Response: $responseMessage
     exit 1
 fi
 
-echo "Workflow(s) triggered for the following package(s): ${changedPackageNames[*]}"
+printf "${GREEN}Workflow(s) triggered for the following package(s): ${BOLD}${changedPackageNames[*]}${END}"

@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Command line output formats
+GREEN='\033[0;32m'
+BOLD='\033[1m'
+END='\e[0m'
+
 # Returns an array of JSON objects, where each object is of the following shape:
 # { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
 getPackageVersions () {
@@ -51,12 +56,12 @@ packageNamesToPublish=($( getPackageNamesToPublish "${packageVersions[@]}" ))
 # If none of the packages have had their version changed, skip publishing
 if [ -z "$packageNamesToPublish" ]
 then
-    echo None of the packages have had their version change. Skipping publish.
+    printf "${GREEN}None of the packages have had their version change. Skipping publish.${END}"
     exit 0
 fi
 
 for packageName in ${packageNamesToPublish[@]}
 do
-    echo "Turn on publishing for $packageName when ready"
+    printf "${GREEN}Turn on publishing for ${BOLD}$packageName ${GREEN}when ready${END}"
     # npm publish --dry-run ../packages/$packageName
 done
