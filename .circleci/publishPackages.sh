@@ -65,6 +65,7 @@ if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
 then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/design-tokens ========\n${END}"
         cd ./packages/design-tokens
+        ls
         npm ci
         npm publish --access public
         cd ../..
