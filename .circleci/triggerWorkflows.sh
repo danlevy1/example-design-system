@@ -5,7 +5,7 @@ set -e
 # A change is a diff in the code in the package's `src` directory between the current commit in the checked out branch and the the latest commit in the `main` branch.
 
 # Command line output formats
-RED='\031[0;32m'
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 BOLD='\033[1m'
 END='\e[0m'
@@ -61,8 +61,8 @@ responseStatusCode=${triggerPipelineResponse##*http_code:}
 
 if [[ $responseStatusCode != 2* ]]
 then
-    printf "${GREEN}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode\n${END}"
-    echo Response: $responseMessage
+    printf "${RED}CircleCI pipeline trigger returned a bad status code: ${BOLD}$responseStatusCode\n${END}"
+    printf "${RED}${BOLD}Response: ${RED}$responseMessage\n${END}"
     exit 1
 fi
 
