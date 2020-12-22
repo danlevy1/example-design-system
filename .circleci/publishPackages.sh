@@ -68,7 +68,7 @@ then
         npm ci
         npm publish --dry-run
         cd ../..
-        printf "\n\n${GREEN}======== @x3r5e/design-tokens PUBLISHED ========\n\n${END}"
+        printf "${GREEN}======== @x3r5e/design-tokens PUBLISHED ========\n\n${END}"
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "icons" ]]
@@ -78,7 +78,7 @@ then
         npm ci
         npm publish --dry-run
         cd ../..
-        printf "\n\n${GREEN}======== @x3r5e/icons PUBLISHED ========\n\n${END}"
+        printf "${GREEN}======== @x3r5e/icons PUBLISHED ========\n\n${END}"
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
@@ -89,7 +89,7 @@ then
         npm install --save-dev @x3r5e/design-tokens@latest
         npm publish --dry-run
         cd ../..
-        printf "\n\n${GREEN}======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
+        printf "${GREEN}======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
 fi
 
 if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
@@ -100,5 +100,5 @@ then
         npm install --save @x3r5e/icons@latest @x3r5e/component-styles@latest
         npm publish --dry-run
         cd ../..
-        printf "\n\n${GREEN}======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
+        printf "${GREEN}======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
 fi
