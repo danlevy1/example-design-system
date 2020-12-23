@@ -12,7 +12,7 @@ END='\e[0m'
 
 # If the commit has a package publish tag, this script does not need to run
 tagsAssociatedWithCommit=$( git tag --points-at HEAD )
-if [[ echo $tagsAssociatedWithCommit | grep "^@x3r5e\/.*@[0-9]+\.[0-9]+\.[0-9]+$" ]]
+if [[ echo $tagsAssociatedWithCommit | grep "^@x3r5e\/.*@.*" ]]
 then
     printf "${GREEN}This commit is associated with a package publish tag: $tagsAssociatedWithCommit. This script will be skipped.\n${END}"
     exit 0
