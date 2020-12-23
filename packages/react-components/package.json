@@ -29,7 +29,7 @@
         "eslint-plugin-react-hooks": "^4.2.0"
     },
     "dependencies": {
-        "@x3r5e/component-styles": "^0.5.1",
-        "@x3r5e/icons": "^0.5.1"
+        "@x3r5e/component-styles": "^0.5.2",
+        "@x3r5e/icons": "^0.5.2"
     }
 }
