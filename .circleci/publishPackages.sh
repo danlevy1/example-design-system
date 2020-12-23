@@ -46,9 +46,6 @@ do
     fi
 done
 
-echo ${packageVersions[@]}
-echo ${packageNamesToPublish[@]}
-
 # Publish the packages
 
 # If none of the packages have had their version changed, skip publishing
