@@ -59,10 +59,7 @@ jobs:
                   command: printf "//registry.npmjs.org/:_authToken=$NPM_TOKEN\naccess=public" > .npmrc
             - run:
                   name: Publish Packages
-                  command: cat .npmrc
-            - run:
-                  name: x
-                  command: ls
+                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh
     trigger-workflows-job:
         docker:
             - image: circleci/node:14
