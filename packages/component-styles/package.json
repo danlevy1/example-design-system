@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "",
     "main": "dist/index.js",
     "type": "module",

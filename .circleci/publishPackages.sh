@@ -39,6 +39,8 @@ getPackageNamesToPublish () {
     local packageVersions=("$@")
     local packagesToPublish=()
 
+    echo ${packageVersions[@]}
+
     for packageVersion in "${packageVersions[@]}"
     do        
         local localVersion=$( jq -r .localVersion <<< $packageVersion)
