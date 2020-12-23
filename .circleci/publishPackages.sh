@@ -32,7 +32,7 @@ done
 # Accepts an array of package version JSON objects, where each object is of the following shape:
 # { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
 # Returns an array of package names that need to be published
-packagesToPublish=()
+packageNamesToPublish=()
 
 for packageVersion in "${packageVersions[@]}"
 do        
@@ -42,12 +42,12 @@ do
     if [ $localVersion != $publishedVersion ]
     then
         name=$( jq -r .name <<< $packageVersion )
-        packagesToPublish+=($name)
+        packageNamesToPublish+=($name)
     fi
 done
 
 echo ${packageVersions[@]}
-echo ${packagesToPublish[@]}
+echo ${packageNamesToPublish[@]}
 
 # Publish the packages
 
