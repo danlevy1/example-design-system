@@ -55,7 +55,7 @@ jobs:
             - checkout
             - run:
                   name: Publish Packages
-                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh
+                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
     trigger-workflows-job:
         docker:
             - image: circleci/node:14
