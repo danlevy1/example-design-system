@@ -26,11 +26,11 @@ workflows:
             - trigger-workflows-job:
                   filters:
                       branches:
-                          ignore: sequential-publish
+                          ignore: main
             - publish-packages-job:
                   filters:
                       branches:
-                          only: sequential-publish
+                          only: main
     design-tokens:
         when: << pipeline.parameters.run-design-tokens >>
         jobs:
