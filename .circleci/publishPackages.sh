@@ -10,9 +10,13 @@ GREEN='\033[0;32m'
 BOLD='\033[1m'
 END='\e[0m'
 
-printf "${CYAN_BRIGHT}======== Entering 2 minute sleep period ========\n${END}"
-sleep 2m
-printf "${CYAN_BRIGHT}======== Sleep period has ended. Beginning to execute publish script. ========\n${END}"
+# If the commit has a package publish tag, this script does not need to run
+tagsAssociatedWithCommit=$( git tag --points-at HEAD )
+if [[ echo $tagsAssociatedWithCommit | grep "^@x3r5e\/.*@[0-9]+\.[0-9]+\.[0-9]+$" ]]
+then
+    printf "${GREEN}This commit is associated with a package publish tag: $tagsAssociatedWithCommit. This script will be skipped.\n${END}"
+    exit 0
+fi
 
 # Returns an array of JSON objects, where each object is of the following shape:
 # { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
