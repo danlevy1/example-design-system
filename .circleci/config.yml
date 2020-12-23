@@ -52,6 +52,9 @@ jobs:
         docker:
             - image: circleci/node:14
         steps:
+            - add_ssh_keys:
+                  fingerprints:
+                      - 95:05:01:71:62:53:0f:b9:3d:bd:a8:97:03:08:42:3c
             - checkout
             - run:
                   name: Set up Git Config
