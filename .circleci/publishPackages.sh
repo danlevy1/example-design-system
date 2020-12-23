@@ -39,10 +39,6 @@ getPackageNamesToPublish () {
     local packageVersions=("$@")
     local packagesToPublish=()
 
-    echo ${packageVersions[@]}
-
-    exit 0
-
     for packageVersion in "${packageVersions[@]}"
     do        
         local localVersion=$( jq -r .localVersion <<< $packageVersion)
@@ -59,10 +55,12 @@ getPackageNamesToPublish () {
 }
 
 packageVersions=($( getPackageVersions ))
-getPackageNamesToPublish "${packageVersions[@]}"
+packageNamesToPublish=($( getPackageNamesToPublish "${packageVersions[@]}" ))
+
+echo ${packageNamesToPublish[@]}
 
 # If none of the packages have had their version changed, skip publishing
-if [ -z "$packageNamesToPublish" ]
+if [ -z "${packageNamesToPublish[@]}" ]
 then
     printf "${GREEN}None of the packages have had their version change. Skipping publish.\n${END}"
     exit 0
