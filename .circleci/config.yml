@@ -32,7 +32,7 @@ workflows:
                       branches:
                           only: sequential-publish
                       tags:
-                          ignore: /^Publish.*/
+                          ignore: /^@x3r5e\/.*@.*/
     design-tokens:
         when: << pipeline.parameters.run-design-tokens >>
         jobs:
