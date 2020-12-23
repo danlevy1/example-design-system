@@ -39,4 +39,3 @@ const platformsTest = [
 buildDesignTokens(platformsTest);
 
 // TEST
-// TEST 2

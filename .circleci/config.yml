@@ -82,12 +82,10 @@ jobs:
             - checkout:
                   path: ~/project
             - restore_cache:
-                  keys:
-                      - design-tokens-v1-{{ checksum "package-lock.json" }}
-                      - design-tokens-v1-
+                  key: design-tokens-v1-{{ checksum "package-lock.json" }}
             - run:
                   name: Install npm Dependencies
-                  command: npm ci
+                  command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
                   command: npm test
@@ -103,12 +101,10 @@ jobs:
             - checkout:
                   path: ~/project
             - restore_cache:
-                  keys:
-                      - component-styles-v1-{{ checksum "package-lock.json" }}
-                      - component-styles-v1-
+                  key: component-styles-v1-{{ checksum "package-lock.json" }}
             - run:
                   name: Install npm Dependencies
-                  command: npm ci
+                  command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
                   command: npm test
@@ -124,12 +120,10 @@ jobs:
             - checkout:
                   path: ~/project
             - restore_cache:
-                  keys:
-                      - icons-v1-{{ checksum "package-lock.json" }}
-                      - icons-v1-
+                  key: icons-v1-{{ checksum "package-lock.json" }}
             - run:
                   name: Install npm Dependencies
-                  command: npm ci
+                  command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
                   command: npm test
@@ -145,12 +139,10 @@ jobs:
             - checkout:
                   path: ~/project
             - restore_cache:
-                  keys:
-                      - react-components-v1-{{ checksum "package-lock.json" }}
-                      - react-components-v1-
+                  key: react-components-v1-{{ checksum "package-lock.json" }}
             - run:
                   name: Install npm Dependencies
-                  command: npm ci
+                  command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
                   command: npm test
