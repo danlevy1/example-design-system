@@ -18,9 +18,9 @@ packageVersions=()
 
 for packageName in "${packageNames[@]}"
 do
-    local name=$packageName
-    local localVersion=$( jq -r .version ./packages/$name/package.json )
-    local publishedVersion=$( npm view @x3r5e/$name version)
+    name=$packageName
+    localVersion=$( jq -r .version ./packages/$name/package.json )
+    publishedVersion=$( npm view @x3r5e/$name version)
 
     packageVersions+=($( jq -nc \
                                 --arg name "${name}" \
@@ -36,12 +36,12 @@ packagesToPublish=()
 
 for packageVersion in "${packageVersions[@]}"
 do        
-    local localVersion=$( jq -r .localVersion <<< $packageVersion)
-    local publishedVersion=$( jq -r .publishedVersion <<< $packageVersion )
+    localVersion=$( jq -r .localVersion <<< $packageVersion)
+    publishedVersion=$( jq -r .publishedVersion <<< $packageVersion )
 
     if [ $localVersion != $publishedVersion ]
     then
-        local name=$( jq -r .name <<< $packageVersion )
+        name=$( jq -r .name <<< $packageVersion )
         packagesToPublish+=($name)
     fi
 done
