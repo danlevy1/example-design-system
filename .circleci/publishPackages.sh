@@ -59,7 +59,7 @@ getPackageNamesToPublish () {
 }
 
 packageVersions=($( getPackageVersions ))
-packageNamesToPublish=($( getPackageNamesToPublish "${packageVersions[@]}" ))
+getPackageNamesToPublish "${packageVersions[@]}"
 
 # If none of the packages have had their version changed, skip publishing
 if [ -z "$packageNamesToPublish" ]
