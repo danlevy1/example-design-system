@@ -4,6 +4,10 @@ set -e
 # Description: Triggers a CircleCI pipeline that runs a workflow for each package that has changed.
 # A change is a diff in the code in the package's `src` directory between the current commit in the checked out branch and the the latest commit in the `main` branch.
 
+args=("$@")
+circle_token=${args[0]}
+git_branch_name=${args[1]}
+
 # Command line output formats
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -28,10 +32,6 @@ getChangedPackageNames () {
 
     echo ${changedPackageNames[@]}
 }
-
-args=("$@")
-circle_token=${args[0]}
-git_branch_name=${args[1]}
 
 changedPackageNames=($( getChangedPackageNames ))
 

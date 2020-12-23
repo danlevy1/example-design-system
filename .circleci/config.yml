@@ -1,3 +1,4 @@
+# See https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-user-key for getting GitHub write access
 version: 2.1
 
 parameters:
@@ -52,13 +53,19 @@ jobs:
         docker:
             - image: circleci/node:14
         steps:
+            - add_ssh_keys:
+                  fingerprints:
+                      - 95:05:01:71:62:53:0f:b9:3d:bd:a8:97:03:08:42:3c
             - checkout
             - run:
-                  name: Install npm Dependencies
-                  command: npm ci
+                  name: Set up Git Config
+                  command: git config user.email "danlevy124@gmail.com" && git config user.name "danlevy1"
+            - run:
+                  name: Track remote branch
+                  command: git branch --set-upstream-to origin/$CIRCLE_BRANCH
             - run:
                   name: Publish Packages
-                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh
+                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
     trigger-workflows-job:
         docker:
             - image: circleci/node:14

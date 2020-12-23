@@ -1,10 +1,10 @@
 {
     "name": "@x3r5e/icons",
-    "version": "0.4.4",
+    "version": "0.7.5",
     "description": "",
     "main": "dist/index.js",
     "scripts": {
-        "postpublish": "chmod +x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
+        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "",
         "test": ""
     },
