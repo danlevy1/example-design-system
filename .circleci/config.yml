@@ -56,7 +56,9 @@ jobs:
             - run:
                   name: Set up Git Config
                   command: git config user.email "danlevy124@gmail.com" && git config user.name "danlevy1"
-
+            - run:
+                  name: Track remote branch
+                  command: git branch --set-upstream-to origin/$CIRCLE_BRANCH
             - run:
                   name: Publish Packages
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
