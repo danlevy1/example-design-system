@@ -54,6 +54,10 @@ jobs:
         steps:
             - checkout
             - run:
+                  name: Set up Git Config
+                  command: git config user.email "danlevy124@gmail.com" && git config user.name "danlevy1"
+
+            - run:
                   name: Publish Packages
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
     trigger-workflows-job:
