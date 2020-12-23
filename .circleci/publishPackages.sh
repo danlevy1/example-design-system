@@ -57,7 +57,7 @@ done
 # Publish the packages
 
 # If none of the packages have had their version changed, skip publishing
-if [ -z "${packageNamesToPublish[@]}" ]
+if [[ -z "${packageNamesToPublish[@]}" ]]
 then
     printf "${GREEN}None of the packages have had their version change. Skipping publish.\n${END}"
     exit 0
