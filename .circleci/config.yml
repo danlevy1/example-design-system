@@ -51,7 +51,6 @@ jobs:
     publish-packages-job:
         docker:
             - image: circleci/node:14
-        working_directory: ~/project
         steps:
             - checkout
             - run:
