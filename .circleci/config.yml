@@ -92,8 +92,9 @@ jobs:
                   name: Tests
                   command: npm test
             - save_cache:
-                  keys:
-                      - design-tokens-v1-{{ checksum "package-lock.json" }}
+                  paths:
+                      - node_modules
+                  key: design-tokens-v1-{{ checksum "package-lock.json" }}
     component-styles-job:
         docker:
             - image: circleci/node:14
@@ -112,8 +113,9 @@ jobs:
                   name: Tests
                   command: npm test
             - save_cache:
-                  keys:
-                      - component-styles-v1-{{ checksum "package-lock.json" }}
+                  paths:
+                      - node_modules
+                  key: component-styles-v1-{{ checksum "package-lock.json" }}
     icons-job:
         docker:
             - image: circleci/node:14
@@ -132,8 +134,9 @@ jobs:
                   name: Tests
                   command: npm test
             - save_cache:
-                  keys:
-                      - icons-v1-{{ checksum "package-lock.json" }}
+                  paths:
+                      - node_modules
+                  key: icons-v1-{{ checksum "package-lock.json" }}
     react-components-job:
         docker:
             - image: circleci/node:14
@@ -152,5 +155,6 @@ jobs:
                   name: Tests
                   command: npm test
             - save_cache:
-                  keys:
-                      - react-components-v1-{{ checksum "package-lock.json" }}
+                  paths:
+                      - node_modules
+                  key: react-components-v1-{{ checksum "package-lock.json" }}
