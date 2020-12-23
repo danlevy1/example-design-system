@@ -56,7 +56,7 @@ jobs:
             - checkout
             - run:
                   name: Authenticate with npm
-                  command: printf "//registry.npmjs.org/:_authToken=$NPM_TOKEN\naccess=public" > .npmrc
+                  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
             - run:
                   name: Publish Packages
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh
