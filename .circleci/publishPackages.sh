@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+args=("$@")
+npm_token=${args[0]}
+
 # Command line output formats
 CYAN_BRIGHT='\033[0;96m'
 GREEN='\033[0;32m'
@@ -65,9 +68,10 @@ if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
 then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/design-tokens ========\n${END}"
         cd ./packages/design-tokens
+        echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
         ls
         npm ci
-        npm publish --access public
+        npm publish
         cd ../..
         printf "${GREEN}======== @x3r5e/design-tokens PUBLISHED ========\n\n${END}"
 fi
@@ -76,8 +80,9 @@ if [[ "${packageNamesToPublish[@]}" =~ "icons" ]]
 then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/icons ========\n${END}"
         cd ./packages/icons
+        echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
         npm ci
-        npm publish --access public
+        npm publish
         cd ../..
         printf "${GREEN}======== @x3r5e/icons PUBLISHED ========\n\n${END}"
 fi
@@ -86,9 +91,10 @@ if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
 then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/component-styles ========\n${END}"
         cd ./packages/component-styles
+        echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
         npm ci
         npm install --save-dev @x3r5e/design-tokens@latest
-        npm publish --access public
+        npm publish
         cd ../..
         printf "${GREEN}======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
 fi
@@ -97,9 +103,10 @@ if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
 then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/react-components ========\n${END}"
         cd ./packages/react-components
+        echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
         npm ci
         npm install --save @x3r5e/icons@latest @x3r5e/component-styles@latest
-        npm publish --access public
+        npm publish
         cd ../..
         printf "${GREEN}======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
 fi
