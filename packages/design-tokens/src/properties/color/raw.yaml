@@ -1,0 +1,109 @@
+raw:
+    color:
+        purple:
+            "200":
+                value: "#9b96b3"
+            "100":
+                value: "#a9a5be"
+            "300":
+                value: "#8d87a9"
+            "400":
+                value: "#7e789e"
+            "500":
+                value: "#706993"
+            "600":
+                value: "#655f84"
+            "700":
+                value: "#5a5476"
+            "800":
+                value: "#4e4a67"
+            "900":
+                value: "#433f58"
+            base:
+                value: "{raw.color.purple.500.value}"
+
+        blue:
+            "100":
+                value: "#a9c6cf"
+            "200":
+                value: "#9bbdc7"
+            "300":
+                value: "#8db3bf"
+            "400":
+                value: "#7eaab7"
+            "500":
+                value: "#70a0af"
+            "600":
+                value: "#65909e"
+            "700":
+                value: "#5a808c"
+            "800":
+                value: "#4e707a"
+            "900":
+                value: "#436069"
+            base:
+                value: "{raw.color.blue.500.value}"
+
+        green:
+            "100":
+                value: "#c6dad5"
+            "200":
+                value: "#bdd4ce"
+            "300":
+                value: "#b3cdc7"
+            "400":
+                value: "#aac7c0"
+            "500":
+                value: "#a0c1b9"
+            "600":
+                value: "#90aea7"
+            "700":
+                value: "#809a94"
+            "800":
+                value: "#708782"
+            "900":
+                value: "#60746f"
+            base:
+                value: "{raw.color.green.500.value}"
+
+        black:
+            value: "#000000"
+            "100":
+                value: "#888888"
+            "200":
+                value: "#747474"
+            "300":
+                value: "#606060"
+            "400":
+                value: "#4c4c4c"
+            "500":
+                value: "#383838"
+            "600":
+                value: "#323232"
+            "700":
+                value: "#2d2d2d"
+            "800":
+                value: "#272727"
+            "900":
+                value: "#222222"
+
+        white:
+            value: "#ffffff"
+            "100":
+                value: "#f2f2f2"
+            "200":
+                value: "#f3f3f3"
+            "300":
+                value: "#f5f5f5"
+            "400":
+                value: "#f6f6f6"
+            "500":
+                value: "#f7f7f7"
+            "600":
+                value: "#f9f9f9"
+            "700":
+                value: "#fafafa"
+            "800":
+                value: "#fbfbfb"
+            "900":
+                value: "#fcfcfc"
