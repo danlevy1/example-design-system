@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+sleep 2m
+
 args=("$@")
 npm_token=${args[0]}
 
@@ -54,8 +56,6 @@ then
     printf "${GREEN}None of the packages have had their version change. Skipping publish.\n${END}"
     exit 0
 fi
-
-sleep 2m
 
 if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
 then

@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/icons",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "description": "",
     "main": "dist/index.js",
     "scripts": {
