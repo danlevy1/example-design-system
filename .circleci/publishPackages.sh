@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-sleep 2m
-
 args=("$@")
 npm_token=${args[0]}
 
@@ -11,6 +9,10 @@ CYAN_BRIGHT='\033[0;96m'
 GREEN='\033[0;32m'
 BOLD='\033[1m'
 END='\e[0m'
+
+printf "${CYAN_BRIGHT}======== Entering 2 minute sleep period ========\n${END}"
+sleep 2m
+printf "${CYAN_BRIGHT}======== Sleep period has ended. Beginning to execute publish script. ========\n${END}"
 
 # Returns an array of JSON objects, where each object is of the following shape:
 # { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
