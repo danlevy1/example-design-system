@@ -56,7 +56,7 @@ jobs:
             - checkout
             - run:
                   name: Authenticate with npm
-                  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN\naccess=public" > .npmrc
+                  command: printf "//registry.npmjs.org/:_authToken=$NPM_TOKEN\naccess=public" > .npmrc
             - run:
                   name: Publish Packages
                   command: cat .npmrc
