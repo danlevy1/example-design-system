@@ -58,6 +58,8 @@ then
     exit 0
 fi
 
+sleep 2m
+
 if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
 then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/design-tokens ========\n${END}"
