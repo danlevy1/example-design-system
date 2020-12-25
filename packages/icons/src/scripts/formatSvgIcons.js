@@ -29,7 +29,7 @@ class EmptySvgError extends Error {
  * @returns {Promise<Array[string]|Error>} An array of absolute file paths, or an error
  */
 const getSvgAbsoluteFilePaths = async () => {
-    const absolutePathToSvgDirectory = resolve(__dirname, "../../assets/svg");
+    const absolutePathToSvgDirectory = resolve(__dirname, "../../assets");
 
     const svgFileNames = await readdir(absolutePathToSvgDirectory);
     const absoluteFilePaths = svgFileNames.map(
