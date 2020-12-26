@@ -68,7 +68,6 @@ then
         printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/design-tokens ========\n${END}"
         cd ./packages/design-tokens
         echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
-        ls
         npm ci
         npm publish
         cd ../..
