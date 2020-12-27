@@ -4,11 +4,21 @@ const { parse } = require("svgson");
 const formatSvgIcons = require("../formatSvgIcons");
 
 describe("Format SVG Icons", () => {
-    it("Throws an error when the SVG has no children elements (i.e. is an empty SVG)", async () => {
+    it("Throws an error when the SVG file is empty (i.e. empty string or all whitespace)", async () => {
         expect.assertions(1);
 
         try {
-            await formatSvgIcons(resolve(__dirname, "./empty"));
+            await formatSvgIcons(resolve(__dirname, "./emptyFile"));
+        } catch (e) {
+            expect(e).toBeInstanceOf(Error);
+        }
+    });
+
+    it("Throws an error when the SVG has no children elements", async () => {
+        expect.assertions(1);
+
+        try {
+            await formatSvgIcons(resolve(__dirname, "./noChildren"));
         } catch (e) {
             expect(e).toBeInstanceOf(Error);
         }
