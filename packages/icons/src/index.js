@@ -1,3 +1,3 @@
-import { getIconSvgs } from "./getIconSvgs/getIconSvgs";
+import { getSvgIcons } from "./getSvgIcons/getSvgIcons";
 
-export { getIconSvgs };
+export { getSvgIcons };

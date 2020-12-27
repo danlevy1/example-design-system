@@ -6,12 +6,12 @@ const { readFile, readdir } = require("fs/promises");
  * @param {string=} absolutePathToSvgDirectory - The absolute path the the directory containing the SVG files. Defaults to the `dist/assets` directory of this package.
  * @returns {Promise<Map<string, string> | Error>} A map of SVGs (key is the icon name; value is the SVG), or an error
  */
-const getIconSvgs = async (
+const getSvgIcons = async (
     absolutePathToSvgDirectory = resolve(__dirname, "./assets")
 ) => {
     const iconFileNames = await readdir(absolutePathToSvgDirectory);
 
-    const iconSvgs = new Map();
+    const svgIcons = new Map();
 
     await Promise.all(
         iconFileNames
@@ -21,16 +21,16 @@ const getIconSvgs = async (
                     0,
                     iconFileName.lastIndexOf(".")
                 );
-                const iconSvg = await readFile(
+                const svgIcon = await readFile(
                     `${absolutePathToSvgDirectory}/${iconFileName}`,
                     { encoding: "utf-8" }
                 );
 
-                iconSvgs.set(iconName, iconSvg);
+                svgIcons.set(iconName, svgIcon);
             })
     );
 
-    return iconSvgs;
+    return svgIcons;
 };
 
-module.exports = { getIconSvgs };
+module.exports = { getSvgIcons };

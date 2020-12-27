@@ -1,9 +1,9 @@
 const { resolve } = require("path");
-const { getIconSvgs } = require("../getIconSvgs");
+const { getSvgIcons } = require("../getSvgIcons");
 
 describe("Get Icon SVGs", () => {
     it("Does not retrieve icons that don't have a `.svg` file extension", async () => {
-        const iconSvgs = await getIconSvgs(resolve(__dirname, "./assets"));
+        const iconSvgs = await getSvgIcons(resolve(__dirname, "./assets"));
 
         expect(iconSvgs.size).toBe(3);
 
@@ -15,7 +15,7 @@ describe("Get Icon SVGs", () => {
     it("Does not include the file extension with the icon name", async () => {
         const correctIconNames = ["CheckIcon", "MinusIcon", "PlusIcon"];
 
-        const iconSvgs = await getIconSvgs(resolve(__dirname, "./assets"));
+        const iconSvgs = await getSvgIcons(resolve(__dirname, "./assets"));
 
         for (const iconName of iconSvgs.keys()) {
             expect(correctIconNames).toContain(iconName);
@@ -38,7 +38,7 @@ describe("Get Icon SVGs", () => {
             ],
         ]);
 
-        const iconSvgs = await getIconSvgs(resolve(__dirname, "./assets"));
+        const iconSvgs = await getSvgIcons(resolve(__dirname, "./assets"));
 
         for (const [retrievedIconName, retrievedIconSvg] of iconSvgs) {
             expect(retrievedIconSvg).toBe(

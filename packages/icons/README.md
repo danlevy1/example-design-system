@@ -27,15 +27,15 @@ npm install --save @x3r5e/icons
 
 ```javascript
 // Imports the `getIconFilePaths` function
-const { getIconSvgs } = require("@x3r5e/icons");
+const { getSvgIcons } = require("@x3r5e/icons");
 ```
 
-2. Execute the `getIconSvgs` function. The function returns a `promise` that, if resolved, returns a map where the keys are the icon names (e.g. `CheckIcon`) and the values are the icon SVGs.
+2. Execute the `getSvgIcons` function. The function returns a `promise` that, if resolved, returns a map where the keys are the icon names (e.g. `CheckIcon`) and the values are the icon SVGs.
 
 ```javascript
 // Gets the icon SVGs
-const iconSvgs = getIconSvgs()
-    .then((iconSvgs) => console.log(iconSvgs))
+getSvgIcons()
+    .then((svgIcons) => console.log(svgIcons))
     .catch((error) => console.log(error));
 ```
 
