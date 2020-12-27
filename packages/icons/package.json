@@ -1,7 +1,10 @@
 {
     "name": "@x3r5e/icons",
-    "version": "0.8.1",
+    "version": "0.8.2",
     "description": "Icons",
+    "files": [
+        "dist/"
+    ],
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
