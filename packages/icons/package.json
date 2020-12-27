@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/icons",
-    "version": "0.7.5",
+    "version": "0.8.0",
     "description": "Icons",
     "scripts": {
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
