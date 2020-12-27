@@ -1,8 +1,9 @@
 {
     "name": "@x3r5e/icons",
-    "version": "0.7.5",
+    "version": "0.8.0",
     "description": "Icons",
     "scripts": {
+        "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "chmod u+x ./src/scripts/build.sh && ./src/scripts/build.sh",
         "test": "jest"
