@@ -22,4 +22,4 @@ numIcons=$( ls ./assets | wc -l | xargs)
 
 cp -r ./assets ./dist
 
-printf "${GREEN}Copied ${BOLD}$numIcons ${GREEN}icons to the ${BOLD}'dist' ${GREEN}directory\n${END}"
+printf "${GREEN}Copied ${BOLD}$numIcons ${GREEN}icon(s) to the ${BOLD}'dist' ${GREEN}directory\n${END}"
