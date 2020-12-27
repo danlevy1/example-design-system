@@ -11,15 +11,9 @@ printf "${CYAN_BRIGHT}Formatting icons...\n${END}"
 
 node --unhandled-rejections=strict -e 'const formatSvgIcons = require("./src/formatSvgIcons/formatSvgIcons.js"); formatSvgIcons();'
 
-printf "\n${CYAN_BRIGHT}Copying icons to the ${BOLD}'dist' ${CYAN_BRIGHT}directory...\n${END}"
+printf "${GREEN}SVG file(s) were successfully formatted\n${END}"
 
-if [ -d "./dist" ]
-then
-    rm -r ./dist
-fi
+rollup -c
 
-numIcons=$( ls ./assets | wc -l | xargs)
-
-cp -r ./assets ./dist
-
-printf "${GREEN}Copied ${BOLD}$numIcons ${GREEN}icon(s) to the ${BOLD}'dist' ${GREEN}directory\n${END}"
+chmod u+x ./src/scripts/buildTypes.sh
+./src/scripts/buildTypes.sh

@@ -22,7 +22,6 @@ class SvgIconFormatter {
     }
     /**
      * Gets the absolute file path for each SVG file
-     * @param {String=} this.absolutePathToSvgDirectory - The absolute path the the directory containing the SVG files. Defaults to the "assets" directory in the "icons" package.
      * @returns {Promise<Array[string]|Error>} An array of absolute file paths, or an error
      */
     getSvgAbsoluteFilePaths = async () => {
@@ -204,10 +203,6 @@ const formatSvgIcons = async (absolutePathToSvgDirectory) => {
             svgIconFormatter.formatSvg(svgObject);
             await svgIconFormatter.writeFormattedSvgToFile(svgObject, filePath);
         })
-    );
-
-    console.log(
-        chalk`{green {bold ${absoluteFilePaths.length}} SVG file(s) were successfully formatted}`
     );
 };
 
