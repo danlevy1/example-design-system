@@ -9,7 +9,7 @@ END='\e[0m'
 
 printf "${CYAN_BRIGHT}Formatting icons...\n${END}"
 
-node --unhandled-rejections=strict ./src/scripts/formatSvgIcons.js
+node --unhandled-rejections=strict -e 'const formatSvgIcons = require("./src/formatSvgIcons/formatSvgIcons.js"); formatSvgIcons();'
 
 printf "\n${CYAN_BRIGHT}Copying icons to the ${BOLD}'dist' ${CYAN_BRIGHT}directory...\n${END}"
 

@@ -7,14 +7,19 @@
 const { resolve } = require("path");
 const { readFile, writeFile, readdir } = require("fs/promises");
 const { parse, stringify } = require("svgson");
-const { exit } = require("process");
 const chalk = require("chalk");
 
-class ValidationError extends Error {
+class InvalidAttributeError extends Error {
     constructor(elementName, attributeKey) {
         super();
         this.elementName = elementName;
         this.attributeKey = attributeKey;
+    }
+}
+
+class MissingRequiredAttributeError extends InvalidAttributeError {
+    constructor(elementName, attributeKey) {
+        super(elementName, attributeKey);
     }
 }
 
@@ -26,11 +31,12 @@ class EmptySvgError extends Error {
 
 /**
  * Gets the absolute file path for each SVG file
+ * @param {String=} absolutePathToSvgDirectory - The absolute path the the directory containing the SVG files. Defaults to the "assets" directory in the "icons" package.
  * @returns {Promise<Array[string]|Error>} An array of absolute file paths, or an error
  */
-const getSvgAbsoluteFilePaths = async () => {
-    const absolutePathToSvgDirectory = resolve(__dirname, "../../assets");
-
+const getSvgAbsoluteFilePaths = async (
+    absolutePathToSvgDirectory = resolve(__dirname, "../../assets")
+) => {
     const svgFileNames = await readdir(absolutePathToSvgDirectory);
     const absoluteFilePaths = svgFileNames.map(
         (fileName) => `${absolutePathToSvgDirectory}/${fileName}`
@@ -46,37 +52,58 @@ const getSvgAbsoluteFilePaths = async () => {
  */
 const getSvgAsObject = async (absoluteFilePath) => {
     const svgContent = await readFile(absoluteFilePath, { encoding: "utf-8" });
-    const svgAsObject = await parse(svgContent);
+    const svgObject = await parse(svgContent);
 
-    return svgAsObject;
+    return svgObject;
 };
 
 /**
- *
+ * Throws an error if the SVG element is missing a required attribute.
  * @param {object} svgElement - The SVG element to validate
- * @param {"valid"|"invalid"} validationCheck - The type of validation check to do. "valid" throws an error if an element is not in the `validationAttributes` array. "invalid" throws an error if an element is in the `validationAttributes` array.
- * @param {array[string]} validationAttributes - An array of attributes to check against. The check is based off of the `validationCheck` argument.
+ * @param {array[string]} requiredAttributes - An array of required attributes to check against
  * @returns {void|Error}
  */
-const checkForValidOrInvalidAttributes = (
-    svgElement,
-    validationCheck,
-    validationAttributes
-) => {
-    for (const attributeKey of Object.keys(svgElement.attributes)) {
-        let isAttributeValid;
-        if (validationCheck === "valid") {
-            isAttributeValid = validationAttributes.includes(attributeKey);
-        } else if (validationCheck === "invalid") {
-            isAttributeValid = !validationAttributes.includes(attributeKey);
-        } else {
-            throw new Error(
-                "Invalid validationCheck value. Accepted values are 'valid' or 'invalid'."
+const checkForRequiredAttributes = (svgElement, requiredAttributes) => {
+    for (const requiredAttribute of requiredAttributes) {
+        if (!Object.keys(svgElement.attributes).includes(requiredAttribute)) {
+            throw new MissingRequiredAttributeError(
+                svgElement.name,
+                requiredAttribute
             );
         }
+    }
+};
 
-        if (!isAttributeValid) {
-            throw new ValidationError(svgElement.name, attributeKey);
+/**
+ * Throws an error if the SVG element has an invalid attribute.
+ * @param {object} svgElement - The SVG element to validate
+ * @param {array[string]} invalidAttributes - An array of invalid attributes to check against
+ * @returns {void|Error}
+ */
+const checkForInvalidAttributesUsingInvalidAttributesArray = (
+    svgElement,
+    invalidAttributes
+) => {
+    for (const attributeKey of Object.keys(svgElement.attributes)) {
+        if (invalidAttributes.includes(attributeKey)) {
+            throw new InvalidAttributeError(svgElement.name, attributeKey);
+        }
+    }
+};
+
+/**
+ * Throws an error if the SVG element has an invalid attribute.
+ * @param {object} svgElement - The SVG element to validate
+ * @param {array[string]} validAttributes - An array of valid attributes to check against
+ * @returns {void|Error}
+ */
+const checkForInvalidAttributesUsingValidAttributesArray = (
+    svgElement,
+    validAttributes
+) => {
+    for (const attributeKey of Object.keys(svgElement.attributes)) {
+        if (!validAttributes.includes(attributeKey)) {
+            throw new InvalidAttributeError(svgElement.name, attributeKey);
         }
     }
 };
@@ -89,7 +116,9 @@ const checkForValidOrInvalidAttributes = (
 const formatSvgChildElement = (svgElement) => {
     delete svgElement.attributes.fill;
 
-    checkForValidOrInvalidAttributes(svgElement, "invalid", ["stroke"]);
+    checkForInvalidAttributesUsingInvalidAttributesArray(svgElement, [
+        "stroke",
+    ]);
 };
 
 /**
@@ -125,7 +154,11 @@ const formatSvgRootElement = (svgElement) => {
         throw new EmptySvgError();
     }
 
-    checkForValidOrInvalidAttributes(svgElement, "valid", ["viewBox", "xmlns"]);
+    checkForRequiredAttributes(svgElement, ["viewBox"]);
+    checkForInvalidAttributesUsingValidAttributesArray(svgElement, [
+        "viewBox",
+        "xmlns",
+    ]);
 };
 
 /**
@@ -151,10 +184,13 @@ const writeFormattedSvgToFile = async (svgObject, absoluteFilePath) => {
 
 /**
  * Formats all SVGs
+ * @param {String=} absolutePathToSvgDirectory - The absolute path the the directory containing the SVG files.
  * @returns {Promise<void>}
  */
-const formatSvgIcons = async () => {
-    const absoluteFilePaths = await getSvgAbsoluteFilePaths();
+const formatSvgIcons = async (absolutePathToSvgDirectory) => {
+    const absoluteFilePaths = await getSvgAbsoluteFilePaths(
+        absolutePathToSvgDirectory
+    );
 
     await Promise.all(
         absoluteFilePaths.map(async (filePath) => {
@@ -163,21 +199,32 @@ const formatSvgIcons = async () => {
                 formatSvg(svgObject);
                 await writeFormattedSvgToFile(svgObject, filePath);
             } catch (error) {
-                if (error instanceof ValidationError) {
-                    error.message = chalk`{red SVG element {bold "${error.elementName}"} has invalid attribute {bold "${error.attributeKey}"}. Error thrown in file {bold ${filePath}}. Please remove this attribute from the element.}`;
-                } else if (error instanceof EmptySvgError) {
-                    error.message = chalk`{red SVG at {bold ${filePath}} does not have any children, which means that it is empty. Empty SVGs are not allowed.}`;
+                if (error instanceof InvalidAttributeError) {
+                    throw new Error(
+                        chalk`{red SVG element {bold "${error.elementName}"} has invalid attribute {bold "${error.attributeKey}"}. Error thrown in file {bold ${filePath}}. Please remove this attribute from the element.}`
+                    );
                 }
 
-                console.error(error);
-                exit(1);
+                if (error instanceof MissingRequiredAttributeError) {
+                    throw new Error(
+                        chalk`{red SVG element {bold "${error.elementName}"} is missing attribute {bold "${error.attributeKey}"}. Error thrown in file {bold ${filePath}}. Please add this attribute to the element.}`
+                    );
+                }
+
+                if (error instanceof EmptySvgError) {
+                    throw new Error(
+                        chalk`{red SVG at {bold ${filePath}} does not have any children, which means that it is empty. Empty SVGs are not allowed.}`
+                    );
+                }
+
+                throw error;
             }
         })
     );
 
     console.log(
-        chalk`{green {bold ${absoluteFilePaths.length}} SVG files were successfully formatted}`
+        chalk`{green {bold ${absoluteFilePaths.length}} SVG file(s) were successfully formatted}`
     );
 };
 
-formatSvgIcons();
+module.exports = formatSvgIcons;
