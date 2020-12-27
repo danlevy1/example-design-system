@@ -27,14 +27,20 @@ npm install --save @x3r5e/icons
 
 ```javascript
 // Imports the `getIconFilePaths` function
-const { getIconFilePaths } = require("@x3r5e/icons");
+const { getSvgIcons } = require("@x3r5e/icons");
 ```
 
-2. Execute the `getIconFilePaths` function to get an array of absolute paths to the icon files.
+2. Execute the `getSvgIcons` function. The function returns a `promise` that, if resolved, returns a map where the keys are the icon names (e.g. `CheckIcon`) and the values are the icon SVGs.
 
 ```javascript
-// Gets an array of absolute paths (one path per icon)
-const absoluteFilePaths = getIconFilePaths();
+// Gets the icon SVGs
+getSvgIcons()
+    .then((svgIcons) => console.log(svgIcons))
+    .catch((error) => console.log(error));
 ```
 
-3. Use your importer of choice (e.g. `require`, `import`, `fs.readFile`) to get the SVG file contents.
+3. Use the icon name (key) as the component name and render the icon SVG (value).
+
+### Important Note
+
+The `width` and `height` attributes are purposefully omitted from the SVGs. Make sure that you add those properties to the SVG when rendering it. This is useful when your icon component has a fixed number of sizes (e.g. `small = 18px`, `medium = 24px`, and `large = 30px`).
