@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/icons",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "Icons",
     "scripts": {
         "prepublishOnly": "npm run build",
