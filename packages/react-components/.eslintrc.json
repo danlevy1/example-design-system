@@ -7,6 +7,7 @@
         "eslint:recommended",
         "plugin:compat/recommended",
         "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -17,11 +18,6 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint",
-        "react",
-        "react-hooks"
-    ],
-    "rules": {
-    }
+    "plugins": ["@typescript-eslint", "react", "react-hooks"],
+    "rules": {}
 }
