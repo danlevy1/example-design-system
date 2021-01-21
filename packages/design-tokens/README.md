@@ -46,7 +46,7 @@ Out of the box, we currently support the following platforms, which are seen ins
 The `buildDesignTokens` function is an asynchronous function that accetps two (2) parameters and returns a `Promise` that either resolves with no information or rejects with an error:
 
 1. An array of platforms (see the above supported platforms) [required]
-2. An array of source paths [optional]. If no source path(s) are provided, the path defaults to the `properties` directory in the libraray's `dist` directory`. It's likely that you won't need to pass in an array of source paths because you'll just want the provided tokens (i.e. properties) to be used.
+2. An array of source paths [optional]. If no source path(s) are provided, the path defaults to the `tokens` directory in the libraray's `dist` directory`. It's likely that you won't need to pass in an array of source paths because you'll just want the provided tokens to be used.
 
 The platforms array expects an array of objects where each object is of the following (this is a TypeScript type definition):
 
@@ -112,14 +112,14 @@ You can add more platforms by adding more objects to the `platforms` array.
 
 If the provided API (explained above) does not offer enough flexibility, you can use any build process that you'd like. Under the hood of the provided API, [Style Dictionary](https://amzn.github.io/style-dictionary/) is used to:
 
-1. Deep merge all of the property files in the library's `dist/properties` directory.
+1. Deep merge all of the token files in the library's `dist/tokens` directory.
 2. Resolve any token aliases (see [alias](https://amzn.github.io/style-dictionary/#/properties?id=attribute-reference-alias)).
 3. Output the tokens into files using syntax based on the provided `platform`(s).
 
-Item #2 above is especially important if you want to use your own build process (even if you use Style Dictionary). The tokens and build process of the API that we provide go hand-in-hand. The token aliases are set up in a way such that the build process can resolve them to the alias' value. In order to ensure that your build process handles the aliases the right way, we recommand using the following code that leverages the API to create a deep merged property object with all aliases resolved to their respective values. Once the `buildDesignTokens` function finishes (remember, the function is asynchronous), you can then ingest the single output JSON file using your build process.
+Item #2 above is especially important if you want to use your own build process (even if you use Style Dictionary). The tokens and build process of the API that we provide go hand-in-hand. The token aliases are set up in a way such that the build process can resolve them to the alias' value. In order to ensure that your build process handles the aliases the right way, we recommand using the following code that leverages the API to create a deep merged token object with all aliases resolved to their respective values. Once the `buildDesignTokens` function finishes (remember, the function is asynchronous), you can then ingest the single output JSON file using your build process.
 
 ```javascript
-// Merge all properties (i.e. tokens) into a single file and resolve all property aliases
+// Merge all tokens into a single file and resolve all token aliases
 const { buildDesignTokens, PlatformOptions } = require("@x3r5e/design-tokens");
 
 const mergeTokensAndResolveAliases = async () => {

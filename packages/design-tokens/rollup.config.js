@@ -10,7 +10,7 @@ const plugins = [
         targets: "dist/*",
     }),
     copy({
-        targets: [{ src: "src/properties", dest: "dist" }],
+        targets: [{ src: "src/tokens", dest: "dist" }],
     }),
     commonjs(),
     cleanup({ comments: "jsdoc", maxEmptyLines: 1, sourcemap: false }),
