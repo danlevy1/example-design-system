@@ -194,7 +194,7 @@ describe("Build Design Tokens", () => {
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.json")]
+                [resolve(__dirname, "./properties/**/*.yaml")]
             );
 
             const outputFile = await readFile(
@@ -234,7 +234,7 @@ describe("Build Design Tokens", () => {
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.json")]
+                [resolve(__dirname, "./properties/**/*.yaml")]
             );
 
             const outputFile = await readFile(
@@ -269,7 +269,7 @@ describe("Build Design Tokens", () => {
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.json")]
+                [resolve(__dirname, "./properties/**/*.yaml")]
             );
 
             const outputFile = await readFile(
@@ -304,7 +304,7 @@ describe("Build Design Tokens", () => {
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.json")]
+                [resolve(__dirname, "./properties/**/*.yaml")]
             );
 
             const outputFile = await readFile(
@@ -354,7 +354,7 @@ describe("Build Design Tokens", () => {
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.json")]
+                [resolve(__dirname, "./properties/**/*.yaml")]
             );
 
             const outputFile = await readFile(
@@ -392,7 +392,7 @@ describe("Build Design Tokens", () => {
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.json")]
+                [resolve(__dirname, "./properties/**/*.yaml")]
             );
 
             const outputFile = await readFile(
