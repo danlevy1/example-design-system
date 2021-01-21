@@ -1,5 +1,8 @@
 const { resolve } = require("path");
-const { buildDesignTokens, PlatformOptions } = require("../../dist/index.js");
+const {
+    buildDesignTokens,
+    PlatformOptions,
+} = require("../buildDesignTokens/buildDesignTokens");
 
 // This array includes every platform currently offered via the API
 const platforms = [
@@ -48,4 +51,4 @@ const platforms = [
  */
 
 // Builds the design tokens for each platform and outputs one file for each platform
-buildDesignTokens(platforms);
+buildDesignTokens(platforms, [resolve(__dirname, "../properties/**/*.yaml")]);

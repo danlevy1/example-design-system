@@ -1,5 +1,6 @@
 const { resolve } = require("path");
 const styleDictionary = require("style-dictionary");
+const yaml = require("yaml");
 
 /**
  * Platforms that design tokens can be built for.
@@ -144,9 +145,15 @@ const createTransformGroups = (styleDictionary) => {
 const buildDesignTokens = async (
     platforms,
     // The default source path is based on the production version of this file in the dist folder
-    sourcePaths = [resolve(__dirname, "./properties/**/*.json")]
+    sourcePaths = [resolve(__dirname, "./properties/**/*.yaml")]
 ) => {
     const styleDictionaryConfig = {
+        parsers: [
+            {
+                pattern: /\.yaml$/,
+                parse: ({ contents }) => yaml.parse(contents),
+            },
+        ],
         source: sourcePaths,
         platforms: {},
     };

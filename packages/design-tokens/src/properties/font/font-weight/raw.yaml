@@ -1,0 +1,13 @@
+raw:
+    font:
+        weight:
+            "400":
+                value: "bolder"
+            "300":
+                value: "bold"
+            "200":
+                value: "normal"
+            "100":
+                value: "lighter"
+            base:
+                value: "{raw.font.weight.200.value}"
