@@ -51,7 +51,7 @@ describe("Build Design Tokens", () => {
     });
 
     afterEach(async () => {
-        await rimrafPromise(resolve(__dirname, "./tokens"));
+        await rimrafPromise(resolve(__dirname, "./output-tokens"));
     });
 
     describe("Platform Validation", () => {
@@ -69,7 +69,7 @@ describe("Build Design Tokens", () => {
             expect.assertions(1);
 
             const platform = {
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.css",
             };
 
@@ -84,7 +84,7 @@ describe("Build Design Tokens", () => {
             expect.assertions(1);
 
             const platform = {
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.css",
             };
 
@@ -99,7 +99,7 @@ describe("Build Design Tokens", () => {
             expect.assertions(1);
 
             const platform = {
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.css",
             };
 
@@ -115,7 +115,7 @@ describe("Build Design Tokens", () => {
 
             const platform = {
                 name: "ts",
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.css",
             };
 
@@ -146,7 +146,7 @@ describe("Build Design Tokens", () => {
 
             const platform = {
                 name: PlatformOptions.CSS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
             };
 
             try {
@@ -161,7 +161,7 @@ describe("Build Design Tokens", () => {
 
             const platform = {
                 name: PlatformOptions.CSS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "/tokens.css",
             };
 
@@ -175,7 +175,7 @@ describe("Build Design Tokens", () => {
         it("Does not throw an error when the platform is valid", async () => {
             const platform = {
                 name: PlatformOptions.CSS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.css",
             };
 
@@ -188,17 +188,17 @@ describe("Build Design Tokens", () => {
         it("Outputs a CSS file with the design tokens", async () => {
             const platform = {
                 name: PlatformOptions.CSS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.css",
             };
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.yaml")]
+                [resolve(__dirname, "./tokens/**/*.yaml")]
             );
 
             const outputFile = await readFile(
-                resolve(__dirname, "./tokens/tokens.css"),
+                resolve(__dirname, "./output-tokens/tokens.css"),
                 "utf8"
             );
 
@@ -228,17 +228,17 @@ describe("Build Design Tokens", () => {
         it("Outputs an SCSS file with the design tokens", async () => {
             const platform = {
                 name: PlatformOptions.SCSS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.scss",
             };
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.yaml")]
+                [resolve(__dirname, "./tokens/**/*.yaml")]
             );
 
             const outputFile = await readFile(
-                resolve(__dirname, "./tokens/tokens.scss"),
+                resolve(__dirname, "./output-tokens/tokens.scss"),
                 "utf8"
             );
 
@@ -263,17 +263,17 @@ describe("Build Design Tokens", () => {
         it("Outputs a LESS file with the design tokens", async () => {
             const platform = {
                 name: PlatformOptions.LESS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.less",
             };
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.yaml")]
+                [resolve(__dirname, "./tokens/**/*.yaml")]
             );
 
             const outputFile = await readFile(
-                resolve(__dirname, "./tokens/tokens.less"),
+                resolve(__dirname, "./output-tokens/tokens.less"),
                 "utf8"
             );
 
@@ -298,17 +298,17 @@ describe("Build Design Tokens", () => {
         it("Outputs a CJS file with the design tokens", async () => {
             const platform = {
                 name: PlatformOptions.CJS,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.cjs",
             };
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.yaml")]
+                [resolve(__dirname, "./tokens/**/*.yaml")]
             );
 
             const outputFile = await readFile(
-                resolve(__dirname, "./tokens/tokens.cjs"),
+                resolve(__dirname, "./output-tokens/tokens.cjs"),
                 "utf8"
             );
 
@@ -348,17 +348,17 @@ describe("Build Design Tokens", () => {
         it("Outputs an ESM file with the design tokens", async () => {
             const platform = {
                 name: PlatformOptions.ESM,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.mjs",
             };
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.yaml")]
+                [resolve(__dirname, "./tokens/**/*.yaml")]
             );
 
             const outputFile = await readFile(
-                resolve(__dirname, "./tokens/tokens.mjs"),
+                resolve(__dirname, "./output-tokens/tokens.mjs"),
                 "utf8"
             );
 
@@ -386,17 +386,17 @@ describe("Build Design Tokens", () => {
         it("Outputs a JSON file with the design tokens", async () => {
             const platform = {
                 name: PlatformOptions.JSON,
-                destinationPath: `${resolve(__dirname, "./tokens")}/`,
+                destinationPath: `${resolve(__dirname, "./output-tokens")}/`,
                 destinationFilename: "tokens.json",
             };
 
             await buildDesignTokens(
                 [platform],
-                [resolve(__dirname, "./properties/**/*.yaml")]
+                [resolve(__dirname, "./tokens/**/*.yaml")]
             );
 
             const outputFile = await readFile(
-                resolve(__dirname, "./tokens/tokens.json"),
+                resolve(__dirname, "./output-tokens/tokens.json"),
                 "utf8"
             );
 

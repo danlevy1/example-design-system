@@ -51,4 +51,4 @@ const platforms = [
  */
 
 // Builds the design tokens for each platform and outputs one file for each platform
-buildDesignTokens(platforms, [resolve(__dirname, "../properties/**/*.yaml")]);
+buildDesignTokens(platforms, [resolve(__dirname, "../tokens/**/*.yaml")]);

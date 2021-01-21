@@ -140,12 +140,12 @@ const createTransformGroups = (styleDictionary) => {
 /**
  * Builds the design tokens for the specified platforms.
  * @param {Platform[]} platforms - The platforms that the design tokens will be built for.
- * @param {string[]=} sourcePaths - An array of property file paths. Absolute paths and path globs are accepted. See https://github.com/isaacs/node-glob for more information about globs.
+ * @param {string[]=} sourcePaths - An array of token file paths. Absolute paths and path globs are accepted. See https://github.com/isaacs/node-glob for more information about globs.
  */
 const buildDesignTokens = async (
     platforms,
     // The default source path is based on the production version of this file in the dist folder
-    sourcePaths = [resolve(__dirname, "./properties/**/*.yaml")]
+    sourcePaths = [resolve(__dirname, "./tokens/**/*.yaml")]
 ) => {
     const styleDictionaryConfig = {
         parsers: [
