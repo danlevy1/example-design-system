@@ -7,16 +7,23 @@
                 "corejs": "3.8"
             }
         ],
+        "@babel/preset-react",
         [
             "@babel/preset-typescript",
             {
                 "allowDeclareFields": true,
                 "onlyRemoveTypeImports": true
             }
-        ],
-        "@babel/preset-react"
+        ]
     ],
     "plugins": [
+        [
+            "module-resolver",
+            {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"],
+                "root": ["./src"]
+            }
+        ],
         [
             "@babel/plugin-transform-runtime",
             { "corejs": 3, "version": "^7.12.5" }
