@@ -7,7 +7,8 @@
     "scripts": {
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "",
-        "test": ""
+        "test": "",
+        "lint": "eslint --fix"
     },
     "repository": {
         "type": "git",
@@ -22,8 +23,8 @@
     "license": "MIT",
     "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
     "peerDependencies": {
-        "react": ">= 16.8.0 <= 17.0.1",
-        "react-dom": ">= 16.8.0 <= 17.0.1"
+        "react": "^16.8.0 || ^17.0.1",
+        "react-dom": "^16.8.0 || ^17.0.1"
     },
     "devDependencies": {
         "@babel/core": "^7.12.10",
@@ -37,6 +38,7 @@
         "@types/react-dom": "^17.0.0",
         "@typescript-eslint/eslint-plugin": "^4.11.0",
         "@typescript-eslint/parser": "^4.11.0",
+        "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "eslint": "^7.12.0",
         "eslint-plugin-compat": "^3.8.0",
         "eslint-plugin-react": "^7.21.5",
