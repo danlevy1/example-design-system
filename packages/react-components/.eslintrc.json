@@ -5,11 +5,16 @@
         "jest": true
     },
     "extends": [
+        "prettier/react",
         "eslint:recommended",
         "plugin:compat/recommended",
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -19,6 +24,11 @@
         "ecmaVersion": 2021,
         "sourceType": "module"
     },
-    "plugins": ["@typescript-eslint", "react", "react-hooks"],
+    "plugins": [
+        "@typescript-eslint",
+        "react",
+        "react-hooks",
+        "eslint-plugin-jsx-a11y"
+    ],
     "rules": {}
 }
