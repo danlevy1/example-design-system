@@ -12,7 +12,9 @@
             "@babel/preset-typescript",
             {
                 "allowDeclareFields": true,
-                "onlyRemoveTypeImports": true
+                "onlyRemoveTypeImports": true,
+                "isTSX": true,
+                "allExtensions": true
             }
         ]
     ],
@@ -20,7 +22,6 @@
         [
             "module-resolver",
             {
-                "extensions": [".js", ".jsx", ".ts", ".tsx"],
                 "root": ["./src"]
             }
         ],
