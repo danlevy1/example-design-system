@@ -13,11 +13,11 @@ const plugins = [
         targets: "dist/*",
     }),
     json(),
-    nodeResolve(),
     externals({
         packagePath: "./package.json",
         include: ["@babel/runtime-corejs3"],
     }),
+    nodeResolve(),
     commonjs(),
     typescript({ useTsconfigDeclarationDir: true }),
     babel({ exclude: "node_modules/**", babelHelpers: "runtime" }),
