@@ -1,27 +1,37 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
     "extends": [
+        "prettier/react",
         "eslint:recommended",
         "plugin:compat/recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:prettier/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 12,
+        "ecmaVersion": 2021,
         "sourceType": "module"
     },
     "plugins": [
         "@typescript-eslint",
         "react",
-        "react-hooks"
+        "react-hooks",
+        "eslint-plugin-jsx-a11y"
     ],
     "rules": {
-    }
+        "@typescript-eslint/no-explicit-any": ["off"]
+    },
+    "ignorePatterns": ["dist/", "node_modules"]
 }

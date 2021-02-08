@@ -1,0 +1,38 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "corejs": "3.8"
+            }
+        ],
+        "@babel/preset-react",
+        [
+            "@babel/preset-typescript",
+            {
+                "allowDeclareFields": true,
+                "onlyRemoveTypeImports": true,
+                "isTSX": true,
+                "allExtensions": true
+            }
+        ]
+    ],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": ["./src"]
+            }
+        ],
+        [
+            "@babel/plugin-transform-runtime",
+            { "corejs": 3, "version": "^7.12.5" }
+        ],
+        "@babel/plugin-proposal-class-properties",
+        [
+            "babel-plugin-transform-react-remove-prop-types",
+            { "mode": "unsafe-wrap", "ignoreFilenames": ["node_modules"] }
+        ]
+    ]
+}

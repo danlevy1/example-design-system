@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "noImplicitAny": true,
+        "declaration": true,
+        "declarationDir": "dist/types",
+        "emitDeclarationOnly": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "isolatedModules": true
+    },
+    "files": ["src/index.ts"]
+}
