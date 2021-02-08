@@ -3,7 +3,6 @@ import del from "rollup-plugin-delete";
 import cleanup from "rollup-plugin-cleanup";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import babel from "@rollup/plugin-babel";
-import typescript from "rollup-plugin-typescript2";
 import json from "@rollup/plugin-json";
 import pkg from "./package.json";
 
@@ -25,26 +24,20 @@ const plugins = [
     cleanup({ comments: "jsdoc", maxEmptyLines: 1, sourcemap: false }),
 ];
 
-export default [
-    {
-        input: "src/index.ts",
-        output: [
-            {
-                file: pkg.main,
-                format: "cjs",
-                exports: "named",
-            },
-            {
-                file: pkg.module,
-                format: "esm",
-                exports: "named",
-            },
-        ],
-        plugins,
-        external,
-    },
-    {
-        input: "src/index.ts",
-        plugins: [typescript({ useTsconfigDeclarationDir: true })],
-    },
-];
+export default {
+    input: "src/index.ts",
+    output: [
+        {
+            file: pkg.main,
+            format: "cjs",
+            exports: "named",
+        },
+        {
+            file: pkg.module,
+            format: "esm",
+            exports: "named",
+        },
+    ],
+    plugins,
+    external,
+};
