@@ -23,7 +23,7 @@
     "license": "MIT",
     "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
     "devDependencies": {
-        "@x3r5e/design-tokens": "^0.13.0",
+        "@x3r5e/design-tokens": "0.13.0",
         "eslint": "^7.12.0",
         "esm": "^3.2.25"
     },

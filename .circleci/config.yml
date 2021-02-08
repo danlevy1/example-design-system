@@ -89,6 +89,9 @@ jobs:
             - run:
                   name: Tests
                   command: npm test
+            - run:
+                  name: Test Publish
+                  command: npm publish --dry-run
             - save_cache:
                   paths:
                       - node_modules
@@ -108,6 +111,9 @@ jobs:
             - run:
                   name: Tests
                   command: npm test
+            - run:
+                  name: Test Publish
+                  command: npm publish --dry-run
             - save_cache:
                   paths:
                       - node_modules
@@ -127,6 +133,9 @@ jobs:
             - run:
                   name: Tests
                   command: npm test
+            - run:
+                  name: Test Publish
+                  command: npm publish --dry-run
             - save_cache:
                   paths:
                       - node_modules
@@ -146,6 +155,9 @@ jobs:
             - run:
                   name: Tests
                   command: npm test
+            - run:
+                  name: Test Publish
+                  command: npm publish --dry-run
             - save_cache:
                   paths:
                       - node_modules
