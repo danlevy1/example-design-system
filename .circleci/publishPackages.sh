@@ -91,7 +91,7 @@ then
         cd ./packages/component-styles
         echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
         npm ci
-        npm install --save-dev @x3r5e/design-tokens@latest
+        npm install --save-dev --save-exact @x3r5e/design-tokens@latest
         npm publish
         cd ../..
         printf "${GREEN}======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
@@ -103,7 +103,7 @@ then
         cd ./packages/react-components
         echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
         npm ci
-        npm install --save @x3r5e/icons@latest @x3r5e/component-styles@latest
+        npm install --save-exact @x3r5e/icons@latest @x3r5e/component-styles@latest
         npm publish
         cd ../..
         printf "${GREEN}======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
