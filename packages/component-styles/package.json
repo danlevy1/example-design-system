@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "",
     "main": "dist/index.js",
     "type": "module",
@@ -25,7 +25,8 @@
     "devDependencies": {
         "@x3r5e/design-tokens": "^0.13.0",
         "eslint": "^7.12.0",
-        "esm": "^3.2.25"
+        "esm": "^3.2.25",
+        "style-dictionary": "^3.0.0-rc.2"
     },
     "dependencies": {}
 }

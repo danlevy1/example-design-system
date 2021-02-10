@@ -21,6 +21,12 @@ The above command assumes that you will be using the design tokens package as a 
 npm install --save @x3r5e/design-tokens
 ```
 
+Style Dictionary is a peer dependency, which means that you'll need to install `style-dictionary@3.0.0-rc.2` as well:
+
+```
+npm install --save-dev style-dictionary@3.0.0-rc.2
+```
+
 ## Usage
 
 The design tokens library offers a simple API for those who are either looking to test the package out or don't have a complex use case. For advanced use-cases, your only technical constraint is that the tokens are in JSON fromat.
