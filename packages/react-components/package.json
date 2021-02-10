@@ -8,13 +8,14 @@
     "files": [
         "dist"
     ],
-    "type": "module",
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "rollup -c && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "test": "",
-        "lint": "eslint --fix"
+        "lint": "eslint --fix",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook"
     },
     "repository": {
         "type": "git",
@@ -43,6 +44,10 @@
         "@rollup/plugin-babel": "^5.2.2",
         "@rollup/plugin-commonjs": "^17.0.0",
         "@rollup/plugin-node-resolve": "^11.1.0",
+        "@storybook/addon-actions": "^6.1.17",
+        "@storybook/addon-essentials": "^6.1.17",
+        "@storybook/addon-links": "^6.1.17",
+        "@storybook/react": "^6.1.17",
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/react": "^11.2.3",
         "@testing-library/react-hooks": "^5.0.3",
@@ -52,6 +57,7 @@
         "@types/react-dom": "^17.0.0",
         "@typescript-eslint/eslint-plugin": "^4.11.0",
         "@typescript-eslint/parser": "^4.11.0",
+        "babel-loader": "^8.2.2",
         "babel-plugin-module-resolver": "^4.1.0",
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "classnames": "^2.2.6",
