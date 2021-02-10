@@ -23,7 +23,7 @@ const plugins = [
 ];
 
 export default {
-    input: "src/index.ts",
+    input: "src/components/index.ts",
     output: [
         {
             file: pkg.main,

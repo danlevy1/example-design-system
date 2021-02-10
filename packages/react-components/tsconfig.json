@@ -11,5 +11,5 @@
         "jsx": "react",
         "isolatedModules": true
     },
-    "files": ["src/index.ts"]
+    "files": ["src/components/index.ts"]
 }
