@@ -2,12 +2,18 @@
     "name": "@x3r5e/component-styles",
     "version": "0.7.0",
     "description": "",
-    "main": "dist/index.js",
-    "type": "module",
+    "exports": {
+        "./": "./dist/components/",
+        "./design-tokens/": "./dist/design-tokens/"
+    },
+    "files": [
+        "dist/"
+    ],
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
-        "build": "",
+        "build": "rm -rf ./dist && mkdir ./dist && cp -r ./src/design-tokens ./dist/design-tokens && sass --no-source-map src/components:dist/components",
+        "updateDesignTokens": "npm install --save-exact @x3r5e/design-tokens && node ./src/scripts/buildDesignTokens",
         "test": ""
     },
     "repository": {
@@ -26,6 +32,7 @@
         "@x3r5e/design-tokens": "^0.14.0",
         "eslint": "^7.12.0",
         "esm": "^3.2.25",
+        "sass": "^1.32.7",
         "style-dictionary": "^3.0.0-rc.2"
     },
     "dependencies": {}

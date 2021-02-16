@@ -1,0 +1,10 @@
+@import "../../design-tokens/variables.css";
+
+.button {
+    height: var(--raw-spacing-700);
+    border: none;
+    outline: none;
+    background-color: var(--raw-color-blur-900);
+    font-size: var(--raw-font-size-400);
+    color: var(--raw-color-white);
+}
