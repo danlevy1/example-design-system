@@ -52,6 +52,7 @@
         "@testing-library/react": "^11.2.3",
         "@testing-library/react-hooks": "^5.0.3",
         "@testing-library/user-event": "^12.6.2",
+        "@types/classnames": "^2.2.11",
         "@types/jest": "^26.0.20",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
@@ -79,15 +80,19 @@
         "rollup-plugin-cleanup": "^3.2.1",
         "rollup-plugin-delete": "^2.0.0",
         "rollup-plugin-node-externals": "^2.2.0",
+        "rollup-plugin-postcss": "^4.0.0",
+        "storybook-css-modules-preset": "^1.0.6",
         "ts-jest": "^26.4.4",
-        "typescript": "^4.1.3"
+        "typescript": "^4.1.3",
+        "typescript-plugin-css-modules": "^3.2.0"
     },
     "dependencies": {
         "@babel/runtime-corejs3": "^7.12.5",
         "@popperjs/core": "^2.6.0",
-        "@x3r5e/component-styles": "^0.7.0",
+        "@x3r5e/component-styles": "0.8.0",
         "@x3r5e/icons": "^0.9.0",
         "core-js": "^3.8.1",
+        "postcss": "^8.2.6",
         "react-popper": "^2.2.4",
         "regenerator-runtime": "^0.13.7"
     }
