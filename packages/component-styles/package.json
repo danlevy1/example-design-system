@@ -2,11 +2,17 @@
     "name": "@x3r5e/component-styles",
     "version": "0.7.0",
     "description": "",
-    "main": "dist/index.js",
+    "exports": {
+        "./": "./dist/components/",
+        "./design-tokens/": "./dist/design-tokens/"
+    },
+    "files": [
+        "dist/"
+    ],
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
-        "build": "cp -r ./src/design-tokens ./dist/design-tokens && sass --no-source-map ./src/components/Button/Button.scss ./dist/components/Button/Button.css",
+        "build": "rm -rf ./dist && mkdir ./dist && cp -r ./src/design-tokens ./dist/design-tokens && sass --no-source-map src/components:dist/components",
         "updateDesignTokens": "npm install --save-exact @x3r5e/design-tokens && node ./src/scripts/buildDesignTokens",
         "test": ""
     },
