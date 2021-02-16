@@ -1,10 +1,11 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.8.0",
+    "version": "0.9.1",
     "description": "",
     "exports": {
-        "./": "./dist/components/",
-        "./design-tokens/": "./dist/design-tokens/"
+        ".": {
+            "default": "./dist/components"
+        }
     },
     "files": [
         "dist/"
@@ -34,6 +35,5 @@
         "esm": "^3.2.25",
         "sass": "^1.32.7",
         "style-dictionary": "^3.0.0-rc.2"
-    },
-    "dependencies": {}
+    }
 }
