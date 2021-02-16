@@ -1,10 +1,11 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "description": "",
     "exports": {
-        "./": "./dist/components/",
-        "./design-tokens/": "./dist/design-tokens/"
+        ".": {
+            "default": "./dist/components"
+        }
     },
     "files": [
         "dist/"
