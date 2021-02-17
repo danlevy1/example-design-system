@@ -1,57 +1,43 @@
 # See https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-user-key for getting GitHub write access
 version: 2.1
 
-parameters:
-    run-ci-triggers:
-        type: boolean
-        default: true
-    run-design-tokens:
-        type: boolean
-        default: false
-    run-component-styles:
-        type: boolean
-        default: false
-    run-icons:
-        type: boolean
-        default: false
-    run-react-components:
-        type: boolean
-        default: false
-
 workflows:
     version: 2
-    ci:
-        when: << pipeline.parameters.run-ci-triggers >>
+    publish-packages:
         jobs:
-            - trigger-workflows-job:
-                  filters:
-                      branches:
-                          ignore: main
             - publish-packages-job:
                   filters:
                       branches:
                           only: main
     design-tokens:
-        when: << pipeline.parameters.run-design-tokens >>
         jobs:
-            - design-tokens-job
+            - design-tokens-job:
+                  filters:
+                      branches:
+                          ignore: main
     component-styles:
-        when: << pipeline.parameters.run-component-styles >>
         jobs:
-            - component-styles-job
+            - component-styles-job:
+                  filters:
+                      branches:
+                          ignore: main
     icons:
-        when: << pipeline.parameters.run-icons >>
         jobs:
-            - icons-job
+            - icons-job:
+                  filters:
+                      branches:
+                          ignore: main
     react-components:
-        when: << pipeline.parameters.run-react-components >>
         jobs:
-            - react-components-job
+            - react-components-job:
+                  filters:
+                      branches:
+                          ignore: main
 
 jobs:
     publish-packages-job:
         docker:
-            - image: cimg/node:15.8.0
+            - image: cimg/node:14.15.5
         steps:
             - add_ssh_keys:
                   fingerprints:
@@ -59,24 +45,16 @@ jobs:
             - checkout
             - run:
                   name: Set up Git Config
-                  command: git config user.email "danlevy124@gmail.com" && git config user.name "danlevy1"
+                  command: git config user.email "danlevy124@gmail.com" && git config user.name "CI"
             - run:
                   name: Track remote branch
                   command: git branch --set-upstream-to origin/$CIRCLE_BRANCH
             - run:
                   name: Publish Packages
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
-    trigger-workflows-job:
-        docker:
-            - image: cimg/node:15.8.0
-        steps:
-            - checkout
-            - run:
-                  name: Trigger Workflows
-                  command: chmod u+x ./.circleci/triggerWorkflows.sh && ./.circleci/triggerWorkflows.sh $PERSONAL_TOKEN $CIRCLE_BRANCH
     design-tokens-job:
         docker:
-            - image: cimg/node:15.8.0
+            - image: cimg/node:14.15.5
         working_directory: ~/project/packages/design-tokens
         steps:
             - checkout:
@@ -88,14 +66,17 @@ jobs:
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
-                  command: npm test
+                  command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh design-tokens
+            - run:
+                  name: Build
+                  command: npm run build
             - save_cache:
                   paths:
                       - node_modules
                   key: design-tokens-v1-{{ checksum "package-lock.json" }}
     component-styles-job:
         docker:
-            - image: cimg/node:15.8.0
+            - image: cimg/node:14.15.5
         working_directory: ~/project/packages/component-styles
         steps:
             - checkout:
@@ -107,14 +88,17 @@ jobs:
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
-                  command: npm test
+                  command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh component-styles
+            - run:
+                  name: Build
+                  command: npm run build
             - save_cache:
                   paths:
                       - node_modules
                   key: component-styles-v1-{{ checksum "package-lock.json" }}
     icons-job:
         docker:
-            - image: cimg/node:15.8.0
+            - image: cimg/node:14.15.5
         working_directory: ~/project/packages/icons
         steps:
             - checkout:
@@ -126,14 +110,17 @@ jobs:
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
-                  command: npm test
+                  command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh icons
+            - run:
+                  name: Build
+                  command: npm run build
             - save_cache:
                   paths:
                       - node_modules
                   key: icons-v1-{{ checksum "package-lock.json" }}
     react-components-job:
         docker:
-            - image: cimg/node:15.8.0
+            - image: cimg/node:14.15.5
         working_directory: ~/project/packages/react-components
         steps:
             - checkout:
@@ -145,7 +132,10 @@ jobs:
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
                   name: Tests
-                  command: npm test
+                  command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh react-components
+            - run:
+                  name: Build
+                  command: npm run build
             - save_cache:
                   paths:
                       - node_modules

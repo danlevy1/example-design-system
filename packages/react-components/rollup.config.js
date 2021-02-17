@@ -40,4 +40,7 @@ export default {
     ],
     plugins,
     external,
+    onwarn: (warning) => {
+        throw new Error(warning.message);
+    },
 };
