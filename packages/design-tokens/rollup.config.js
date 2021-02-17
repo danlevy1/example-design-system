@@ -31,4 +31,7 @@ export default {
         format: "cjs",
     },
     plugins,
+    onwarn: (warning) => {
+        throw new Error(warning.message);
+    },
 };
