@@ -51,7 +51,7 @@ workflows:
 jobs:
     publish-packages-job:
         docker:
-            - image: circleci/node:14
+            - image: cimg/node:15.8.0
         steps:
             - add_ssh_keys:
                   fingerprints:
@@ -68,7 +68,7 @@ jobs:
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
     trigger-workflows-job:
         docker:
-            - image: circleci/node:14
+            - image: cimg/node:15.8.0
         steps:
             - checkout
             - run:
@@ -76,7 +76,7 @@ jobs:
                   command: chmod u+x ./.circleci/triggerWorkflows.sh && ./.circleci/triggerWorkflows.sh $PERSONAL_TOKEN $CIRCLE_BRANCH
     design-tokens-job:
         docker:
-            - image: circleci/node:14
+            - image: cimg/node:15.8.0
         working_directory: ~/project/packages/design-tokens
         steps:
             - checkout:
@@ -95,7 +95,7 @@ jobs:
                   key: design-tokens-v1-{{ checksum "package-lock.json" }}
     component-styles-job:
         docker:
-            - image: circleci/node:14
+            - image: cimg/node:15.8.0
         working_directory: ~/project/packages/component-styles
         steps:
             - checkout:
@@ -114,7 +114,7 @@ jobs:
                   key: component-styles-v1-{{ checksum "package-lock.json" }}
     icons-job:
         docker:
-            - image: circleci/node:14
+            - image: cimg/node:15.8.0
         working_directory: ~/project/packages/icons
         steps:
             - checkout:
@@ -133,7 +133,7 @@ jobs:
                   key: icons-v1-{{ checksum "package-lock.json" }}
     react-components-job:
         docker:
-            - image: circleci/node:14
+            - image: cimg/node:15.8.0
         working_directory: ~/project/packages/react-components
         steps:
             - checkout:
