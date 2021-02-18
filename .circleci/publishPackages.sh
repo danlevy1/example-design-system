@@ -87,7 +87,7 @@ then
 fi
 
 # Waits for new package versions to become available
-sleep 2m
+# sleep 2m
 
 if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
 then
@@ -98,7 +98,7 @@ then
     do  
         name2=$( jq -r .name <<< $packageNameWithVersions2 )
 
-        if [ "$name2" = "design-tokens" ]
+        if [[ "$name2" = "design-tokens" ]]
         then
             localVersion2=$( jq -r .localVersion <<< $packageNameWithVersions2)
             publishedVersion2=$( npm view @x3r5e/$name2 version )
@@ -128,7 +128,7 @@ then
 fi
 
 # Waits for new package versions to become available
-sleep 2m
+# sleep 2m
 
 if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
 then
@@ -139,7 +139,7 @@ then
     do  
         name3=$( jq -r .name <<< $packageNameWithVersions3 )
 
-        if [ "$name3" = "icons" || "$name3" = "component-styles" ]
+        if [[ "$name3" = "icons" || "$name3" = "component-styles" ]]
         then
             localVersion3=$( jq -r .localVersion <<< $packageNameWithVersions3)
             publishedVersion3=$( npm view @x3r5e/$name3 version )
