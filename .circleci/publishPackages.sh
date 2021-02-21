@@ -108,8 +108,6 @@ function publishReactComponentsPackage() {
     endSuccessfulPackagePublish "$packageName"
 }
 
-# ==== BEGIN SCRIPT ====
-
 # Publishes the design-tokens package
 isNewVersionOfDesignTokensBeingPublished=false;
 

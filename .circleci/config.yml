@@ -65,7 +65,7 @@ jobs:
                   name: Install npm Dependencies
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
-                  name: Tests
+                  name: Run Tests
                   command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh design-tokens
             - run:
                   name: Build
@@ -87,7 +87,10 @@ jobs:
                   name: Install npm Dependencies
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
-                  name: Tests
+                  name: Link Dependencies
+                  command: chmod u+x ../../.circleci/linkDependencies.sh && ../../.circleci/linkDependencies.sh component-styles
+            - run:
+                  name: Run Tests
                   command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh component-styles
             - run:
                   name: Build
@@ -109,7 +112,7 @@ jobs:
                   name: Install npm Dependencies
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
-                  name: Tests
+                  name: Run Tests
                   command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh icons
             - run:
                   name: Build
@@ -131,7 +134,10 @@ jobs:
                   name: Install npm Dependencies
                   command: "[ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
             - run:
-                  name: Tests
+                  name: Link Dependencies
+                  command: chmod u+x ../../.circleci/linkDependencies.sh && ../../.circleci/linkDependencies.sh react-components
+            - run:
+                  name: Run Tests
                   command: chmod u+x ../../.circleci/runTests.sh && ../../.circleci/runTests.sh react-components
             - run:
                   name: Build
