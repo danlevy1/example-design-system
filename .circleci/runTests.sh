@@ -18,10 +18,12 @@ diff=$( git diff origin/main -- ./packages/$packageName/src )
 if [[ $diff ]]
 then
     printf "\n\n${CYAN_BRIGHT}======== RUNNING TESTS FOR @x3r5e/$packageName ========\n${END}"
+
+    cd packages/"$packageName"
     npm test
+    cd ../..
+    
     printf "${GREEN}======== TESTS PASSED FOR @x3r5e/$packageName ========\n\n${END}"
 else
     printf "${GREEN}No changes in the src directory for ${BOLD}@x3r5e/$packageName${END}${GREEN}. Skipping tests.\n${END}"
 fi
-
-
