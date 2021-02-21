@@ -51,6 +51,10 @@ function beginPackagePublish() {
     printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/"$packageName" ========\n${END}"
 
     cd ./packages/"$packageName"
+
+    # Writes the npm token to the npmrc file
+    echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
+    
     npm ci
 }
 
@@ -105,9 +109,6 @@ function publishReactComponentsPackage() {
 }
 
 # ==== BEGIN SCRIPT ====
-
-# Writes the npm token to the npmrc file
-echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
 
 # Publishes the design-tokens package
 isDesignTokensLocalPackageVersionDifferentThanPublishedVersion=false;
