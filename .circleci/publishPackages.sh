@@ -174,7 +174,7 @@ then
     fi
 fi
 
-if [[ isNewVersionOfDesignTokensBeingPublished = false && isNewVersionOfIconsBeingPublished = false && isNewVersionOfComponentStylesBeingPublished = false && isNewVersionOfReactComponentsBeingPublished = false ]]
+if [[ $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
     printf "${GREEN}None of the packages have a version change. Nothing to publish.\n${END}"
 fi
