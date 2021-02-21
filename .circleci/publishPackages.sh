@@ -11,159 +11,164 @@ RED='\033[0;31m'
 BOLD='\033[1m'
 END='\e[0m'
 
-# If the commit has a package publish tag, this script does not need to run
-tagsAssociatedWithCommit=$( git tag --points-at HEAD )
-if [[ ! -z $( echo $tagsAssociatedWithCommit | grep "^@x3r5e\/.*@.*" ) ]]
-then
-    printf "${GREEN}This commit is associated with a package publish tag: $tagsAssociatedWithCommit. This script will be skipped.\n${END}"
-    exit 0
-fi
+function sleepBetweenPublishCommands() {
+    printf "\n\n${CYAN_BRIGHT}======== SLEEPING FOR THREE MINUTES ========\n${END}"
 
-# Returns an array of JSON objects, where each object is of the following shape:
-# { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
+    sleep 180
 
-packageNames=($( ls ./packages ))
-packageNamesWithVersions=()
+    printf "\n\n${CYAN_BRIGHT}======== THREE MINUTE SLEEP HAS ENDED ========\n${END}"
+}
 
-for packageName in "${packageNames[@]}"
-do
-    name=$packageName
-    localVersion=$( jq -r .version ./packages/$name/package.json )
-    publishedVersion=$( npm view @x3r5e/$name version)
+function getLocalPackageVersion() {
+    local packageName="$1"
 
-    packageNamesWithVersions+=($( jq -nc \
-                                --arg name "${name}" \
-                                --arg localVersion "${localVersion}" \
-                                --arg publishedVersion "${publishedVersion}" \
-                                '{name: $name, localVersion: $localVersion, publishedVersion: $publishedVersion}' ) )
-done
+    echo $( jq -r .version ./packages/"$packageName"/package.json )
+}
 
-# Accepts an array of package version JSON objects, where each object is of the following shape:
-# { name: package-name-without-scope, localVersion: version-from-package-json, publishedVersion: version-on-npm@latest }
-# Returns an array of package names that need to be published
-packageNamesToPublish=()
+function getPublishedPackageVersionLatest() {
+    local packageName="$1"
 
-for packageNameWithVersions in "${packageNamesWithVersions[@]}"
-do        
-    localVersion=$( jq -r .localVersion <<< $packageNameWithVersions)
-    publishedVersion=$( jq -r .publishedVersion <<< $packageNameWithVersions )
+    echo $( npm view @x3r5e/$packageName version)
+}
 
-    if [ $localVersion != $publishedVersion ]
+function isLocalPackageVersionDifferentThanPublishedVersion() {
+    local packageName="$1"
+
+    local localVersion=$( getLocalPackageVersion "$packageName" )
+    local publishedVersion=$( getPublishedPackageVersionLatest "$packageName" )
+
+    if [[ $localVersion != $publishedVersion ]]
     then
-        name=$( jq -r .name <<< $packageNameWithVersions )
-        packageNamesToPublish+=($name)
+        echo "true"
+    else
+        echo "false"
     fi
-done
+}
 
-# Publish the packages
+function beginPackagePublish() {
+    local packageName="$1"
 
-# If none of the packages have had their version changed, skip publishing
-if [[ -z "${packageNamesToPublish[@]}" ]]
-then
-    printf "${GREEN}None of the packages have had their version change. Skipping publish.\n${END}"
-    exit 0
-fi
+    printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/"$packageName" ========\n${END}"
 
-if [[ "${packageNamesToPublish[@]}" =~ "design-tokens" ]]
-then
-        printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/design-tokens ========\n${END}"
-        cd ./packages/design-tokens
-        echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
-        npm ci
-        npm publish
-        cd ../..
-        printf "${GREEN}======== @x3r5e/design-tokens PUBLISHED ========\n\n${END}"
-fi
-
-if [[ "${packageNamesToPublish[@]}" =~ "icons" ]]
-then
-        printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/icons ========\n${END}"
-        cd ./packages/icons
-        echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
-        npm ci
-        npm publish
-        cd ../..
-        printf "${GREEN}======== @x3r5e/icons PUBLISHED ========\n\n${END}"
-fi
-
-# Waits for new package versions to become available
-# sleep 2m
-
-if [[ "${packageNamesToPublish[@]}" =~ "component-styles" ]]
-then
-    # Does not publish @x3r5e/component-styles if the latest version @x3r5e/design-tokens is not yet available
-    isPackageVersionNotAvailable=false
-
-    for packageNameWithVersions2 in "${packageNamesWithVersions[@]}"
-    do  
-        name2=$( jq -r .name <<< $packageNameWithVersions2 )
-
-        if [[ "$name2" = "design-tokens" ]]
-        then
-            localVersion2=$( jq -r .localVersion <<< $packageNameWithVersions2)
-            publishedVersion2=$( npm view @x3r5e/$name2 version )
-
-            if [ $localVersion2 != $publishedVersion2 ]
-            then
-                isPackageVersionNotAvailable=true
-                printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/$name2${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch, create a new MR, and wait for the latest version of @x3r5e/$name2 to become available using the command ${BOLD}'npm view @x3r5e/$name2 version'${END}${RED}. Then, create merge the MR to publish.\n${END}"
-            fi
-        fi
-    done
-
-    if [ "$isPackageVersionNotAvailable" = true ]
-    then
-        exit 1
-    fi
-
-    # Publishes @x3r5e/component-styles
-    printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/component-styles ========\n${END}"
-    cd ./packages/component-styles
-    echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
+    cd ./packages/"$packageName"
     npm ci
+}
+
+function endSuccessfulPackagePublish() {
+    local packageName="$1"
+
+    cd ../..
+
+    printf "${GREEN}======== @x3r5e/"$packageName" PUBLISHED ========\n\n${END}"
+}
+
+function publishDesignTokensPackage() {
+    local packageName="design-tokens"
+
+    beginPackagePublish "$packageName"
+    
+    npm publish
+
+    endSuccessfulPackagePublish "$packageName"
+}
+
+function publishIconsPackage() {
+    local packageName="icons"
+
+    beginPackagePublish "$packageName"
+    
+    npm publish
+    
+    endSuccessfulPackagePublish "$packageName"
+}
+
+function publishComponentStylesPackage() {
+    local packageName="component-styles"
+
+    beginPackagePublish "$packageName"
+        
     npm install --save-exact @x3r5e/design-tokens@latest
     npm publish
-    cd ../..
-    printf "${GREEN}======== @x3r5e/component-styles PUBLISHED ========\n\n${END}"
-fi
+    
+    endSuccessfulPackagePublish "$packageName"
+}
 
-# Waits for new package versions to become available
-# sleep 2m
+function publishReactComponentsPackage() {
+    local packageName="react-components"
 
-if [[ "${packageNamesToPublish[@]}" =~ "react-components" ]]
-then
-    # Does not publish @x3r5e/react-components if the latest version of @x3r5e/icons or @x3r5e/component-styles is not yet available
-    isPackageVersionNotAvailable2=false
-
-    for packageNameWithVersions3 in "${packageNamesWithVersions[@]}"
-    do  
-        name3=$( jq -r .name <<< $packageNameWithVersions3 )
-
-        if [[ "$name3" = "icons" || "$name3" = "component-styles" ]]
-        then
-            localVersion3=$( jq -r .localVersion <<< $packageNameWithVersions3)
-            publishedVersion3=$( npm view @x3r5e/$name3 version )
-
-            if [ $localVersion3 != $publishedVersion3 ]
-            then
-                isPackageVersionNotAvailable3=true
-                printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/$name3${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch, create a new MR, and wait for the latest version of @x3r5e/$name3 to become available using the command ${BOLD}'npm view @x3r5e/$name3 version'${END}${RED}. Then, create merge the MR to publish.\n${END}"
-            fi
-        fi
-    done
-
-    if [ "$isPackageVersionNotAvailable2" = true ]
-    then
-        exit 1
-    fi
-
-    # Publishes @x3r5e/react-components
-    printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/react-components ========\n${END}"
-    cd ./packages/react-components
-    echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
-    npm ci
+    beginPackagePublish "$packageName"
+    
     npm install --save-exact @x3r5e/icons@latest @x3r5e/component-styles@latest
     npm publish
-    cd ../..
-    printf "${GREEN}======== @x3r5e/react-components PUBLISHED ========\n\n${END}"
+    
+    endSuccessfulPackagePublish "$packageName"
+}
+
+# ==== BEGIN SCRIPT ====
+
+# Writes the npm token to the npmrc file
+echo "//registry.npmjs.org/:_authToken=$npm_token" > .npmrc
+
+# Publishes the design-tokens package
+isDesignTokensLocalPackageVersionDifferentThanPublishedVersion=false;
+
+if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+then
+    isDesignTokensLocalPackageVersionDifferentThanPublishedVersion = true;
+    publishDesignTokensPackage
+fi
+
+# Publishes the icons package
+isIconsLocalPackageVersionDifferentThanPublishedVersion=false;
+
+if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true" ]]
+then
+    isIconsLocalPackageVersionDifferentThanPublishedVersion=true;
+    publishIconsPackage
+fi
+
+# Publishes the component-styles package if the latest version of the design-tokens package is available
+isComponentStylesLocalPackageVersionDifferentThanPublishedVersion=false;
+
+if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true" ]]
+then
+    isComponentStylesLocalPackageVersionDifferentThanPublishedVersion=true;
+
+    if [[ isDesignTokensLocalPackageVersionDifferentThanPublishedVersion = true ]]
+    then
+        sleepBetweenPublishCommands
+    fi
+
+    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+    then
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/design-tokens to become available using the command ${BOLD}'npm view @x3r5e/design-tokens version'${END}${RED}. When the latest version of @x3r5e/design-tokens becomes available, push an empty commit to the main branch to trigger this job again.\n${END}"
+        exit 1
+    else
+        publishComponentStylesPackage
+    fi
+fi
+
+# Publishes the react-components package if the latest version of the icons package and component-styles package is available
+isReactComponentsLocalPackageVersionDifferentThanPublishedVersion=false;
+
+if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "react-components" ) = "true" ]]
+then
+    isReactComponentsLocalPackageVersionDifferentThanPublishedVersion=true;
+
+    if [[ isIconsLocalPackageVersionDifferentThanPublishedVersion = true && isComponentStylesLocalPackageVersionDifferentThanPublishedVersion = true ]]
+    then
+        sleepBetweenPublishCommands
+    fi
+
+    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
+    then
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/icons to become available using the command ${BOLD}'npm view @x3r5e/icons version'${END}${RED}. When the latest version of @x3r5e/icons becomes available, push an empty commit to the main branch to trigger this job again.\n${END}"
+        exit 1
+    elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true"  ]]
+    then
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/component-styles${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/component-styles to become available using the command ${BOLD}'npm view @x3r5e/component-styles version'${END}${RED}. When the latest version of @x3r5e/component-styles becomes available, push an empty commit to the main branch to trigger this job again.\n${END}"
+        exit 1
+    else
+        publishReactComponentsPackage
+    fi
 fi
