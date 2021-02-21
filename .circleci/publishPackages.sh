@@ -115,7 +115,7 @@ isNewVersionOfDesignTokensBeingPublished=false;
 
 if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
 then
-    isNewVersionOfDesignTokensBeingPublished = true;
+    isNewVersionOfDesignTokensBeingPublished=true;
     publishDesignTokensPackage
 fi
 
