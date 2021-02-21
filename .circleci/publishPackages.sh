@@ -111,38 +111,38 @@ function publishReactComponentsPackage() {
 # ==== BEGIN SCRIPT ====
 
 # Publishes the design-tokens package
-isDesignTokensLocalPackageVersionDifferentThanPublishedVersion=false;
+isNewVersionOfDesignTokensBeingPublished=false;
 
 if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
 then
-    isDesignTokensLocalPackageVersionDifferentThanPublishedVersion = true;
+    isNewVersionOfDesignTokensBeingPublished = true;
     publishDesignTokensPackage
 fi
 
 # Publishes the icons package
-isIconsLocalPackageVersionDifferentThanPublishedVersion=false;
+isNewVersionOfIconsBeingPublished=false;
 
 if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true" ]]
 then
-    isIconsLocalPackageVersionDifferentThanPublishedVersion=true;
+    isNewVersionOfIconsBeingPublished=true;
     publishIconsPackage
 fi
 
 # Publishes the component-styles package if the latest version of the design-tokens package is available
-isComponentStylesLocalPackageVersionDifferentThanPublishedVersion=false;
+isNewVersionOfComponentStylesBeingPublished=false;
 
 if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true" ]]
 then
-    isComponentStylesLocalPackageVersionDifferentThanPublishedVersion=true;
+    isNewVersionOfComponentStylesBeingPublished=true;
 
-    if [[ isDesignTokensLocalPackageVersionDifferentThanPublishedVersion = true ]]
+    if [[ $isNewVersionOfDesignTokensBeingPublished = true ]]
     then
         sleepBetweenPublishCommands
     fi
 
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/design-tokens to become available using the command ${BOLD}'npm view @x3r5e/design-tokens version'${END}${RED}. When the latest version of @x3r5e/design-tokens becomes available, push an empty commit to the main branch to trigger this job again.\n${END}"
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/design-tokens to become available using the command ${BOLD}'npm view @x3r5e/design-tokens version'${END}${RED}. When the latest version of @x3r5e/design-tokens becomes available, create and merge another PR to trigger this job again.\n${END}"
         exit 1
     else
         publishComponentStylesPackage
@@ -150,26 +150,31 @@ then
 fi
 
 # Publishes the react-components package if the latest version of the icons package and component-styles package is available
-isReactComponentsLocalPackageVersionDifferentThanPublishedVersion=false;
+isNewVersionOfReactComponentsBeingPublished=false;
 
 if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "react-components" ) = "true" ]]
 then
-    isReactComponentsLocalPackageVersionDifferentThanPublishedVersion=true;
+    isNewVersionOfReactComponentsBeingPublished=true;
 
-    if [[ isIconsLocalPackageVersionDifferentThanPublishedVersion = true && isComponentStylesLocalPackageVersionDifferentThanPublishedVersion = true ]]
+    if [[ $isNewVersionOfIconsBeingPublished = true || $isNewVersionOfComponentStylesBeingPublished = true ]]
     then
         sleepBetweenPublishCommands
     fi
 
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/icons to become available using the command ${BOLD}'npm view @x3r5e/icons version'${END}${RED}. When the latest version of @x3r5e/icons becomes available, push an empty commit to the main branch to trigger this job again.\n${END}"
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/icons to become available using the command ${BOLD}'npm view @x3r5e/icons version'${END}${RED}. When the latest version of @x3r5e/icons becomes available, create and merge another PR to trigger this job again.\n${END}"
         exit 1
     elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/component-styles${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/component-styles to become available using the command ${BOLD}'npm view @x3r5e/component-styles version'${END}${RED}. When the latest version of @x3r5e/component-styles becomes available, push an empty commit to the main branch to trigger this job again.\n${END}"
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/component-styles${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/component-styles to become available using the command ${BOLD}'npm view @x3r5e/component-styles version'${END}${RED}. When the latest version of @x3r5e/component-styles becomes available, create and merge another PR to trigger this job again.\n${END}"
         exit 1
     else
         publishReactComponentsPackage
     fi
+fi
+
+if [[ isNewVersionOfDesignTokensBeingPublished = false && isNewVersionOfIconsBeingPublished = false && isNewVersionOfComponentStylesBeingPublished = false && isNewVersionOfReactComponentsBeingPublished = false ]]
+then
+    printf "${GREEN}None of the packages have a version change. Nothing to publish.\n${END}"
 fi
