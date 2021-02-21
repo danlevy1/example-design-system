@@ -12,6 +12,7 @@
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "rollup -c && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
+        "build:CI-PR": "rollup -c --preserveSymlinks && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "test": "",
         "lint": "eslint --fix",
         "storybook": "start-storybook -p 6006",

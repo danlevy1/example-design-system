@@ -35,6 +35,21 @@ function isLocalPackageVersionDifferentThanPublishedVersion() {
     fi
 }
 
+function linkDependency() {
+    local dependencyName="$1"
+
+    sudo chown -R $( whoami ) $( npm prefix -g )
+    
+    cd ./packages/"$dependencyName"
+    npm ci
+    npm run build
+    
+    cd ../"$packageName"
+    npm link ../"$dependencyName"
+
+    cd ../..
+}
+
 # Link appropriate package dependencies for testing. Each dependency will only be linked if the dependency has a local version that is different than the published version (@latest).
 if [[ $packageName = "component-styles" ]]
 then
@@ -42,7 +57,7 @@ then
     then
         printf "\n\n${CYAN_BRIGHT}======== LINKING @x3r5e/design-tokens ========\n${END}"
 
-        npm link ../design-tokens
+        linkDependency design-tokens
 
         printf "${GREEN}======== @x3r5e/design-tokens LINKED ========\n\n${END}"
     else
@@ -54,7 +69,7 @@ then
     then
         printf "\n\n${CYAN_BRIGHT}======== LINKING @x3r5e/icons ========\n${END}"
 
-        npm link ../icons
+        linkDependency icons
 
         printf "${GREEN}======== @x3r5e/icons LINKED ========\n\n${END}"
     else
@@ -65,7 +80,7 @@ then
     then
         printf "\n\n${CYAN_BRIGHT}======== LINKING @x3r5e/component-styles ========\n${END}"
 
-        npm link ../component-styles
+        linkDependency component-styles
 
         printf "${GREEN}======== @x3r5e/component-styles LINKED ========\n\n${END}"
     else
