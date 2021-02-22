@@ -9,27 +9,9 @@ workflows:
                   filters:
                       branches:
                           only: main
-    design-tokens:
+    pull-request-checker:
         jobs:
-            - design-tokens-job:
-                  filters:
-                      branches:
-                          ignore: main
-    component-styles:
-        jobs:
-            - component-styles-job:
-                  filters:
-                      branches:
-                          ignore: main
-    icons:
-        jobs:
-            - icons-job:
-                  filters:
-                      branches:
-                          ignore: main
-    react-components:
-        jobs:
-            - react-components-job:
+            - pull-request-checker-job:
                   filters:
                       branches:
                           ignore: main
@@ -52,89 +34,23 @@ jobs:
             - run:
                   name: Publish Packages
                   command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
-    design-tokens-job:
+    pull-request-checker-job:
         docker:
             - image: cimg/node:14.15.5
         steps:
             - checkout
+            - run:
+                  name: Concatenate package-lock.json Files for all Packages into combined-package-lock.txt File
+                  command: ls ./packages | awk -F packages '{printf "\"packages/%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
             - restore_cache:
-                  key: design-tokens-v3-{{ checksum "./packages/design-tokens/package-lock.json" }}
+                  key: node-modules-all-packages-v1-{{ checksum "combined-package-lock.txt" }}
             - run:
-                  name: Install npm Dependencies
-                  command: "cd ./packages/design-tokens && [ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
-            - run:
-                  name: Run Tests
-                  command: chmod u+x ./.circleci/runTests.sh && ./.circleci/runTests.sh design-tokens
-            - run:
-                  name: Build
-                  command: cd ./packages/design-tokens && npm run build
+                  name: Pull Request Checker
+                  command: chmod u+x ./.circleci/pullRequestChecker.sh && ./.circleci/pullRequestChecker.sh
             - save_cache:
                   paths:
                       - ./packages/design-tokens/node_modules
-                  key: design-tokens-v3-{{ checksum "./packages/design-tokens/package-lock.json" }}
-    component-styles-job:
-        docker:
-            - image: cimg/node:14.15.5
-        steps:
-            - checkout
-            - restore_cache:
-                  key: component-styles-v3-{{ checksum "./packages/component-styles/package-lock.json" }}
-            - run:
-                  name: Install npm Dependencies
-                  command: "cd ./packages/component-styles && [ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
-            - run:
-                  name: Link Dependencies
-                  command: chmod u+x ./.circleci/linkDependencies.sh && ./.circleci/linkDependencies.sh component-styles
-            - run:
-                  name: Run Tests
-                  command: chmod u+x ./.circleci/runTests.sh && ./.circleci/runTests.sh component-styles
-            - run:
-                  name: Build
-                  command: cd ./packages/component-styles && npm run build
-            - save_cache:
-                  paths:
-                      - ./packages/component-styles/node_modules
-                  key: component-styles-v3-{{ checksum "./packages/component-styles/package-lock.json" }}
-    icons-job:
-        docker:
-            - image: cimg/node:14.15.5
-        steps:
-            - checkout
-            - restore_cache:
-                  key: icons-v3-{{ checksum "./packages/icons/package-lock.json" }}
-            - run:
-                  name: Install npm Dependencies
-                  command: "cd ./packages/icons && [ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
-            - run:
-                  name: Run Tests
-                  command: chmod u+x ./.circleci/runTests.sh && ./.circleci/runTests.sh icons
-            - run:
-                  name: Build
-                  command: cd ./packages/icons && npm run build
-            - save_cache:
-                  paths:
                       - ./packages/icons/node_modules
-                  key: icons-v3-{{ checksum "./packages/icons/package-lock.json" }}
-    react-components-job:
-        docker:
-            - image: cimg/node:14.15.5
-        steps:
-            - checkout
-            - restore_cache:
-                  key: react-components-v3-{{ checksum "./packages/react-components/package-lock.json" }}
-            - run:
-                  name: Install npm Dependencies
-                  command: "cd ./packages/react-components && [ ! -d node_modules ] && npm ci --loglevel verbose --yes || echo Using cache. No install needed."
-            - run:
-                  name: Link Dependencies
-                  command: chmod u+x ./.circleci/linkDependencies.sh && ./.circleci/linkDependencies.sh react-components
-            - run:
-                  name: Run Tests
-                  command: chmod u+x ./.circleci/runTests.sh && ./.circleci/runTests.sh react-components
-            - run:
-                  name: Build
-                  command: cd ./packages/react-components && npm run build
-            - save_cache:
-                  paths:
+                      - ./packages/component-styles/node_modules
                       - ./packages/react-components/node_modules
-                  key: react-components-v3-{{ checksum "./packages/react-components/package-lock.json" }}
+                  key: node-modules-all-packages-v1-{{ checksum "combined-package-lock.txt" }}

@@ -45,6 +45,15 @@ function isLocalPackageVersionDifferentThanPublishedVersion() {
     fi
 }
 
+function printManualJobTriggerInstructions() {
+    local packageName="$1"
+
+    printf "${RED}After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/$packageName to become available using the command ${BOLD}'npm view @x3r5e/$packageName version'${END}${RED}. When the latest version of @x3r5e/$packageName becomes available, run the following curl command to trigger this job again:\n${END}"
+    printf "${RED}curl -u <CIRCLE_API_USER_TOKEN>: \\
+        -d 'build_parameters[CIRCLE_JOB]=pull-request-checker' \\
+        https://circleci.com/api/v1.1/project/github/danlevy1/example-design-system/tree/main\n${END}"
+}
+
 function beginPackagePublish() {
     local packageName="$1"
 
@@ -140,7 +149,9 @@ then
 
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/design-tokens to become available using the command ${BOLD}'npm view @x3r5e/design-tokens version'${END}${RED}. When the latest version of @x3r5e/design-tokens becomes available, create and merge another PR to trigger this job again.\n${END}"
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available.\n${END}"
+        printManualJobTriggerInstructions design-tokens
+
         exit 1
     else
         publishComponentStylesPackage
@@ -161,11 +172,15 @@ then
 
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/icons to become available using the command ${BOLD}'npm view @x3r5e/icons version'${END}${RED}. When the latest version of @x3r5e/icons becomes available, create and merge another PR to trigger this job again.\n${END}"
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available.\n${END}"
+        printManualJobTriggerInstructions icons
+
         exit 1
     elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/component-styles${END}${RED} is not yet available. After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/component-styles to become available using the command ${BOLD}'npm view @x3r5e/component-styles version'${END}${RED}. When the latest version of @x3r5e/component-styles becomes available, create and merge another PR to trigger this job again.\n${END}"
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/component-styles${END}${RED} is not yet available.\n${END}"
+        printManualJobTriggerInstructions component-styles
+
         exit 1
     else
         publishReactComponentsPackage
