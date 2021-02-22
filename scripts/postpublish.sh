@@ -9,8 +9,6 @@ changedFiles=$( git add package.json package-lock.json --dry-run )
 if [[ "$changedFiles" ]]
 then
     git add package.json package-lock.json
-    git commit -m "Publish $packageNameAndVersion"
 fi
 
 git tag -a "$packageNameAndVersion" -m "$packageNameAndVersion"
-git push --follow-tags

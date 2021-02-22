@@ -187,6 +187,10 @@ then
     fi
 fi
 
+# Updates GitHub
+git commit -m "chore: publish [skip ci]"
+git push --follow-tags
+
 if [[ $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
     printf "${GREEN}None of the packages have a version change. Nothing to publish.\n${END}"
