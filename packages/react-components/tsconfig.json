@@ -12,5 +12,5 @@
         "isolatedModules": true,
         "plugins": [{ "name": "typescript-plugin-css-modules" }]
     },
-    "files": ["src/components/index.ts", "src/css-module.d.ts"]
+    "files": ["src/components/index.ts", "src/css.d.ts"]
 }

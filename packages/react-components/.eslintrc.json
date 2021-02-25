@@ -1,3 +1,4 @@
+// TODO: Use overrides to only TS lint TS and TSX files
 {
     "env": {
         "browser": true,
