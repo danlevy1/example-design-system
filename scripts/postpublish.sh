@@ -4,6 +4,8 @@ set -e
 args=("$@")
 packageName=${args[0]}
 
+cat ./package.json
+
 packageArr=($(jq -r .name,.version ./packages/"$packageName"/package.json))
 packageNameAndVersion="${packageArr[0]}@${packageArr[1]}"
 
