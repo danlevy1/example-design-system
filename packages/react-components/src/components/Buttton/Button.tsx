@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import styles from "@x3r5e/component-styles/dist/components/Button/Button.module.css";
+import styles from "@x3r5e/component-styles";
 
 export type ButtonProps = {
     className?: string;
