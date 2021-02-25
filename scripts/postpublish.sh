@@ -1,14 +1,17 @@
 #!/bin/bash
 set -e
 
-packageArr=($(jq -r .name,.version ./package.json))
+args=("$@")
+packageName=${args[0]}
+
+packageArr=($(jq -r .name,.version ./packages/"$packageName"/package.json))
 packageNameAndVersion="${packageArr[0]}@${packageArr[1]}"
 
-changedFiles=$( git add package.json package-lock.json --dry-run )
+changedFiles=$( git add ./packages/"$packageName"/package.json ./packages/"$packageName"/package-lock.json --dry-run )
 
 if [[ "$changedFiles" ]]
 then
-    git add package.json package-lock.json
+    git add ./packages/"$packageName"/package.json ./packages/"$packageName"/package-lock.json
 fi
 
 git tag -a "$packageNameAndVersion" -m "$packageNameAndVersion"

@@ -188,8 +188,12 @@ then
 fi
 
 # Updates GitHub
-git commit -m "chore: publish [skip ci]"
-git push --follow-tags
+stagedFiles=$( git diff --cache )
+if [[ "$stagedFiles" ]]
+then
+    git commit -m "chore: publish [skip ci]"
+    git push --follow-tags
+fi
 
 if [[ $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
