@@ -188,7 +188,7 @@ then
 fi
 
 # Updates GitHub
-stagedFiles=$( git diff --cache )
+stagedFiles=$( git diff --cached )
 if [[ "$stagedFiles" ]]
 then
     git commit -m "chore: publish [skip ci]"
