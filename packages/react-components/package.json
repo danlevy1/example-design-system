@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/react-components",
-    "version": "0.10.11",
+    "version": "0.10.12",
     "description": "",
     "main": "dist/index.js",
     "module": "dist/index.es.js",
@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "prepublishOnly": "npm run build",
-        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh react-components",
+        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "rollup -c && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "build:CI-PR": "rollup -c --preserveSymlinks && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "test": "",
