@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import styles from "@x3r5e/component-styles";
+import { ButtonStyles } from "@x3r5e/component-styles";
 
 export type ButtonProps = {
     className?: string;
@@ -14,8 +14,12 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
     children,
     ...rest
 }) => {
+    console.log(ButtonStyles);
     return (
-        <button {...rest} className={classnames(styles.button, className)}>
+        <button
+            {...rest}
+            className={classnames(ButtonStyles.button, className)}
+        >
             {children}
         </button>
     );

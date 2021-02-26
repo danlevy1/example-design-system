@@ -2,7 +2,6 @@ import commonjs from "@rollup/plugin-commonjs";
 import del from "rollup-plugin-delete";
 import cleanup from "rollup-plugin-cleanup";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import postcss from "rollup-plugin-postcss";
 import babel from "@rollup/plugin-babel";
 import pkg from "./package.json";
 
@@ -20,7 +19,6 @@ const plugins = [
     nodeResolve({ extensions }),
     commonjs(),
     babel({ exclude: "node_modules/**", babelHelpers: "runtime", extensions }),
-    postcss(),
     cleanup({ comments: "jsdoc", maxEmptyLines: 1, sourcemap: false }),
 ];
 

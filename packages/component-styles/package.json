@@ -1,19 +1,23 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.9.7",
+    "version": "0.10.0",
     "description": "",
     "files": [
         "dist/"
     ],
     "main": "dist/index.js",
     "module": "dist/index.es.js",
-    "types": "dist/types",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
-        "build": "rollup -c && copyfiles src/components/**/*.d.ts dist/types",
-        "updateDesignTokens": "npm install --save-exact @x3r5e/design-tokens@latest && node ./src/scripts/buildDesignTokens",
-        "tsm": "tsm src/components"
+        "build": "npm-run-all buildDesignTokens tsm rollup",
+        "start": "npm-run-all --parallel --race tsm:watch rollup:watch",
+        "rollup": "rollup -c",
+        "rollup:watch": "rollup -c -w",
+        "tsm": "tsm --exportType default src/components",
+        "tsm:watch": "tsm --watch --exportType default src/components",
+        "buildDesignTokens": "node ./src/scripts/buildDesignTokens"
     },
     "repository": {
         "type": "git",
@@ -31,9 +35,8 @@
         "@rollup/plugin-node-resolve": "^11.2.0",
         "@x3r5e/design-tokens": "0.14.6",
         "copyfiles": "^2.4.1",
-        "cssnano": "^4.1.10",
         "eslint": "^7.12.0",
-        "node-sass": "^5.0.0",
+        "npm-run-all": "^4.1.5",
         "postcss": "^8.2.6",
         "postcss-preset-env": "^6.7.0",
         "postcss-reporter": "^7.0.2",
@@ -41,6 +44,7 @@
         "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-delete": "^2.0.0",
         "rollup-plugin-postcss": "^4.0.0",
+        "sass": "^1.32.8",
         "style-dictionary": "^3.0.0-rc.2",
         "typed-scss-modules": "^4.1.0"
     },

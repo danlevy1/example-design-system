@@ -4,6 +4,12 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import postcss from "rollup-plugin-postcss";
 import pkg from "./package.json";
 
+const isInWatchMode = process.env.ROLLUP_WATCH;
+
+const scopedCssModuleName = isInWatchMode
+    ? "[name]__[local]___[hash:base64:5]"
+    : "___[hash:base64:5]";
+
 const external = [
     ...Object.keys(pkg.devDependencies),
     ...Object.keys(pkg.peerDependencies),
@@ -15,15 +21,22 @@ const plugins = [
     }),
     copy({
         targets: [
-            { src: "src/design-tokens/**/*", dest: "dist/design-tokens" },
+            { src: "src/design-tokens/**/*", dest: "dist" },
+            { src: "src/**/*.d.ts", dest: "dist/types" },
         ],
+        flatten: false,
     }),
     nodeResolve(),
-    postcss(),
+    postcss({
+        minimize: true,
+        modules: {
+            generateScopedName: scopedCssModuleName,
+        },
+    }),
 ];
 
 export default {
-    input: "src/components/index.js",
+    input: "src/index.js",
     output: [
         {
             file: pkg.main,
