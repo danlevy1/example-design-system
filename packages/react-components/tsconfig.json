@@ -9,8 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "jsx": "react",
-        "isolatedModules": true,
-        "plugins": [{ "name": "typescript-plugin-css-modules" }]
+        "isolatedModules": true
     },
-    "files": ["src/components/index.ts", "src/css.d.ts"]
+    "files": ["src/components/index.ts"]
 }

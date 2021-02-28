@@ -202,8 +202,8 @@ describe("Build Design Tokens", () => {
                 "utf8"
             );
 
-            // Asserts that the file begins with a /** */ comment and ":root {\n"
-            expect(outputFile).toMatch(/^\/\*\*(.|\n)*\*\/\n\n:root {\n/);
+            // Asserts that the file begins with ":root {\n"
+            expect(outputFile).toMatch(/^:root {\n/);
 
             // Asserts that the file ends with "}\n"
             expect(outputFile).toMatch(/}\n$/);
@@ -242,9 +242,6 @@ describe("Build Design Tokens", () => {
                 "utf8"
             );
 
-            // Asserts that the file begins with // comments followed by two newlines
-            expect(outputFile).toMatch(/^\n*\/\/(.|\n)*\/\/(.)*\n\n/);
-
             const outputTokens = outputFile
                 .substring(
                     outputFile.indexOf("$"),
@@ -276,9 +273,6 @@ describe("Build Design Tokens", () => {
                 resolve(__dirname, "./output-tokens/tokens.less"),
                 "utf8"
             );
-
-            // Asserts that the file begins with // comments followed by two newlines
-            expect(outputFile).toMatch(/^\n*\/\/(.|\n)*\/\/(.)*\n\n/);
 
             const outputTokens = outputFile
                 .substring(
@@ -312,10 +306,8 @@ describe("Build Design Tokens", () => {
                 "utf8"
             );
 
-            // Asserts that the file begins with a /** */ comment and "module.exports = {\n"
-            expect(outputFile).toMatch(
-                /^\/\*\*(.|\n)*\*\/\n\nmodule.exports = {\n/
-            );
+            // Asserts that the file begins with "module.exports = {\n"
+            expect(outputFile).toMatch(/^module.exports = {\n/);
 
             // Asserts that the file ends with "};"
             expect(outputFile).toMatch(/};$/);
@@ -361,9 +353,6 @@ describe("Build Design Tokens", () => {
                 resolve(__dirname, "./output-tokens/tokens.mjs"),
                 "utf8"
             );
-
-            // Asserts that the file begins with a /** */ comment and two newlines
-            expect(outputFile).toMatch(/^\/\*\*(.|\n)*\*\/\n\n/);
 
             // Asserts that the file ends with ";"
             expect(outputFile).toMatch(/;$/);

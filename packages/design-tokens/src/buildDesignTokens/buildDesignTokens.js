@@ -109,6 +109,7 @@ const addPlatformToConfig = (platform, config) => {
             {
                 destination: platform.destinationFilename,
                 format: PLATFORM_FORMATS_MAP.get(platform.name),
+                options: { showFileHeader: false },
             },
         ],
     };

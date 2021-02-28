@@ -1,4 +1,4 @@
-.button {
+.checkbox {
     border: none;
     outline: none;
     background-color: var(--raw-color-blue-800);
@@ -7,8 +7,4 @@
     cursor: pointer;
     border-radius: var(--raw-border-radius-400);
     padding: var(--raw-spacing-75) var(--raw-spacing-400);
-}
-
-.primary {
-    color: wheat;
 }

@@ -1,16 +1,23 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.9.7",
+    "version": "0.10.0",
     "description": "",
     "files": [
         "dist/"
     ],
+    "main": "dist/index.js",
+    "module": "dist/index.es.js",
+    "types": "dist/types/index.d.ts",
     "scripts": {
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
-        "build": "npm run updateDesignTokens && rm -rf ./dist && mkdir ./dist && cp -r ./src/design-tokens ./dist/design-tokens && sass --no-source-map src/components:dist/components",
-        "updateDesignTokens": "npm install --save-exact @x3r5e/design-tokens@latest && node ./src/scripts/buildDesignTokens",
-        "start": "sass --no-source-map src/components:dist/components --watch"
+        "build": "npm-run-all buildDesignTokens tsm rollup",
+        "start": "npm-run-all --parallel --race tsm:watch rollup:watch",
+        "rollup": "rollup -c",
+        "rollup:watch": "rollup -c -w",
+        "tsm": "tsm --exportType default src/components",
+        "tsm:watch": "tsm --watch --exportType default src/components",
+        "buildDesignTokens": "node ./src/scripts/buildDesignTokens"
     },
     "repository": {
         "type": "git",
@@ -25,10 +32,22 @@
     "license": "MIT",
     "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
     "devDependencies": {
+        "@rollup/plugin-node-resolve": "^11.2.0",
         "@x3r5e/design-tokens": "0.14.6",
+        "copyfiles": "^2.4.1",
         "eslint": "^7.12.0",
-        "esm": "^3.2.25",
-        "sass": "^1.32.7",
-        "style-dictionary": "^3.0.0-rc.2"
-    }
+        "npm-run-all": "^4.1.5",
+        "postcss": "^8.2.6",
+        "postcss-preset-env": "^6.7.0",
+        "postcss-reporter": "^7.0.2",
+        "rollup": "^2.39.1",
+        "rollup-plugin-copy": "^3.4.0",
+        "rollup-plugin-delete": "^2.0.0",
+        "rollup-plugin-postcss": "^4.0.0",
+        "sass": "^1.32.8",
+        "style-dictionary": "^3.0.0-rc.2",
+        "typed-scss-modules": "^4.1.0"
+    },
+    "dependencies": {},
+    "peerDependencies": {}
 }

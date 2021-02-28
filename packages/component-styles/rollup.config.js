@@ -1,33 +1,42 @@
-import commonjs from "@rollup/plugin-commonjs";
+import copy from "rollup-plugin-copy";
 import del from "rollup-plugin-delete";
-import cleanup from "rollup-plugin-cleanup";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import babel from "@rollup/plugin-babel";
+import postcss from "rollup-plugin-postcss";
 import pkg from "./package.json";
+
+const isInWatchMode = process.env.ROLLUP_WATCH;
+
+const scopedCssModuleName = isInWatchMode
+    ? "[name]__[local]___[hash:base64:5]"
+    : "___[hash:base64:5]";
 
 const external = [
     ...Object.keys(pkg.devDependencies),
     ...Object.keys(pkg.peerDependencies),
 ];
 
-const extensions = [".js", ".jsx", ".ts", ".tsx"];
-
 const plugins = [
     del({
         targets: "dist/*",
     }),
-    nodeResolve({ extensions }),
-    commonjs(),
-    babel({
-        babelHelpers: "runtime",
-        extensions,
-        skipPreflightCheck: true, // Remove this once https://github.com/rollup/plugins/issues/381 is fixed
+    copy({
+        targets: [
+            { src: "src/design-tokens/**/*", dest: "dist" },
+            { src: "src/**/*.d.ts", dest: "dist/types" },
+        ],
+        flatten: false,
     }),
-    cleanup({ comments: "jsdoc", maxEmptyLines: 1, sourcemap: false }),
+    nodeResolve(),
+    postcss({
+        minimize: true,
+        modules: {
+            generateScopedName: scopedCssModuleName,
+        },
+    }),
 ];
 
 export default {
-    input: "src/components/index.ts",
+    input: "src/index.js",
     output: [
         {
             file: pkg.main,
