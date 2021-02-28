@@ -16,6 +16,7 @@
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "chmod u+x ./src/scripts/build.sh && ./src/scripts/build.sh",
+        "start": "rollup -c -w",
         "test": "jest"
     },
     "repository": {
