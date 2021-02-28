@@ -13,6 +13,6 @@ END='\e[0m'
 
 printf "\n${CYAN_BRIGHT}Creating TypeScript declaration files based on entry file ${BOLD}$tsConfigEntryFile${CYAN_BRIGHT}...\n${END}"
 
-emittedFiles=($( tsc ))
+tsc
 
 printf "${GREEN}Created declaration files.\n${END}"

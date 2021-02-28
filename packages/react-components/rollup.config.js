@@ -18,7 +18,11 @@ const plugins = [
     }),
     nodeResolve({ extensions }),
     commonjs(),
-    babel({ exclude: "node_modules/**", babelHelpers: "runtime", extensions }),
+    babel({
+        babelHelpers: "runtime",
+        extensions,
+        skipPreflightCheck: true, // Remove this once https://github.com/rollup/plugins/issues/381 is fixed
+    }),
     cleanup({ comments: "jsdoc", maxEmptyLines: 1, sourcemap: false }),
 ];
 
