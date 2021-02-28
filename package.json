@@ -2,6 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {
+        "start": "npm run bootstrap && lerna run --parallel start",
         "bootstrap": "npm install && lerna exec -- npm install && lerna link --force-local"
     },
     "devDependencies": {

@@ -17,7 +17,7 @@
         "rollup:watch": "rollup -c -w",
         "tsm": "tsm --exportType default src/components",
         "tsm:watch": "tsm --watch --exportType default src/components",
-        "buildDesignTokens": "node ./src/scripts/buildDesignTokens"
+        "buildDesignTokens": "node --unhandled-rejections=strict ./src/scripts/buildDesignTokens"
     },
     "repository": {
         "type": "git",
