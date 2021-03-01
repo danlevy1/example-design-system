@@ -16,11 +16,8 @@
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "npm-run-all rollup tsc",
-        "start": "npm-run-all --parallel --race rollup:watch tsc:watch",
         "rollup": "rollup -c",
-        "rollup:watch": "rollup -c -w",
         "tsc": "chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
-        "tsc:watch": "tsc --watch",
         "test": "chmod u+x ./src/scripts/testWarning.sh && ./src/scripts/testWarning.sh && jest"
     },
     "repository": {
