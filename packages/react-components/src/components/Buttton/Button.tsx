@@ -14,7 +14,6 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
     children,
     ...rest
 }) => {
-    console.log(ButtonStyles);
     return (
         <button
             {...rest}
