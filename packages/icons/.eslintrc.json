@@ -5,10 +5,31 @@
         "node": true,
         "jest": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:compat/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:prettier/recommended"
+    ],
     "parser": "babel-eslint",
     "parserOptions": {
-        "ecmaVersion": 12,
+        "ecmaVersion": 2021,
         "sourceType": "module"
-    }
+    },
+    "ignorePatterns": ["dist/", "node_modules"],
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "extends": [
+                "plugin:@typescript-eslint/recommended",
+                "plugin:import/typescript"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "plugins": ["@typescript-eslint"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": ["off"]
+            }
+        }
+    ]
 }

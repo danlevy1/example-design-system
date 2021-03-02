@@ -17,7 +17,8 @@
         "rollup:watch": "rollup -c -w",
         "tsm": "tsm --exportType default src/components",
         "tsm:watch": "tsm --watch --exportType default src/components",
-        "buildDesignTokens": "node --unhandled-rejections=strict ./src/scripts/buildDesignTokens"
+        "buildDesignTokens": "node --unhandled-rejections=strict ./src/scripts/buildDesignTokens",
+        "lint": "eslint --max-warnings 0 ."
     },
     "repository": {
         "type": "git",
@@ -33,9 +34,15 @@
     "gitHead": "75fb0674ebacb1e211e1c4b2329c567333de16bf",
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^11.2.0",
+        "@typescript-eslint/eslint-plugin": "^4.16.1",
+        "@typescript-eslint/parser": "^4.16.1",
         "@x3r5e/design-tokens": "0.15.0",
         "copyfiles": "^2.4.1",
         "eslint": "^7.12.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-compat": "^3.9.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.3.1",
         "npm-run-all": "^4.1.5",
         "postcss": "^8.2.6",
         "postcss-preset-env": "^6.7.0",
@@ -46,7 +53,8 @@
         "rollup-plugin-postcss": "^4.0.0",
         "sass": "^1.32.8",
         "style-dictionary": "^3.0.0-rc.2",
-        "typed-scss-modules": "^4.1.0"
+        "typed-scss-modules": "^4.1.0",
+        "typescript": "^4.2.2"
     },
     "dependencies": {},
     "peerDependencies": {}

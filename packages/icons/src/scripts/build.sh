@@ -24,7 +24,7 @@ printf "//This is an auto-generated file\n\n" > "$indexDTSFilePath"
 for svgFilepath in ./assets/svg/*.svg
 do
     svgFilename=$(basename "${svgFilepath%.*}")
-    echo export \{ default as $svgFilename \} from \"."$svgFilepath"\" >> "$indexJSFilePath"
+    echo export \{ default as $svgFilename \} from \"."$svgFilepath"\"\; >> "$indexJSFilePath"
     echo export const $svgFilename: string\; >> "$indexDTSFilePath"
 done
 
