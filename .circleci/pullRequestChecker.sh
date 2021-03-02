@@ -41,9 +41,13 @@ function installDependencies() {
 
     if [[ ! -d node_modules ]]
     then
+        printf "${CYAN_BRIGHT}-------- INSTALLING DEPENDENCIES FOR @x3r5e/"$packageName" --------\n${END}"
+
         npm ci --yes
+
+        printf "\n${GREEN}-------- DEPENDENCIES SUCCESSFULLY INSTALLED FOR @x3r5e/"$packageName" --------\n\n\n${END}"
     else
-        printf "${GREEN}Using cache for @x3r5e/$packageName. No install needed.\n\n${END}"
+        printf "${GREEN}Using cache for @x3r5e/$packageName. No install needed.\n\n\n${END}"
     fi
 
     cd ../..
@@ -65,26 +69,26 @@ function linkDependency() {
 function linkComponentStylesDependencies() {
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
     then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/component-styles --------\n\n${END}"
+        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/component-styles --------\n${END}"
 
         linkDependency component-styles design-tokens
 
-        printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/component-styles --------\n\n${END}"
+        printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/component-styles --------\n\n\n${END}"
     else
-        printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/component-styles\n\n${END}"
+        printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/component-styles\n\n\n${END}"
     fi
 }
 
 function linkReactComponentsDependencies() {
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
     then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/icons INTO @x3r5e/react-components --------\n\n${END}"
+        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/icons INTO @x3r5e/react-components --------\n${END}"
 
         linkDependency react-components icons
 
-        printf "\n${GREEN}-------- @x3r5e/icons LINKED INTO @x3r5e/react-components --------\n\n${END}"
+        printf "\n${GREEN}-------- @x3r5e/icons LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
     else
-        printf "${CYAN_BRIGHT}@x3r5e/icons was not linked into @x3r5e/react-components\n\n${END}"
+        printf "${CYAN_BRIGHT}@x3r5e/icons was not linked into @x3r5e/react-components\n\n\n${END}"
     fi
 
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true"  ]]
@@ -93,10 +97,24 @@ function linkReactComponentsDependencies() {
 
         linkDependency react-components component-styles
 
-        printf "\n${GREEN}-------- @x3r5e/component-styles LINKED INTO @x3r5e/react-components --------\n\n${END}"
+        printf "\n${GREEN}-------- @x3r5e/component-styles LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
     else
-        printf "${CYAN_BRIGHT}@x3r5e/component-styles was not linked into @x3r5e/react-components\n\n${END}"
+        printf "${CYAN_BRIGHT}@x3r5e/component-styles was not linked into @x3r5e/react-components\n\n\n${END}"
     fi
+}
+
+function runLinter() {
+    local packageName="$1"
+
+    printf "${CYAN_BRIGHT}-------- RUNNING LINTER CHECK FOR @x3r5e/"$packageName" --------\n${END}"
+
+    cd ./packages/"$packageName"
+    
+    npm run lint
+
+    cd ../..
+
+    printf "${GREEN}-------- LINTER CHECK PASSED FOR @x3r5e/"$packageName" --------\n\n\n${END}"
 }
 
 function runTests() {
@@ -107,22 +125,22 @@ function runTests() {
     
     if [[ $diff ]]
     then
-        printf "${CYAN_BRIGHT}-------- RUNNING TESTS FOR @x3r5e/$packageName --------\n\n${END}"
+        printf "${CYAN_BRIGHT}-------- RUNNING TESTS FOR @x3r5e/$packageName --------\n${END}"
 
         cd packages/"$packageName"
         npm test
         cd ../..
         
-        printf "\n${GREEN}-------- TESTS PASSED FOR @x3r5e/$packageName --------\n\n${END}"
+        printf "\n${GREEN}-------- TESTS PASSED FOR @x3r5e/$packageName --------\n\n\n${END}"
     else
-        printf "${GREEN}No changes in the src directory for ${BOLD}@x3r5e/$packageName${END}${GREEN}. Skipping tests.\n\n${END}"
+        printf "${GREEN}No changes in the src directory for ${BOLD}@x3r5e/$packageName${END}${GREEN}. Skipping tests.\n\n\n${END}"
     fi
 }
 
 function buildPackage() {
     local packageName="$1"
 
-    printf "${CYAN_BRIGHT}-------- BUILDING @x3r5e/$packageName --------\n\n${END}"
+    printf "${CYAN_BRIGHT}-------- BUILDING @x3r5e/$packageName --------\n${END}"
 
     cd ./packages/"$packageName"
 
@@ -146,6 +164,7 @@ function runDesignTokensPRChecker() {
 
     beginPackagePRChecker
     installDependencies "$packageName"
+    runLinter "$packageName"
     runTests "$packageName"
     buildPackage "$packageName"
     endPackagePRChecker
@@ -156,6 +175,7 @@ function runIconsPRChecker() {
 
     beginPackagePRChecker
     installDependencies "$packageName"
+    runLinter "$packageName"
     runTests "$packageName"
     buildPackage "$packageName"
     endPackagePRChecker
@@ -167,6 +187,7 @@ function runComponentStylesPRChecker() {
     beginPackagePRChecker
     installDependencies "$packageName"
     linkComponentStylesDependencies
+    runLinter "$packageName"
     runTests "$packageName"
     buildPackage "$packageName"
     endPackagePRChecker
@@ -178,10 +199,18 @@ function runReactComponentsPRChecker() {
     beginPackagePRChecker
     installDependencies "$packageName"
     linkReactComponentsDependencies
+    runLinter "$packageName"
     runTests "$packageName"
     buildPackage "$packageName"
     endPackagePRChecker
 }
+
+if [[ ! -d node_modules ]]
+then
+    npm ci --yes
+else
+    printf "${GREEN}Using cache for root package. No install needed.\n\n${END}"
+fi
 
 runDesignTokensPRChecker
 runIconsPRChecker

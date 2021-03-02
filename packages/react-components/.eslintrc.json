@@ -1,4 +1,3 @@
-// TODO: Use overrides to only TS lint TS and TSX files
 {
     "env": {
         "browser": true,
@@ -11,13 +10,10 @@
         "plugin:compat/recommended",
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
-        "plugin:@typescript-eslint/recommended",
         "plugin:import/errors",
         "plugin:import/warnings",
-        "plugin:import/typescript",
         "plugin:prettier/recommended"
     ],
-    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -25,14 +21,25 @@
         "ecmaVersion": 2021,
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint",
-        "react",
-        "react-hooks",
-        "eslint-plugin-jsx-a11y"
-    ],
-    "rules": {
-        "@typescript-eslint/no-explicit-any": ["off"]
+    "plugins": ["react", "react-hooks", "eslint-plugin-jsx-a11y"],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     },
-    "ignorePatterns": ["dist/", "node_modules"]
+    "ignorePatterns": ["dist/", "node_modules"],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "extends": [
+                "plugin:@typescript-eslint/recommended",
+                "plugin:import/typescript"
+            ],
+            "parser": "@typescript-eslint/parser",
+            "plugins": ["@typescript-eslint"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": ["off"]
+            }
+        }
+    ]
 }

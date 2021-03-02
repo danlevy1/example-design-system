@@ -14,7 +14,7 @@
         "build": "rollup -c && chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "start": "start-storybook -p 6006 BROWSER='chromium'",
         "test": "",
-        "lint": "eslint --fix"
+        "lint": "eslint --max-warnings 0 ."
     },
     "repository": {
         "type": "git",

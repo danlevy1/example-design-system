@@ -1,9 +1,0 @@
-{
-    "compilerOptions": {
-        "allowJs": true,
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "declarationDir": "dist/types"
-    },
-    "files": ["src/index.js"]
-}

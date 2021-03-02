@@ -16,7 +16,8 @@
         "prepublishOnly": "npm run build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
         "build": "chmod u+x ./src/scripts/build.sh && ./src/scripts/build.sh",
-        "test": "jest"
+        "test": "jest",
+        "lint": "eslint --max-warnings 0 ."
     },
     "repository": {
         "type": "git",
@@ -36,10 +37,16 @@
         "@rollup/plugin-node-resolve": "^11.0.1",
         "@types/jest": "^26.0.15",
         "@types/node": "^14.14.9",
+        "@typescript-eslint/eslint-plugin": "^4.16.1",
+        "@typescript-eslint/parser": "^4.16.1",
         "babel": "^6.23.0",
         "babel-eslint": "^10.1.0",
         "chalk": "^4.1.0",
         "eslint": "^7.12.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-compat": "^3.9.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.3.1",
         "jest": "^26.6.3",
         "rollup": "^2.35.1",
         "rollup-plugin-cleanup": "^3.2.1",
@@ -47,6 +54,7 @@
         "rollup-plugin-delete": "^2.0.0",
         "rollup-plugin-node-externals": "^2.2.0",
         "rollup-plugin-svg": "^2.0.0",
-        "svgson": "^4.1.0"
+        "svgson": "^4.1.0",
+        "typescript": "^4.2.2"
     }
 }
