@@ -192,8 +192,9 @@ stagedFiles=$( git diff --cached )
 if [[ "$stagedFiles" ]]
 then
     git commit -m "chore: publish [skip ci]"
-    git push --follow-tags
 fi
+
+git push --follow-tags
 
 if [[ $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
