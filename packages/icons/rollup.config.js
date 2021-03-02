@@ -1,5 +1,5 @@
 import commonjs from "@rollup/plugin-commonjs";
-import copy from "rollup-plugin-copy";
+import svg from "rollup-plugin-svg";
 import del from "rollup-plugin-delete";
 import cleanup from "rollup-plugin-cleanup";
 import externals from "rollup-plugin-node-externals";
@@ -11,23 +11,29 @@ const plugins = [
     del({
         targets: "dist/*",
     }),
-    copy({
-        targets: [{ src: "assets", dest: "dist" }],
-    }),
     nodeResolve(),
     externals({
         packagePath: "./package.json",
     }),
     commonjs(),
+    svg(),
     cleanup({ comments: "jsdoc", maxEmptyLines: 1, sourcemap: false }),
 ];
 
 export default {
     input,
-    output: {
-        file: pkg.main,
-        format: "cjs",
-    },
+    output: [
+        {
+            file: pkg.main,
+            format: "cjs",
+            exports: "named",
+        },
+        {
+            file: pkg.module,
+            format: "esm",
+            exports: "named",
+        },
+    ],
     plugins,
     onwarn: (warning) => {
         throw new Error(warning.message);
