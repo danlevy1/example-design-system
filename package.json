@@ -6,7 +6,7 @@
         "bootstrap": "npm install && lerna exec -- npm install && lerna link --force-local"
     },
     "devDependencies": {
-        "lerna": "^3.22.1",
+        "lerna": "^4.0.0",
         "prettier": "^2.1.2"
     }
 }
