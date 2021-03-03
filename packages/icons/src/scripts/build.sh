@@ -28,6 +28,9 @@ do
     echo export const $svgFilename: string\; >> "$indexDTSFilePath"
 done
 
+PATH=$(npm bin):$PATH prettier --write ./src/index.js;
+PATH=$(npm bin):$PATH prettier --write ./src/index.d.ts;
+
 printf "${GREEN}index.js and index.d.ts files were successfully generated\n${END}"
 
 rollup -c
