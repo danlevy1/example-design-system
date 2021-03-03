@@ -1,14 +1,12 @@
+@import "../../design-tokens/_variables.scss";
+
 .button {
     border: none;
     outline: none;
-    background-color: var(--raw-color-blue-800);
-    font-size: var(--raw-font-size-400);
-    color: var(--raw-color-white);
+    background-color: $raw-color-blue-800;
+    font-size: $raw-font-size-400;
+    color: $raw-color-white;
     cursor: pointer;
-    border-radius: var(--raw-border-radius-400);
-    padding: var(--raw-spacing-75) var(--raw-spacing-400);
-}
-
-.primary {
-    color: wheat;
+    border-radius: $raw-border-radius-400;
+    padding: $raw-spacing-75 $raw-spacing-400;
 }

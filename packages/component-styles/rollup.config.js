@@ -20,10 +20,7 @@ const plugins = [
         targets: "dist/*",
     }),
     copy({
-        targets: [
-            { src: "src/design-tokens/**/*", dest: "dist" },
-            { src: "src/**/*.d.ts", dest: "dist/types" },
-        ],
+        targets: [{ src: "src/**/*.d.ts", dest: "dist/types" }],
         flatten: false,
     }),
     nodeResolve(),
