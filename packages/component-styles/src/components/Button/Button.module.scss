@@ -1,12 +1,12 @@
-@import "../../design-tokens/_variables.scss";
+@use "../../design-tokens/_variables.scss" as *;
 
 .button {
-    border: none;
-    outline: none;
     background-color: $raw-color-blue-800;
-    font-size: $raw-font-size-400;
+    border: none;
+    border-radius: $raw-border-radius-400;
     color: $raw-color-white;
     cursor: pointer;
-    border-radius: $raw-border-radius-400;
+    font-size: $raw-font-size-400;
+    outline: none;
     padding: $raw-spacing-75 $raw-spacing-400;
 }
