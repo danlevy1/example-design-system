@@ -18,7 +18,9 @@
         "tsm": "tsm --exportType default src/components",
         "tsm:watch": "tsm --watch --exportType default src/components",
         "buildDesignTokens": "node --unhandled-rejections=strict ./src/scripts/buildDesignTokens",
-        "lint": "eslint --max-warnings 0 ."
+        "lint": "npm-run-all eslint stylelint",
+        "eslint": "eslint --max-warnings 0 .",
+        "stylelint": "cd ../.. && PATH=$(npm bin):$PATH stylelint --max-warnings 0 './packages/component-styles/**/*.(css|scss)' && cd packages/component-styles"
     },
     "repository": {
         "type": "git",

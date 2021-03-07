@@ -9,7 +9,7 @@ raw:
                 blur:
                     value: "4px"
                 spread:
-                    value: "0px"
+                    value: "0"
                 color:
                     value: "#c0c0c0"
 
@@ -21,7 +21,7 @@ raw:
                 blur:
                     value: "6px"
                 spread:
-                    value: "0px"
+                    value: "0"
                 color:
                     value: "#c0c0c0"
 
@@ -33,7 +33,7 @@ raw:
                 blur:
                     value: "10px"
                 spread:
-                    value: "0px"
+                    value: "0"
                 color:
                     value: "#c0c0c0"
 
@@ -45,7 +45,7 @@ raw:
                 blur:
                     value: "16px"
                 spread:
-                    value: "0px"
+                    value: "0"
                 color:
                     value: "#c0c0c0"
 
@@ -57,7 +57,7 @@ raw:
                 blur:
                     value: "20px"
                 spread:
-                    value: "0px"
+                    value: "0"
                 color:
                     value: "#c0c0c0"
 

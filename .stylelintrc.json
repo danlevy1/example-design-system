@@ -1,0 +1,16 @@
+{
+    "extends": [
+        "stylelint-config-standard",
+        "stylelint-config-sass-guidelines"
+    ],
+    "rules": {
+        "string-quotes": "double",
+        "indentation": 4,
+        "color-hex-length": null,
+        "no-missing-end-of-source-newline": null,
+        "declaration-property-value-disallowed-list": {
+            "/^border/": "0"
+        }
+    },
+    "defaultSeverity": "error"
+}
