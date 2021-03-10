@@ -12,5 +12,6 @@
             "/^border/": "0"
         }
     },
+    "ignoreFiles": "**/dist/**/*.(scss|css)",
     "defaultSeverity": "error"
 }

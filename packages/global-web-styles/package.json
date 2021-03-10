@@ -1,17 +1,17 @@
 {
     "name": "@x3r5e/global-web-styles",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Global Web Styles",
-    "main": "dist/index.js",
-    "module": "dist/index.es.js",
+    "main": "dist/index.css",
     "files": [
         "dist/"
     ],
     "scripts": {
         "prepublishOnly": "npm-run-all build",
         "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
-        "build": "npm-run-all rollup",
-        "rollup": "rollup -c",
+        "build": "npm-run-all delete-dist postcss",
+        "delete-dist": "rm -rf ./dist",
+        "postcss": "postcss ./src/index.css --output ./dist/index.css",
         "test": "",
         "lint": "npm-run-all eslint stylelint",
         "eslint": "eslint --max-warnings 0 .",
@@ -30,7 +30,7 @@
     "license": "MIT",
     "peerDependencies": {},
     "devDependencies": {
-        "@rollup/plugin-node-resolve": "^11.2.0",
+        "cssnano": "^4.1.10",
         "eslint": "^7.21.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-compat": "^3.9.0",
@@ -38,12 +38,10 @@
         "eslint-plugin-prettier": "^3.3.1",
         "npm-run-all": "^4.1.5",
         "postcss": "^8.2.8",
+        "postcss-cli": "^8.3.1",
         "postcss-preset-env": "^6.7.0",
         "postcss-reporter": "^7.0.2",
-        "prettier": "^2.2.1",
-        "rollup": "^2.41.0",
-        "rollup-plugin-delete": "^2.0.0",
-        "rollup-plugin-postcss": "^4.0.0"
+        "prettier": "^2.2.1"
     },
     "dependencies": {}
 }
