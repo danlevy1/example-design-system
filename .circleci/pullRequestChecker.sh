@@ -159,6 +159,17 @@ function endPackagePRChecker() {
     printf "\n${GREEN}======================== CHECKS FOR @x3r5e/$packageName HAVE SUCCESSFULLY COMPLETED ========================\n\n${END}"
 }
 
+function runGlobalWebStylesPRChecker() {
+    local packageName="global-web-styles"
+
+    beginPackagePRChecker
+    installDependencies "$packageName"
+    runLinter "$packageName"
+    runTests "$packageName"
+    buildPackage "$packageName"
+    endPackagePRChecker
+}
+
 function runDesignTokensPRChecker() {
     local packageName="design-tokens"
 
@@ -212,6 +223,7 @@ else
     printf "${GREEN}Using cache for root package. No install needed.\n\n${END}"
 fi
 
+runGlobalWebStylesPRChecker
 runDesignTokensPRChecker
 runIconsPRChecker
 runComponentStylesPRChecker

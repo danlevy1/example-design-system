@@ -1,0 +1,19 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:compat/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "module"
+    },
+    "ignorePatterns": ["dist/", "node_modules"]
+}
