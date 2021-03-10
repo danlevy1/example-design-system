@@ -75,6 +75,16 @@ function endSuccessfulPackagePublish() {
     printf "${GREEN}======== @x3r5e/"$packageName" PUBLISHED ========\n\n${END}"
 }
 
+function publishGlobalWebStylesPackage() {
+    local packageName="global-web-styles"
+
+    beginPackagePublish "$packageName"
+    
+    npm publish
+
+    endSuccessfulPackagePublish "$packageName"
+}
+
 function publishDesignTokensPackage() {
     local packageName="design-tokens"
 
@@ -116,6 +126,15 @@ function publishReactComponentsPackage() {
     
     endSuccessfulPackagePublish "$packageName"
 }
+
+# Publishes the global-web-styles package
+isNewVersionOfGlobalWebStylesBeingPublished=false;
+
+if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+then
+    isNewVersionOfGlobalWebStylesBeingPublished=true;
+    publishGlobalWebStylesPackage
+fi
 
 # Publishes the design-tokens package
 isNewVersionOfDesignTokensBeingPublished=false;
@@ -165,12 +184,18 @@ if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "react-components" )
 then
     isNewVersionOfReactComponentsBeingPublished=true;
 
-    if [[ $isNewVersionOfIconsBeingPublished = true || $isNewVersionOfComponentStylesBeingPublished = true ]]
+    if [[ $isNewVersionOfGlobalWebStylesBeingPublished = true || $isNewVersionOfIconsBeingPublished = true || $isNewVersionOfComponentStylesBeingPublished = true ]]
     then
         sleepBetweenPublishCommands
     fi
 
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
+    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "global-web-styles" ) = "true"  ]]
+    then
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/global-web-styles${END}${RED} is not yet available.\n${END}"
+        printManualJobTriggerInstructions icons
+
+        exit 1
+    elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
     then
         printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available.\n${END}"
         printManualJobTriggerInstructions icons

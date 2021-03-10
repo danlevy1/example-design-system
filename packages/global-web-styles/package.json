@@ -1,0 +1,49 @@
+{
+    "name": "@x3r5e/global-web-styles",
+    "version": "0.1.0",
+    "description": "Global Web Styles",
+    "main": "dist/index.js",
+    "module": "dist/index.es.js",
+    "files": [
+        "dist/"
+    ],
+    "scripts": {
+        "prepublishOnly": "npm-run-all build",
+        "postpublish": "chmod u+x ../../scripts/postpublish.sh && ../../scripts/postpublish.sh",
+        "build": "npm-run-all rollup",
+        "rollup": "rollup -c",
+        "test": "",
+        "lint": "npm-run-all eslint stylelint",
+        "eslint": "eslint --max-warnings 0 .",
+        "stylelint": "cd ../.. && PATH=$(npm bin):$PATH stylelint --max-warnings 0 './packages/global-web-styles/**/*.(css|scss)' && cd packages/global-web-styles"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/danlevy1/example-design-system.git",
+        "directory": "packages/global-web-styles"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "keywords": [],
+    "author": "Daniel Levy (https://www.danlevy.info)",
+    "license": "MIT",
+    "peerDependencies": {},
+    "devDependencies": {
+        "@rollup/plugin-node-resolve": "^11.2.0",
+        "eslint": "^7.21.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-compat": "^3.9.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.3.1",
+        "npm-run-all": "^4.1.5",
+        "postcss": "^8.2.8",
+        "postcss-preset-env": "^6.7.0",
+        "postcss-reporter": "^7.0.2",
+        "prettier": "^2.2.1",
+        "rollup": "^2.41.0",
+        "rollup-plugin-delete": "^2.0.0",
+        "rollup-plugin-postcss": "^4.0.0"
+    },
+    "dependencies": {}
+}
