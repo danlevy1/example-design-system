@@ -7,10 +7,17 @@
         "string-quotes": "double",
         "indentation": 4,
         "color-hex-length": null,
+        "color-named": null,
         "no-missing-end-of-source-newline": null,
         "declaration-property-value-disallowed-list": {
             "/^border/": "0"
-        }
+        },
+        "selector-class-pattern": [
+            "^[a-z][a-zA-Z0-9]+$",
+            {
+                "resolveNestedSelectors": true
+            }
+        ]
     },
     "ignoreFiles": "**/dist/**/*.(scss|css)",
     "defaultSeverity": "error"
