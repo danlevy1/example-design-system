@@ -1,14 +1,14 @@
 import copy from "rollup-plugin-copy";
 import del from "rollup-plugin-delete";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import postcss from "rollup-plugin-postcss";
+import styles from "rollup-plugin-styles";
 import pkg from "./package.json";
 
 const isInWatchMode = process.env.ROLLUP_WATCH;
 
 const scopedCssModuleName = isInWatchMode
-    ? "[name]__[local]___[hash:base64:5]"
-    : "___[hash:base64:5]";
+    ? "[name]__[local]___[hash:5]"
+    : "___[hash:5]";
 
 const external = [
     ...Object.keys(pkg.devDependencies),
@@ -24,7 +24,7 @@ const plugins = [
         flatten: false,
     }),
     nodeResolve(),
-    postcss({
+    styles({
         minimize: true,
         modules: {
             generateScopedName: scopedCssModuleName,
@@ -32,18 +32,22 @@ const plugins = [
     }),
 ];
 
+const outputFileSharedOptions = {
+    exports: "named",
+};
+
 export default {
     input: "src/index.js",
     output: [
         {
             file: pkg.main,
             format: "cjs",
-            exports: "named",
+            ...outputFileSharedOptions,
         },
         {
             file: pkg.module,
             format: "esm",
-            exports: "named",
+            ...outputFileSharedOptions,
         },
     ],
     plugins,

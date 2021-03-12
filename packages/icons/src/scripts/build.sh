@@ -18,8 +18,8 @@ printf "${CYAN_BRIGHT}Generating index.js and index.d.ts files...\n${END}"
 indexJSFilePath=./src/index.js
 indexDTSFilePath=./src/index.d.ts
 
-printf "//This is an auto-generated file\n\n" > "$indexJSFilePath"
-printf "//This is an auto-generated file\n\n" > "$indexDTSFilePath"
+printf "// This is an auto-generated file\n\n" > "$indexJSFilePath"
+printf "// This is an auto-generated file\n\n" > "$indexDTSFilePath"
 
 for svgFilepath in ./assets/svg/*.svg
 do

@@ -1,1 +1,1 @@
-export { default as ButtonStyles } from "./Button/Button.module.scss";
+export { ButtonStyles } from "./Button";

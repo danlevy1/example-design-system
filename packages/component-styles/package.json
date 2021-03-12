@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/component-styles",
-    "version": "0.11.0",
+    "version": "0.11.1",
     "description": "Component Styles",
     "files": [
         "dist/"
@@ -15,7 +15,7 @@
         "start": "npm-run-all --parallel --race tsm:watch rollup:watch",
         "rollup": "rollup -c",
         "rollup:watch": "rollup -c -w",
-        "tsm": "tsm --exportType default src/components",
+        "tsm": "tsm --banner '// This is an auto-generated file\n\n' --exportType default src/components",
         "tsm:watch": "tsm --watch --exportType default src/components",
         "buildDesignTokens": "node --unhandled-rejections=strict ./src/scripts/buildDesignTokens",
         "lint": "npm-run-all eslint stylelint",
@@ -53,7 +53,7 @@
         "rollup": "^2.39.1",
         "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-delete": "^2.0.0",
-        "rollup-plugin-postcss": "^4.0.0",
+        "rollup-plugin-styles": "^3.14.1",
         "sass": "^1.32.8",
         "style-dictionary": "3.0.0-rc.2",
         "typed-scss-modules": "^4.1.0",
