@@ -19,6 +19,6 @@
             }
         ]
     },
-    "ignoreFiles": "**/dist/**/*.(scss|css)",
+    "ignoreFiles": ["**/dist/**/*", "**/docs/**/*"],
     "defaultSeverity": "error"
 }
