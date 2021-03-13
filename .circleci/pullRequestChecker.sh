@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+args=("$@")
+netlify_auth_token=${args[0]}
+netlify_react_docs_id=${args[1]}
+
 # Command line output formats
 CYAN_BRIGHT='\033[0;96m'
 GREEN='\033[0;32m'
@@ -151,6 +155,34 @@ function buildPackage() {
     printf "\n${GREEN}-------- @x3r5e/$packageName SUCCESSFULLY BUILT --------\n\n${END}"
 }
 
+function buildDocs() {
+    local packageName="$1"
+
+    printf "${CYAN_BRIGHT}-------- BUILDING DOCS FOR @x3r5e/$packageName --------\n${END}"
+
+    cd ./packages/"$packageName"
+
+    npm run build:docs
+
+    cd ../..
+
+    printf "\n${GREEN}-------- @x3r5e/$packageName DOCS SUCCESSFULLY BUILT --------\n\n${END}"
+}
+
+function deployDocsDryRun() {
+    local packageName="$1"
+
+    printf "${CYAN_BRIGHT}-------- STARTING A DRY-RUN DOCS DEPLOYMENT FOR @x3r5e/$packageName --------\n${END}"
+
+    cd ./packages/"$packageName"
+
+    PATH=$(npm bin):$PATH netlify deploy --auth $netlify_auth_token --site $netlify_react_docs_id --dir=./docs
+
+    cd ../..
+
+    printf "\n${GREEN}-------- DRY-RUN DOCS DEPLOYMENT @x3r5e/$packageName SUCCESSFULLY COMPLETED --------\n\n${END}"
+}
+
 function beginPackagePRChecker() {
     printf "\n${CYAN_BRIGHT}======================== RUNNING CHECKS FOR @x3r5e/$packageName ========================\n\n${END}"
 }
@@ -213,6 +245,8 @@ function runReactComponentsPRChecker() {
     runLinter "$packageName"
     runTests "$packageName"
     buildPackage "$packageName"
+    buildDocs "$packageName"
+    deployDocsDryRun "$packageName"
     endPackagePRChecker
 }
 

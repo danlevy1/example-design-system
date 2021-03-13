@@ -3,6 +3,8 @@ set -e
 
 args=("$@")
 npm_token=${args[0]}
+netlify_auth_token=${args[1]}
+netlify_react_docs_id=${args[2]}
 
 # Command line output formats
 CYAN_BRIGHT='\033[0;96m'
@@ -127,6 +129,19 @@ function publishReactComponentsPackage() {
     endSuccessfulPackagePublish "$packageName"
 }
 
+function publishReactComponentsDocs() {
+    printf "\n\n${CYAN_BRIGHT}======== PUBLISHING DOCS FOR @x3r5e/"$packageName" ========\n${END}"
+
+    cd packages/react-components
+
+    npm run build:docs
+    PATH=$(npm bin):$PATH netlify deploy --auth $netlify_auth_token --site $netlify_react_docs_id --dir=./docs --prod
+    
+    cd ../..
+
+    printf "${GREEN}======== @x3r5e/"$packageName" DOCS PUBLISHED ========\n\n${END}"
+}
+
 # Publishes the global-web-styles package
 isNewVersionOfGlobalWebStylesBeingPublished=false;
 
@@ -209,6 +224,7 @@ then
         exit 1
     else
         publishReactComponentsPackage
+        publishReactComponentsDocs
     fi
 fi
 

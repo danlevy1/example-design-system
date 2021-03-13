@@ -33,7 +33,7 @@ jobs:
                   command: git branch --set-upstream-to origin/$CIRCLE_BRANCH
             - run:
                   name: Publish Packages
-                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN
+                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN $NETLIFY_AUTH_TOKEN $NETLIFY_REACT_DOCS_ID
     pull-request-checker-job:
         docker:
             - image: cimg/node:14.15.5
@@ -46,7 +46,7 @@ jobs:
                   key: node-modules-all-packages-v1-{{ checksum "combined-package-lock.txt" }}
             - run:
                   name: Pull Request Checker
-                  command: chmod u+x ./.circleci/pullRequestChecker.sh && ./.circleci/pullRequestChecker.sh
+                  command: chmod u+x ./.circleci/pullRequestChecker.sh && ./.circleci/pullRequestChecker.sh $NETLIFY_AUTH_TOKEN $NETLIFY_REACT_DOCS_ID
             - save_cache:
                   paths:
                       - ./packages/design-tokens/node_modules
