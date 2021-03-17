@@ -16,6 +16,8 @@ raw:
             base:
                 value: "{raw.border.radius.200.value}"
         width:
+            0:
+                value: "0px"
             100:
                 value: "1px"
             200:

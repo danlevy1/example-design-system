@@ -4,14 +4,22 @@ raw:
             value: "80px"
         "800":
             value: "60px"
+        "770":
+            value: "54px"
+        "720":
+            value: "44px"
         "700":
             value: "40px"
+        "640":
+            value: "34px"
         "600":
             value: "30px"
         "500":
             value: "24px"
         "400":
             value: "20px"
+        "350":
+            value: "18px"
         "300":
             value: "16px"
         "200":
