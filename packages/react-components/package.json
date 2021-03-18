@@ -109,6 +109,7 @@
     "dependencies": {
         "@babel/runtime-corejs3": "^7.12.5",
         "@popperjs/core": "^2.6.0",
+        "@x3r5e/component-styles": "0.11.1",
         "@x3r5e/icons": "0.10.1",
         "classnames": "^2.2.6",
         "core-js": "^3.8.1",
