@@ -30,6 +30,7 @@ const plugins = [
         modules: {
             generateScopedName: scopedCssModuleName,
         },
+        mode: ["inject", { treeshakeable: true }],
     }),
     babel({
         babelHelpers: "runtime",
