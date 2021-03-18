@@ -70,20 +70,42 @@ function linkDependency() {
     cd ../..
 }
 
-function linkComponentStylesDependencies() {
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
-    then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/component-styles --------\n${END}"
+# function linkComponentStylesDependencies() {
+#     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
+#     then
+#         printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/component-styles --------\n${END}"
 
-        linkDependency component-styles design-tokens
+#         linkDependency component-styles design-tokens
 
-        printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/component-styles --------\n\n\n${END}"
-    else
-        printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/component-styles\n\n\n${END}"
-    fi
-}
+#         printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/component-styles --------\n\n\n${END}"
+#     else
+#         printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/component-styles\n\n\n${END}"
+#     fi
+# }
 
 function linkReactComponentsDependencies() {
+    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "global-web-styles" ) = "true"  ]]
+    then
+        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/global-web-styles INTO @x3r5e/react-components --------\n\n${END}"
+
+        linkDependency react-components global-web-styles
+
+        printf "\n${GREEN}-------- @x3r5e/global-web-styles LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
+    else
+        printf "${CYAN_BRIGHT}@x3r5e/global-web-styles was not linked into @x3r5e/react-components\n\n\n${END}"
+    fi
+
+    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
+    then
+        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/react-components --------\n\n${END}"
+
+        linkDependency react-components design-tokens
+
+        printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
+    else
+        printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/react-components\n\n\n${END}"
+    fi
+
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
     then
         printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/icons INTO @x3r5e/react-components --------\n${END}"
@@ -93,17 +115,6 @@ function linkReactComponentsDependencies() {
         printf "\n${GREEN}-------- @x3r5e/icons LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
     else
         printf "${CYAN_BRIGHT}@x3r5e/icons was not linked into @x3r5e/react-components\n\n\n${END}"
-    fi
-
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true"  ]]
-    then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/component-styles INTO @x3r5e/react-components --------\n\n${END}"
-
-        linkDependency react-components component-styles
-
-        printf "\n${GREEN}-------- @x3r5e/component-styles LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
-    else
-        printf "${CYAN_BRIGHT}@x3r5e/component-styles was not linked into @x3r5e/react-components\n\n\n${END}"
     fi
 }
 
@@ -224,17 +235,17 @@ function runIconsPRChecker() {
     endPackagePRChecker
 }
 
-function runComponentStylesPRChecker() {
-    local packageName="component-styles"
+# function runComponentStylesPRChecker() {
+#     local packageName="component-styles"
 
-    beginPackagePRChecker
-    installDependencies "$packageName"
-    linkComponentStylesDependencies
-    runLinter "$packageName"
-    runTests "$packageName"
-    buildPackage "$packageName"
-    endPackagePRChecker
-}
+#     beginPackagePRChecker
+#     installDependencies "$packageName"
+#     linkComponentStylesDependencies
+#     runLinter "$packageName"
+#     runTests "$packageName"
+#     buildPackage "$packageName"
+#     endPackagePRChecker
+# }
 
 function runReactComponentsPRChecker() {
     local packageName="react-components"
@@ -260,5 +271,5 @@ fi
 runGlobalWebStylesPRChecker
 runDesignTokensPRChecker
 runIconsPRChecker
-runComponentStylesPRChecker
+# runComponentStylesPRChecker
 runReactComponentsPRChecker

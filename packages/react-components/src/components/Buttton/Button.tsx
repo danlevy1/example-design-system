@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { ButtonStyles } from "@x3r5e/component-styles";
+import styles from "./Button.module.scss";
 
 export type ButtonProps = {
     className?: string;
@@ -15,10 +15,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
     ...rest
 }) => {
     return (
-        <button
-            {...rest}
-            className={classnames(ButtonStyles.button, className)}
-        >
+        <button {...rest} className={classnames(styles.button, className)}>
             {children}
         </button>
     );
