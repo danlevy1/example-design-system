@@ -107,16 +107,16 @@ function publishIconsPackage() {
     endSuccessfulPackagePublish "$packageName"
 }
 
-function publishComponentStylesPackage() {
-    local packageName="component-styles"
+# function publishComponentStylesPackage() {
+#     local packageName="component-styles"
 
-    beginPackagePublish "$packageName"
+#     beginPackagePublish "$packageName"
         
-    npm install --save-exact @x3r5e/design-tokens@latest
-    npm publish
+#     npm install --save-exact @x3r5e/design-tokens@latest
+#     npm publish
     
-    endSuccessfulPackagePublish "$packageName"
-}
+#     endSuccessfulPackagePublish "$packageName"
+# }
 
 function publishReactComponentsPackage() {
     local packageName="react-components"
@@ -170,36 +170,36 @@ then
 fi
 
 # Publishes the component-styles package if the latest version of the design-tokens package is available
-isNewVersionOfComponentStylesBeingPublished=false;
+# isNewVersionOfComponentStylesBeingPublished=false;
 
-if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true" ]]
-then
-    isNewVersionOfComponentStylesBeingPublished=true;
+# if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true" ]]
+# then
+#     isNewVersionOfComponentStylesBeingPublished=true;
 
-    if [[ $isNewVersionOfDesignTokensBeingPublished = true ]]
-    then
-        sleepBetweenPublishCommands
-    fi
+#     if [[ $isNewVersionOfDesignTokensBeingPublished = true ]]
+#     then
+#         sleepBetweenPublishCommands
+#     fi
 
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
-    then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available.\n${END}"
-        printManualJobTriggerInstructions design-tokens
+#     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+#     then
+#         printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available.\n${END}"
+#         printManualJobTriggerInstructions design-tokens
 
-        exit 1
-    else
-        publishComponentStylesPackage
-    fi
-fi
+#         exit 1
+#     else
+#         publishComponentStylesPackage
+#     fi
+# fi
 
-# Publishes the react-components package if the latest version of the icons package and component-styles package is available
+# Publishes the react-components package if the latest version of the global-web-styles package, design-tokens package, and icons package is available
 isNewVersionOfReactComponentsBeingPublished=false;
 
 if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "react-components" ) = "true" ]]
 then
     isNewVersionOfReactComponentsBeingPublished=true;
 
-    if [[ $isNewVersionOfGlobalWebStylesBeingPublished = true || $isNewVersionOfIconsBeingPublished = true || $isNewVersionOfComponentStylesBeingPublished = true ]]
+    if [[ $isNewVersionOfGlobalWebStylesBeingPublished = true || $isNewVersionOfDesignTokensBeingPublished = true || $isNewVersionOfIconsBeingPublished = true ]]
     then
         sleepBetweenPublishCommands
     fi
@@ -207,19 +207,19 @@ then
     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "global-web-styles" ) = "true"  ]]
     then
         printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/global-web-styles${END}${RED} is not yet available.\n${END}"
-        printManualJobTriggerInstructions icons
+        printManualJobTriggerInstructions global-web-styles
+
+        exit 1
+    elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
+    then
+        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available.\n${END}"
+        printManualJobTriggerInstructions design-tokens
 
         exit 1
     elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
     then
         printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available.\n${END}"
         printManualJobTriggerInstructions icons
-
-        exit 1
-    elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true"  ]]
-    then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/component-styles${END}${RED} is not yet available.\n${END}"
-        printManualJobTriggerInstructions component-styles
 
         exit 1
     else

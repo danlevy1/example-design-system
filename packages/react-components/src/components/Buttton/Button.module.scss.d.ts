@@ -1,3 +1,5 @@
+// This is an auto-generated file
+
 export type Styles = {
     button: string;
 };

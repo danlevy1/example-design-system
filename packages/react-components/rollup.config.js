@@ -2,8 +2,15 @@ import commonjs from "@rollup/plugin-commonjs";
 import del from "rollup-plugin-delete";
 import cleanup from "rollup-plugin-cleanup";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import styles from "rollup-plugin-styles";
 import babel from "@rollup/plugin-babel";
 import pkg from "./package.json";
+
+const isInWatchMode = process.env.ROLLUP_WATCH;
+
+const scopedCssModuleName = isInWatchMode
+    ? "[name]__[local]___[hash:5]"
+    : "___[hash:5]";
 
 const external = [
     ...Object.keys(pkg.devDependencies),
@@ -18,6 +25,12 @@ const plugins = [
     }),
     nodeResolve({ extensions }),
     commonjs(),
+    styles({
+        minimize: true,
+        modules: {
+            generateScopedName: scopedCssModuleName,
+        },
+    }),
     babel({
         babelHelpers: "runtime",
         extensions,

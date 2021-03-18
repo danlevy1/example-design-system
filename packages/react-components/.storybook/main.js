@@ -1,3 +1,5 @@
+const { resolve } = require("path");
+
 module.exports = {
     webpackFinal: async (config) => {
         /*
@@ -10,6 +12,23 @@ module.exports = {
                 /\@x3r5e\/.+\/node_modules/,
             ],
         };
+
+        config.module.rules.push({
+            test: /\.scss$/,
+            loaders: [
+                "style-loader",
+                {
+                    loader: "css-loader",
+                    options: {
+                        modules: {
+                            localIdentName: "[name]__[local]___[hash:base64:5]",
+                        },
+                    },
+                },
+                "sass-loader",
+            ],
+            include: resolve(__dirname, "../src"),
+        });
 
         return config;
     },
