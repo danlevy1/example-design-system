@@ -8,6 +8,8 @@
         "indentation": 4,
         "color-hex-length": null,
         "color-named": null,
+        "length-zero-no-unit": null,
+        "color-hex-case": "upper",
         "no-missing-end-of-source-newline": null,
         "declaration-property-value-disallowed-list": {
             "/^border/": "0"

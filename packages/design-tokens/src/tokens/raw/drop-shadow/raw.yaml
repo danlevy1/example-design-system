@@ -10,7 +10,7 @@ raw:
             spread:
                 value: "0"
             color:
-                value: "{raw.color.drop-shadow.500}"
+                value: "{raw.color.gray.drop-shadow.500.value}"
 
         200:
             x:
@@ -22,7 +22,7 @@ raw:
             spread:
                 value: "0"
             color:
-                value: "{raw.color.drop-shadow.500}"
+                value: "{raw.color.gray.drop-shadow.500.value}"
 
         300:
             x:
@@ -34,7 +34,7 @@ raw:
             spread:
                 value: "0"
             color:
-                value: "{raw.color.drop-shadow.500}"
+                value: "{raw.color.gray.drop-shadow.500.value}"
 
         400:
             x:
@@ -46,9 +46,9 @@ raw:
             spread:
                 value: "0"
             color:
-                value: "{raw.color.drop-shadow.500}"
+                value: "{raw.color.gray.drop-shadow.500.value}"
 
-        500:
+        500.value:
             x:
                 value: "6px"
             y:
@@ -58,7 +58,7 @@ raw:
             spread:
                 value: "0"
             color:
-                value: "{raw.color.drop-shadow.500}"
+                value: "{raw.color.gray.drop-shadow.500.value}"
 
         focus:
             x1:
@@ -70,7 +70,7 @@ raw:
             spread1:
                 value: "1px"
             color1:
-                value: "{raw.color.white.100}"
+                value: "{raw.color.white.100.value}"
             x2:
                 value: "0px"
             y2:
@@ -80,16 +80,16 @@ raw:
             spread2:
                 value: "3px"
             color2:
-                value: "{raw.color.blue.focus}"
+                value: "{raw.color.blue.focus.value}"
 
         base:
             x:
-                value: "{raw.drop.shadow.300.x.value}"
+                value: "{raw.drop-shadow.300.x.value}"
             y:
-                value: "{raw.drop.shadow.300.y.value}"
+                value: "{raw.drop-shadow.300.y.value}"
             blur:
-                value: "{raw.drop.shadow.300.blur.value}"
+                value: "{raw.drop-shadow.300.blur.value}"
             spread:
-                value: "{raw.drop.shadow.300.spread.value}"
+                value: "{raw.drop-shadow.300.spread.value}"
             color:
-                value: "{raw.drop.shadow.300.color.value}"
+                value: "{raw.drop-shadow.300.color.value}"

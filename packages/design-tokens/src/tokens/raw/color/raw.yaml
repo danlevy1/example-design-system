@@ -30,10 +30,9 @@ raw:
                 value: "#535353"
             900:
                 value: "#404040"
-            drop:
-                shadow:
-                    "500":
-                        value: "#C0C0C0"
+            drop-shadow:
+                "500":
+                    value: "#C0C0C0"
         red:
             100:
                 value: "#C78585"
