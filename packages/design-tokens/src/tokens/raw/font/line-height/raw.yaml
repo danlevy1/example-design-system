@@ -1,0 +1,25 @@
+raw:
+    line:
+        height:
+            900:
+                value: "134px"
+            800:
+                value: "102px"
+            700:
+                value: "84px"
+            600:
+                value: "68px"
+            500:
+                value: "50px"
+            400:
+                value: "34px"
+            300:
+                value: "28px"
+            200:
+                value: "22px"
+            100:
+                value: "18px"
+            75:
+                value: "14px"
+            base:
+                value: "{raw.line.height.200.value}"

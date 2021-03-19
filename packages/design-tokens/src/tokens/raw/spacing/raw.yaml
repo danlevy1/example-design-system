@@ -1,36 +1,38 @@
 raw:
     spacing:
-        "900":
+        900:
+            value: "200px"
+        850:
+            value: "150px"
+        800:
+            value: "100px"
+        700:
             value: "80px"
-        "800":
+        600:
             value: "60px"
-        "770":
+        570:
             value: "54px"
-        "720":
+        520:
             value: "44px"
-        "700":
+        500:
             value: "40px"
-        "640":
+        440:
             value: "34px"
-        "600":
+        400:
             value: "30px"
-        "500":
-            value: "24px"
-        "400":
+        300:
             value: "20px"
-        "350":
+        280:
             value: "18px"
-        "300":
-            value: "16px"
-        "200":
-            value: "12px"
-        "100":
+        200:
             value: "10px"
-        "75":
+        100:
             value: "8px"
-        "50":
+        75:
             value: "6px"
-        "25":
+        50:
             value: "4px"
-        "10":
+        25:
             value: "2px"
+        10:
+            value: "1px"

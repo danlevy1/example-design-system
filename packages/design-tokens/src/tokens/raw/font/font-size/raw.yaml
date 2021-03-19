@@ -1,25 +1,25 @@
 raw:
     font:
         size:
-            "900":
+            900:
                 value: "96px"
-            "800":
+            800:
                 value: "72px"
-            "700":
+            700:
                 value: "60px"
-            "600":
+            600:
                 value: "48px"
-            "500":
+            500:
                 value: "36px"
-            "400":
+            400:
                 value: "24px"
-            "300":
+            300:
                 value: "20px"
-            "200":
+            200:
                 value: "16px"
-            "100":
+            100:
                 value: "12px"
-            "75":
+            75:
                 value: "10px"
             base:
                 value: "{raw.font.size.200.value}"
