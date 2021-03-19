@@ -1,8 +1,6 @@
 raw:
     border:
         radius:
-            circle:
-                value: "50%"
             100:
                 value: "2px"
             200:
@@ -13,6 +11,8 @@ raw:
                 value: "8px"
             500:
                 value: "10px"
+            circle:
+                value: "50%"
             base:
                 value: "{raw.border.radius.200.value}"
         width:

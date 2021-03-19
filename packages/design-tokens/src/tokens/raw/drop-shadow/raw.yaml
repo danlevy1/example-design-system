@@ -1,0 +1,95 @@
+raw:
+    drop-shadow:
+        100:
+            x:
+                value: "2px"
+            y:
+                value: "2px"
+            blur:
+                value: "4px"
+            spread:
+                value: "0"
+            color:
+                value: "{raw.color.drop-shadow.500}"
+
+        200:
+            x:
+                value: "3px"
+            y:
+                value: "3px"
+            blur:
+                value: "6px"
+            spread:
+                value: "0"
+            color:
+                value: "{raw.color.drop-shadow.500}"
+
+        300:
+            x:
+                value: "4px"
+            y:
+                value: "4px"
+            blur:
+                value: "10px"
+            spread:
+                value: "0"
+            color:
+                value: "{raw.color.drop-shadow.500}"
+
+        400:
+            x:
+                value: "6px"
+            y:
+                value: "6px"
+            blur:
+                value: "16px"
+            spread:
+                value: "0"
+            color:
+                value: "{raw.color.drop-shadow.500}"
+
+        500:
+            x:
+                value: "6px"
+            y:
+                value: "6px"
+            blur:
+                value: "20px"
+            spread:
+                value: "0"
+            color:
+                value: "{raw.color.drop-shadow.500}"
+
+        focus:
+            x1:
+                value: "0px"
+            y1:
+                value: "0px"
+            blur1:
+                value: "0px"
+            spread1:
+                value: "1px"
+            color1:
+                value: "{raw.color.white.100}"
+            x2:
+                value: "0px"
+            y2:
+                value: "0px"
+            blur2:
+                value: "0px"
+            spread2:
+                value: "3px"
+            color2:
+                value: "{raw.color.blue.focus}"
+
+        base:
+            x:
+                value: "{raw.drop.shadow.300.x.value}"
+            y:
+                value: "{raw.drop.shadow.300.y.value}"
+            blur:
+                value: "{raw.drop.shadow.300.blur.value}"
+            spread:
+                value: "{raw.drop.shadow.300.spread.value}"
+            color:
+                value: "{raw.drop.shadow.300.color.value}"
