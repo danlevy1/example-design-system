@@ -1,0 +1,48 @@
+shadow:
+    100:
+        value:
+            - x: 2
+              y: 2
+              blur: 4
+              spread: 0
+              color: "{color.gray.shadow.500.value}"
+    200:
+        value:
+            - x: 3
+              y: 3
+              blur: 6
+              spread: 0
+              color: "{color.gray.shadow.500.value}"
+    300:
+        value:
+            - x: 4
+              y: 4
+              blur: 10
+              spread: 0
+              color: "{color.gray.shadow.500.value}"
+    400:
+        value:
+            - x: 6
+              y: 6
+              blur: 16
+              spread: 0
+              color: "{color.gray.shadow.500.value}"
+    500:
+        value:
+            - x: 6
+              y: 6
+              blur: 20
+              spread: 0
+              color: "{color.gray.shadow.500.value}"
+    focus:
+        value:
+            - x: 0
+              y: 0
+              blur: 0
+              spread: 1
+              color: "{color.white.100.value}"
+            - x: 0
+              y: 0
+              blur: 0
+              spread: 3
+              color: "{color.blue.focus.value}"

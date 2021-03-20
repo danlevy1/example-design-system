@@ -1,0 +1,13 @@
+shadow:
+    focus:
+        value:
+            - x: 0
+              y: 0
+              blur: 0
+              spread: 1
+              color: "#000000"
+            - x: 0
+              y: 0
+              blur: 0
+              spread: 3
+              color: "#000000"

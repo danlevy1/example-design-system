@@ -1,5 +1,8 @@
 const { resolve } = require("path");
 const styleDictionary = require("style-dictionary");
+const {
+    "size/pxToRem": pxToRemTransform,
+} = require("style-dictionary/lib/common/transforms");
 const yaml = require("yaml");
 
 /**
@@ -115,26 +118,112 @@ const addPlatformToConfig = (platform, config) => {
     };
 };
 
-const createTransformGroups = (styleDictionary) => {
+/**
+ * Creates custom transforms
+ */
+const createCustomTransforms = () => {
+    // Creates a CSS box-shadow
+    styleDictionary.registerTransform({
+        name: "shadow/css",
+        type: "value",
+        matcher: function (prop) {
+            return prop.attributes.category === "shadow";
+        },
+        transformer: function (prop, options) {
+            const shadowList = prop.original.value;
+
+            return shadowList.reduce(
+                (accumulator, { x, y, blur, spread, color }) => {
+                    const xAsRem = pxToRemTransform.transformer(
+                        {
+                            ...prop,
+                            value: x,
+                            attributes: { category: "size" },
+                        },
+                        options
+                    );
+
+                    const yAsRem = pxToRemTransform.transformer(
+                        {
+                            ...prop,
+                            value: y,
+                            attributes: { category: "size" },
+                        },
+                        options
+                    );
+
+                    const blurAsRem = pxToRemTransform.transformer(
+                        {
+                            ...prop,
+                            value: blur,
+                            attributes: { category: "size" },
+                        },
+                        options
+                    );
+
+                    const spreadAsRem = pxToRemTransform.transformer(
+                        {
+                            ...prop,
+                            value: spread,
+                            attributes: { category: "size" },
+                        },
+                        options
+                    );
+
+                    const currentShadowValue = `${xAsRem} ${yAsRem} ${blurAsRem} ${spreadAsRem} ${color}`;
+
+                    if (accumulator !== "") {
+                        return `${accumulator}, ${currentShadowValue}`;
+                    }
+
+                    return currentShadowValue;
+                },
+                ""
+            );
+        },
+    });
+};
+
+/**
+ * Creates transform groups
+ */
+const createTransformGroups = () => {
+    // TODO: If a transform is added/removed from any of the transform groups below, the custom transforms might need to be updated
+
     /*
      * Creates the CSS transform group.
      * The CSS transform group can be used for CSS pre-processors as well.
      */
     styleDictionary.registerTransformGroup({
         name: "css",
-        transforms: ["attribute/cti", "name/cti/kebab"],
+        transforms: [
+            "attribute/cti",
+            "shadow/css",
+            "name/cti/kebab",
+            "size/pxToRem",
+        ],
     });
 
     // Creates the JS transform group
     styleDictionary.registerTransformGroup({
         name: "js",
-        transforms: ["attribute/cti", "name/cti/constant"],
+        transforms: [
+            "attribute/cti",
+            "shadow/css",
+            "name/cti/constant",
+            "size/pxToRem",
+        ],
     });
 
     // Creates the JSON transform group
     styleDictionary.registerTransformGroup({
         name: "json",
-        transforms: ["attribute/cti", "name/cti/kebab"],
+        transforms: [
+            "attribute/cti",
+            "shadow/css",
+            "name/cti/kebab",
+            "size/pxToRem",
+        ],
     });
 };
 
@@ -180,7 +269,8 @@ const buildDesignTokens = async (
         addPlatformToConfig(platform, styleDictionaryConfig);
     });
 
-    createTransformGroups(styleDictionary);
+    createCustomTransforms();
+    createTransformGroups();
 
     const styleDictionaryWithOptions = styleDictionary.extend(
         styleDictionaryConfig

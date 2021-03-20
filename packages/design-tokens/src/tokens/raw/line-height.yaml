@@ -1,0 +1,23 @@
+size:
+    height:
+        line:
+            75:
+                value: 14
+            100:
+                value: 18
+            200:
+                value: 22
+            300:
+                value: 28
+            400:
+                value: 34
+            500:
+                value: 50
+            600:
+                value: 68
+            700:
+                value: 84
+            800:
+                value: 102
+            900:
+                value: 134

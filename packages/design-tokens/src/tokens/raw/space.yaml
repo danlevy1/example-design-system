@@ -1,0 +1,40 @@
+size:
+    space:
+        10:
+            value: 1
+        25:
+            value: 2
+        50:
+            value: 4
+        75:
+            value: 6
+        100:
+            value: 8
+        200:
+            value: 10
+        220:
+            value: 12
+        280:
+            value: 18
+        300:
+            value: 20
+        400:
+            value: 30
+        440:
+            value: 34
+        500:
+            value: 40
+        520:
+            value: 44
+        570:
+            value: 54
+        600:
+            value: 60
+        700:
+            value: 80
+        800:
+            value: 100
+        850:
+            value: 150
+        900:
+            value: 200
