@@ -6,31 +6,36 @@ const { buildDesignTokens, PlatformOptions } = require("../buildDesignTokens");
 const rimrafPromise = promisify(rimraf);
 
 const tokensKebabCase = new Map([
-    ["raw-color-purple-100", "#a9a5be"],
-    ["raw-font-size-100", "12px"],
-    ["raw-font-weight-100", "lighter"],
+    ["color-purple-100", "#A9A5BE"],
+    ["shadow-focus", "0 0 0 0.0625rem #000000, 0 0 0 0.1875rem #000000"],
+    ["size-font-100", "0.75rem"],
+    ["weight-font-200", 200],
 ]);
 
 const tokensPascalCase = new Map([
-    ["RAW_COLOR_PURPLE_100", "#a9a5be"],
-    ["RAW_FONT_SIZE_100", "12px"],
-    ["RAW_FONT_WEIGHT_100", "lighter"],
+    ["COLOR_PURPLE_100", "#A9A5BE"],
+    ["SHADOW_FOCUS", "0 0 0 0.0625rem #000000, 0 0 0 0.1875rem #000000"],
+    ["SIZE_FONT_100", "0.75rem"],
+    ["WEIGHT_FONT_200", 200],
 ]);
 
 const tokensJS = {
-    raw: {
-        color: {
-            purple: {
-                100: "#a9a5be",
-            },
+    color: {
+        purple: {
+            100: "#A9A5BE",
         },
+    },
+    shadow: {
+        focus: "0 0 0 0.0625rem #000000, 0 0 0 0.1875rem #000000",
+    },
+    size: {
         font: {
-            size: {
-                100: "12px",
-            },
-            weight: {
-                100: "lighter",
-            },
+            100: "0.75rem",
+        },
+    },
+    weight: {
+        font: {
+            200: 200,
         },
     },
 };
@@ -325,7 +330,13 @@ describe("Build Design Tokens", () => {
             expect(outputTokens.length).toBe(tokensPascalCase.size);
 
             tokensPascalCase.forEach((value, key) => {
-                let jsProperty = `"${key}": "${value}"`;
+                let jsProperty = `"${key}": `;
+                if (isNaN(value)) {
+                    jsProperty += `"${value}"`;
+                } else {
+                    jsProperty += value;
+                }
+
                 const indexOfDeclaration = outputTokens.indexOf(jsProperty);
 
                 // All JS properties should have a comma except for the last property
@@ -367,7 +378,14 @@ describe("Build Design Tokens", () => {
             // Asserts that the length and content of the output tokens file is correct
             expect(outputTokens.length).toBe(tokensPascalCase.size);
             tokensPascalCase.forEach((value, key) => {
-                const cssVariableDeclaration = `export const ${key} = "${value}";`;
+                let cssVariableDeclaration = `export const ${key} = `;
+                if (isNaN(value)) {
+                    cssVariableDeclaration += `"${value}"`;
+                } else {
+                    cssVariableDeclaration += value;
+                }
+                cssVariableDeclaration += ";";
+
                 expect(outputTokens).toContain(cssVariableDeclaration);
             });
         });

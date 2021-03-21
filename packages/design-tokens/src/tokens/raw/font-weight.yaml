@@ -1,0 +1,10 @@
+weight:
+    font:
+        200:
+            value: 200
+        400:
+            value: 400
+        600:
+            value: 600
+        800:
+            value: 800

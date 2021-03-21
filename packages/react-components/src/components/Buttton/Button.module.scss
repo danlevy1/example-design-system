@@ -1,12 +1,17 @@
 @use "../../design-tokens/_variables.scss" as *;
 
 .button {
-    background-color: $raw-color-blue-800;
+    background-color: $color-background-button-primary-default;
     border: none;
-    border-radius: $raw-border-radius-400;
-    color: $raw-color-white;
+    border-radius: $size-space-radius-border-button;
+    color: $color-foreground-button-primary-default;
     cursor: pointer;
-    font-size: $raw-font-size-400;
+    font-size: $size-space-font-button-medium;
+    font-weight: $weight-font-button;
     outline: none;
-    padding: $raw-spacing-75 $raw-spacing-400;
+    padding: $size-space-padding-button-small;
+
+    &:focus {
+        box-shadow: $shadow-focus;
+    }
 }
