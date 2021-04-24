@@ -4,24 +4,32 @@ import classnames from "classnames";
 import styles from "./Button.module.scss";
 
 export type ButtonProps = {
-    className?: string;
-    children?: React.ReactNode;
-    [prop: string]: any;
+    kind?: "primary" | "secondary" | "tertiary";
+    size?: "small" | "medium" | "large";
+    label?: React.ReactNode;
 };
 
 export const Button: React.FunctionComponent<ButtonProps> = ({
-    className,
-    children,
-    ...rest
+    kind = "primary",
+    size = "medium",
+    label,
 }) => {
     return (
-        <button {...rest} className={classnames(styles.button, className)}>
-            {children}
+        <button
+            type="button"
+            className={classnames(styles.button, styles[size], {
+                [styles.secondary]: kind === "secondary",
+                [styles.tertiary]: kind === "tertiary",
+            })}
+            data-turbo-component-name="Button"
+        >
+            <span className={classnames(styles.label)}>{label}</span>
         </button>
     );
 };
 
 Button.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
+    kind: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    label: PropTypes.string,
 };

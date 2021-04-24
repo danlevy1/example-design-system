@@ -1,11 +1,15 @@
 size:
     font:
-        75:
+        25:
             value: 10
-        100:
+        50:
             value: 12
-        200:
+        75:
+            value: 14
+        100:
             value: 16
+        200:
+            value: 18
         300:
             value: 20
         400:
