@@ -8,15 +8,26 @@ workflows:
             - publish-packages-job:
                   filters:
                       branches:
-                          only: main
+                          only:
+                              - main
+                              - /^.+custom-release.*/
     pull-request-checker:
         jobs:
             - pull-request-checker-job:
                   filters:
                       branches:
-                          ignore: main
+                          ignore:
+                              - main
+                              - /^.+custom-release.*/
 
 jobs:
+    confirm-release:
+        docker:
+            - image: cimg/node:14.15.5
+        steps:
+            - run:
+                  name: Test
+                  command: echo "test"
     publish-packages-job:
         docker:
             - image: cimg/node:14.15.5
@@ -33,7 +44,7 @@ jobs:
                   command: git branch --set-upstream-to origin/$CIRCLE_BRANCH
             - run:
                   name: Publish Packages
-                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $NPM_TOKEN $NETLIFY_AUTH_TOKEN $NETLIFY_REACT_DOCS_ID
+                  command: chmod u+x ./.circleci/publishPackages.sh && ./.circleci/publishPackages.sh $CIRCLE_BRANCH $NPM_TOKEN $NETLIFY_AUTH_TOKEN $NETLIFY_REACT_DOCS_ID
     pull-request-checker-job:
         docker:
             - image: cimg/node:14.15.5
