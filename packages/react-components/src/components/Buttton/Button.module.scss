@@ -1,17 +1,101 @@
 @use "../../design-tokens/_variables.scss" as *;
 
 .button {
-    background-color: $color-background-button-primary-default;
-    border: none;
-    border-radius: $size-space-radius-border-button;
-    color: $color-foreground-button-primary-default;
-    cursor: pointer;
-    font-size: $size-space-font-button-medium;
-    font-weight: $weight-font-button;
-    outline: none;
-    padding: $size-space-padding-button-small;
+    --color-background-button: #{$color-blue-500};
+    --color-content-button: #{$color-white-100};
+    --color-border-button: #{$color-transparent-pure};
+    --space-width-border-button: #{$size-space-0};
 
-    &:focus {
-        box-shadow: $shadow-focus;
+    cursor: pointer;
+    outline: none;
+    color: var(--color-content-button);
+    border-width: $size-space-25;
+    border-style: solid;
+    border-color: var(--color-border-button);
+    border-radius: $size-radius-border-200;
+    background-color: var(--color-background-button);
+    font-weight: 400;
+
+    .secondary {
+        --color-background-button: #{$color-transparent-pure};
+        --color-border-button: #{$color-blue-700};
+        --color-content-button: #{$color-blue-700};
     }
+
+    .tertiary {
+        --color-background-button: #{$color-transparent-pure};
+        --color-border-button: #{$color-transparent-pure};
+        --color-content-button: #{$color-blue-700};
+    }
+
+    &.small {
+        padding: $size-space-50 $size-space-200;
+
+        .label {
+            font-size: $size-font-100;
+            line-height: $size-font-100;
+        }
+    }
+
+    &.medium {
+        padding: $size-space-100 $size-space-280;
+
+        .label {
+            font-size: $size-font-300;
+            line-height: $size-font-300;
+        }
+    }
+
+    &.large {
+        padding: $size-space-200 $size-space-300;
+
+        .label {
+            font-size: $size-font-400;
+            line-height: $size-font-400;
+        }
+    }
+
+    // & .icon,
+    // & .spinner {
+    //     fill: var(--color-content-button);
+    // }
+
+    // &:hover {
+    //     & .primary {
+    //     }
+
+    //     & .secondary {
+    //     }
+
+    //     & .tertiary {
+    //     }
+    // }
+
+    // &:focus {
+    //     & .primary {
+    //     }
+
+    //     & .secondary {
+    //     }
+
+    //     & .tertiary {
+    //     }
+    // }
+
+    // &:active {
+    //     &.primary {
+    //     }
+
+    //     &.secondary {
+    //     }
+
+    //     &.tertiary {
+    //     }
+    // }
+
+    // &.loading {
+    // }
+
+    // &.disabled {
+    // }
 }

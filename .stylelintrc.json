@@ -11,6 +11,8 @@
         "length-zero-no-unit": null,
         "color-hex-case": "upper",
         "no-missing-end-of-source-newline": null,
+        "order/properties-alphabetical-order": null,
+        "max-nesting-depth": null,
         "declaration-property-value-disallowed-list": {
             "/^border/": "0"
         },

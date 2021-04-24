@@ -1,5 +1,7 @@
 size:
     space:
+        0:
+            value: 0
         10:
             value: 1
         25:
@@ -14,10 +16,16 @@ size:
             value: 10
         220:
             value: 12
+        240:
+            value: 14
+        260:
+            value: 16
         280:
             value: 18
         300:
             value: 20
+        340:
+            value: 24
         400:
             value: 30
         440:

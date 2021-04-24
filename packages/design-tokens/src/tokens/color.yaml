@@ -1,10 +1,13 @@
 color:
     transparent:
-        value: "transparent"
+        pure:
+            value: "transparent"
     black:
-        value: "#000000"
+        pure:
+            value: "#000000"
     white:
-        value: "#FFFFFF"
+        pure:
+            value: "#FFFFFF"
         100:
             value: "#FAFAFA"
         200:
