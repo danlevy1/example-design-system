@@ -16,7 +16,7 @@
         "build:design-tokens": "node --unhandled-rejections=strict ./src/scripts/buildDesignTokens",
         "build:types": "chmod u+x ./src/scripts/buildTypes.sh && ./src/scripts/buildTypes.sh",
         "rollup": "rollup -c",
-        "build:docs": "build-storybook --docs -s ./.storybook/public -o ./docs",
+        "build:docs": "build-storybook --docs -s ./.storybook/public -o ./docs --quiet",
         "start": "npm run copy-global-styles:storybook && npm run build:design-tokens && BROWSER='google chrome' npm run start:storybook",
         "start:docs": "npm-run-all copy-global-styles:storybook start:storybook-docs",
         "copy-global-styles:storybook": "cp ./node_modules/@x3r5e/global-web-styles/dist/index.css ./.storybook/public/global-styles.css",
