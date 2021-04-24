@@ -1,9 +1,10 @@
 #!/bin/bash
 set -e
 
-args=("$@")
-netlify_auth_token=${args[0]}
-netlify_react_docs_id=${args[1]}
+# Command line arguments
+ARGS=("$@")
+NETLIFY_AUTH_TOKEN=${ARGS[0]}
+NETLIFY_REACT_DOCS_ID=${ARGS[1]}
 
 # Command line output formats
 CYAN_BRIGHT='\033[0;96m'
@@ -12,30 +13,50 @@ RED='\033[0;31m'
 BOLD='\033[1m'
 END='\e[0m'
 
+# Other Constants
+NPM_SCOPE="@x3r5e/"
+
+# Returns the locally stored version of a package given a package name
 function getLocalPackageVersion() {
     local packageName="$1"
 
     echo $( jq -r .version ./packages/"$packageName"/package.json )
 }
 
+# Returns the `@latest` version of a package stored in the npm registry given a package name
 function getPublishedPackageVersionLatest() {
     local packageName="$1"
 
-    echo $( npm view @x3r5e/$packageName version)
+    echo $( npm view "$NPM_SCOPE""$packageName" version)
 }
 
-function isLocalPackageVersionDifferentThanPublishedVersion() {
+function getIsLocalVersionGreaterThanLatestVersion() {
     local packageName="$1"
 
     local localVersion=$( getLocalPackageVersion "$packageName" )
-    local publishedVersion=$( getPublishedPackageVersionLatest "$packageName" )
+    local latestVersion=$( getPublishedPackageVersionLatest "$packageName" )
 
-    if [[ $localVersion != $publishedVersion ]]
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
+    IFS='.' read -r -a localVersionArray <<< "$localVersion"
+    IFS='.' read -r -a latestVersionArray <<< "$latestVersion"
+
+    local isLocalVersionGreaterThanLatestVersion="false"
+
+    for i in {0..2}
+    do
+        localVersionNumber="${localVersionArray[i]}"
+        latestVersionNumber="${latestVersionArray[i]}"
+
+        if [ "$localVersionNumber" -gt "$latestVersionNumber" ]
+        then
+            isLocalVersionGreaterThanLatestVersion="true"
+            break;
+        elif [ "$localVersionNumber" -lt "$latestVersionNumber" ]
+        then
+            break;
+        fi
+    done
+
+    echo "$isLocalVersionGreaterThanLatestVersion"
 }
 
 function installDependencies() {
@@ -45,13 +66,13 @@ function installDependencies() {
 
     if [[ ! -d node_modules ]]
     then
-        printf "${CYAN_BRIGHT}-------- INSTALLING DEPENDENCIES FOR @x3r5e/"$packageName" --------\n${END}"
+        printf ""$CYAN_BRIGHT"-------- INSTALLING DEPENDENCIES FOR "$NPM_SCOPE""$packageName" --------\n"$END""
 
         npm ci --yes
 
-        printf "\n${GREEN}-------- DEPENDENCIES SUCCESSFULLY INSTALLED FOR @x3r5e/"$packageName" --------\n\n\n${END}"
+        printf "\n"$GREEN"-------- DEPENDENCIES SUCCESSFULLY INSTALLED FOR "$NPM_SCOPE""$packageName" --------\n\n\n"$END""
     else
-        printf "${GREEN}Using cache for @x3r5e/$packageName. No install needed.\n\n\n${END}"
+        printf ""$GREEN"Using cache for "$NPM_SCOPE""$packageName". No install needed.\n\n\n"$END""
     fi
 
     cd ../..
@@ -71,57 +92,57 @@ function linkDependency() {
 }
 
 # function linkComponentStylesDependencies() {
-#     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
+#     if [[ $( getIsLocalVersionGreaterThanLatestVersion "design-tokens" ) = "true"  ]]
 #     then
-#         printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/component-styles --------\n${END}"
+#         printf ""$CYAN_BRIGHT"-------- LINKING "$NPM_SCOPE"design-tokens INTO "$NPM_SCOPE"component-styles --------\n"$END""
 
 #         linkDependency component-styles design-tokens
 
-#         printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/component-styles --------\n\n\n${END}"
+#         printf "\n"$GREEN"-------- "$NPM_SCOPE"design-tokens LINKED INTO "$NPM_SCOPE"component-styles --------\n\n\n"$END""
 #     else
-#         printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/component-styles\n\n\n${END}"
+#         printf ""$CYAN_BRIGHT""$NPM_SCOPE"design-tokens was not linked into "$NPM_SCOPE"component-styles\n\n\n"$END""
 #     fi
 # }
 
 function linkReactComponentsDependencies() {
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "global-web-styles" ) = "true"  ]]
+    if [[ $( getIsLocalVersionGreaterThanLatestVersion "global-web-styles" ) = "true"  ]]
     then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/global-web-styles INTO @x3r5e/react-components --------\n\n${END}"
+        printf ""$CYAN_BRIGHT"-------- LINKING @x3r5e/global-web-styles INTO @x3r5e/react-components --------\n\n"$END""
 
         linkDependency react-components global-web-styles
 
-        printf "\n${GREEN}-------- @x3r5e/global-web-styles LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
+        printf "\n"$GREEN"-------- @x3r5e/global-web-styles LINKED INTO @x3r5e/react-components --------\n\n\n"$END""
     else
-        printf "${CYAN_BRIGHT}@x3r5e/global-web-styles was not linked into @x3r5e/react-components\n\n\n${END}"
+        printf ""$CYAN_BRIGHT"@x3r5e/global-web-styles was not linked into @x3r5e/react-components\n\n\n"$END""
     fi
 
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
+    if [[ $( getIsLocalVersionGreaterThanLatestVersion "design-tokens" ) = "true"  ]]
     then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/design-tokens INTO @x3r5e/react-components --------\n\n${END}"
+        printf ""$CYAN_BRIGHT"-------- LINKING @x3r5e/design-tokens INTO @x3r5e/react-components --------\n\n"$END""
 
         linkDependency react-components design-tokens
 
-        printf "\n${GREEN}-------- @x3r5e/design-tokens LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
+        printf "\n"$GREEN"-------- @x3r5e/design-tokens LINKED INTO @x3r5e/react-components --------\n\n\n"$END""
     else
-        printf "${CYAN_BRIGHT}@x3r5e/design-tokens was not linked into @x3r5e/react-components\n\n\n${END}"
+        printf ""$CYAN_BRIGHT"@x3r5e/design-tokens was not linked into @x3r5e/react-components\n\n\n"$END""
     fi
 
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
+    if [[ $( getIsLocalVersionGreaterThanLatestVersion "icons" ) = "true"  ]]
     then
-        printf "${CYAN_BRIGHT}-------- LINKING @x3r5e/icons INTO @x3r5e/react-components --------\n${END}"
+        printf ""$CYAN_BRIGHT"-------- LINKING @x3r5e/icons INTO @x3r5e/react-components --------\n"$END""
 
         linkDependency react-components icons
 
-        printf "\n${GREEN}-------- @x3r5e/icons LINKED INTO @x3r5e/react-components --------\n\n\n${END}"
+        printf "\n"$GREEN"-------- @x3r5e/icons LINKED INTO @x3r5e/react-components --------\n\n\n"$END""
     else
-        printf "${CYAN_BRIGHT}@x3r5e/icons was not linked into @x3r5e/react-components\n\n\n${END}"
+        printf ""$CYAN_BRIGHT"@x3r5e/icons was not linked into @x3r5e/react-components\n\n\n"$END""
     fi
 }
 
 function runLinter() {
     local packageName="$1"
 
-    printf "${CYAN_BRIGHT}-------- RUNNING LINTER CHECK FOR @x3r5e/"$packageName" --------\n${END}"
+    printf ""$CYAN_BRIGHT"-------- RUNNING LINTER CHECK FOR @x3r5e/"$packageName" --------\n"$END""
 
     cd ./packages/"$packageName"
     
@@ -129,7 +150,7 @@ function runLinter() {
 
     cd ../..
 
-    printf "${GREEN}-------- LINTER CHECK PASSED FOR @x3r5e/"$packageName" --------\n\n\n${END}"
+    printf ""$GREEN"-------- LINTER CHECK PASSED FOR @x3r5e/"$packageName" --------\n\n\n"$END""
 }
 
 function runTests() {
@@ -140,22 +161,22 @@ function runTests() {
     
     if [[ $diff ]]
     then
-        printf "${CYAN_BRIGHT}-------- RUNNING TESTS FOR @x3r5e/$packageName --------\n${END}"
+        printf ""$CYAN_BRIGHT"-------- RUNNING TESTS FOR @x3r5e/$packageName --------\n"$END""
 
         cd packages/"$packageName"
         npm test
         cd ../..
         
-        printf "\n${GREEN}-------- TESTS PASSED FOR @x3r5e/$packageName --------\n\n\n${END}"
+        printf "\n"$GREEN"-------- TESTS PASSED FOR @x3r5e/$packageName --------\n\n\n"$END""
     else
-        printf "${GREEN}No changes in the src directory for ${BOLD}@x3r5e/$packageName${END}${GREEN}. Skipping tests.\n\n\n${END}"
+        printf ""$GREEN"No changes in the src directory for "$BOLD"@x3r5e/$packageName"$END""$GREEN". Skipping tests.\n\n\n"$END""
     fi
 }
 
 function buildPackage() {
     local packageName="$1"
 
-    printf "${CYAN_BRIGHT}-------- BUILDING @x3r5e/$packageName --------\n${END}"
+    printf ""$CYAN_BRIGHT"-------- BUILDING @x3r5e/$packageName --------\n"$END""
 
     cd ./packages/"$packageName"
 
@@ -163,13 +184,13 @@ function buildPackage() {
 
     cd ../..
 
-    printf "\n${GREEN}-------- @x3r5e/$packageName SUCCESSFULLY BUILT --------\n\n${END}"
+    printf "\n"$GREEN"-------- @x3r5e/$packageName SUCCESSFULLY BUILT --------\n\n"$END""
 }
 
 function buildDocs() {
     local packageName="$1"
 
-    printf "${CYAN_BRIGHT}-------- BUILDING DOCS FOR @x3r5e/$packageName --------\n${END}"
+    printf ""$CYAN_BRIGHT"-------- BUILDING DOCS FOR @x3r5e/$packageName --------\n"$END""
 
     cd ./packages/"$packageName"
 
@@ -177,29 +198,29 @@ function buildDocs() {
 
     cd ../..
 
-    printf "\n${GREEN}-------- @x3r5e/$packageName DOCS SUCCESSFULLY BUILT --------\n\n${END}"
+    printf "\n"$GREEN"-------- @x3r5e/$packageName DOCS SUCCESSFULLY BUILT --------\n\n"$END""
 }
 
 function deployDocsDryRun() {
     local packageName="$1"
 
-    printf "${CYAN_BRIGHT}-------- STARTING A DRY-RUN DOCS DEPLOYMENT FOR @x3r5e/$packageName --------\n${END}"
+    printf ""$CYAN_BRIGHT"-------- STARTING A DRY-RUN DOCS DEPLOYMENT FOR @x3r5e/$packageName --------\n"$END""
 
     cd ./packages/"$packageName"
 
-    PATH=$(npm bin):$PATH netlify deploy --auth $netlify_auth_token --site $netlify_react_docs_id --dir=./docs
+    PATH=$(npm bin):$PATH netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_REACT_DOCS_ID --dir=./docs
 
     cd ../..
 
-    printf "\n${GREEN}-------- DRY-RUN DOCS DEPLOYMENT @x3r5e/$packageName SUCCESSFULLY COMPLETED --------\n\n${END}"
+    printf "\n"$GREEN"-------- DRY-RUN DOCS DEPLOYMENT @x3r5e/$packageName SUCCESSFULLY COMPLETED --------\n\n"$END""
 }
 
 function beginPackagePRChecker() {
-    printf "\n${CYAN_BRIGHT}======================== RUNNING CHECKS FOR @x3r5e/$packageName ========================\n\n${END}"
+    printf "\n"$CYAN_BRIGHT"======================== RUNNING CHECKS FOR @x3r5e/$packageName ========================\n\n"$END""
 }
 
 function endPackagePRChecker() {
-    printf "\n${GREEN}======================== CHECKS FOR @x3r5e/$packageName HAVE SUCCESSFULLY COMPLETED ========================\n\n${END}"
+    printf "\n"$GREEN"======================== CHECKS FOR @x3r5e/$packageName HAVE SUCCESSFULLY COMPLETED ========================\n\n"$END""
 }
 
 function runGlobalWebStylesPRChecker() {
@@ -265,7 +286,7 @@ if [[ ! -d node_modules ]]
 then
     npm ci --yes
 else
-    printf "${GREEN}Using cache for root package. No install needed.\n\n${END}"
+    printf ""$GREEN"Using cache for root package. No install needed.\n\n"$END""
 fi
 
 runGlobalWebStylesPRChecker
