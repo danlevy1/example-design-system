@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+# Command line arguments
 args=("$@")
 npm_token=${args[0]}
 netlify_auth_token=${args[1]}
@@ -13,12 +14,15 @@ RED='\033[0;31m'
 BOLD='\033[1m'
 END='\e[0m'
 
+# Other constants
+NPM_SCOPE="@x3r5e/"
+
 function sleepBetweenPublishCommands() {
-    printf "\n\n${CYAN_BRIGHT}======== SLEEPING FOR THREE MINUTES ========\n${END}"
+    printf "\n\n"$CYAN_BRIGHT"======== SLEEPING FOR THREE MINUTES ========\n"$END""
 
     sleep 180
 
-    printf "\n\n${CYAN_BRIGHT}======== THREE MINUTE SLEEP HAS ENDED ========\n${END}"
+    printf "\n\n"$CYAN_BRIGHT"======== THREE MINUTE SLEEP HAS ENDED ========\n"$END""
 }
 
 function getLocalPackageVersion() {
@@ -30,36 +34,51 @@ function getLocalPackageVersion() {
 function getPublishedPackageVersionLatest() {
     local packageName="$1"
 
-    echo $( npm view @x3r5e/$packageName version)
+    echo $( npm view "$NPM_SCOPE""$packageName" version)
 }
 
-function isLocalPackageVersionDifferentThanPublishedVersion() {
+function getIsLocalVersionGreaterThanLatestVersion() {
     local packageName="$1"
 
     local localVersion=$( getLocalPackageVersion "$packageName" )
-    local publishedVersion=$( getPublishedPackageVersionLatest "$packageName" )
+    local latestVersion=$( getPublishedPackageVersionLatest "$packageName" )
 
-    if [[ $localVersion != $publishedVersion ]]
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
+    IFS='.' read -r -a localVersionArray <<< "$localVersion"
+    IFS='.' read -r -a latestVersionArray <<< "$latestVersion"
+
+    local isLocalVersionGreaterThanLatestVersion="false"
+
+    for i in {0..2}
+    do
+        localVersionNumber="${localVersionArray[i]}"
+        latestVersionNumber="${latestVersionArray[i]}"
+
+        if [ "$localVersionNumber" -gt "$latestVersionNumber" ]
+        then
+            isLocalVersionGreaterThanLatestVersion="true"
+            break;
+        elif [ "$localVersionNumber" -lt "$latestVersionNumber" ]
+        then
+            break;
+        fi
+    done
+
+    echo "$isLocalVersionGreaterThanLatestVersion"
 }
 
 function printManualJobTriggerInstructions() {
     local packageName="$1"
 
-    printf "${RED}After this build completes, pull the latest changes from the main branch and wait for the latest version of @x3r5e/$packageName to become available using the command ${BOLD}'npm view @x3r5e/$packageName version'${END}${RED}. When the latest version of @x3r5e/$packageName becomes available, run the following curl command to trigger this job again:\n${END}"
-    printf "${RED}curl -u <CIRCLE_API_USER_TOKEN>: \\
+    printf ""$RED"After this build completes, pull the latest changes from the main branch and wait for the latest version of "$NPM_SCOPE""$packageName" to become available using the command "$BOLD"'npm view "$NPM_SCOPE"/$packageName version'"$END""$RED". When the latest version of "$NPM_SCOPE""$packageName" becomes available, run the following curl command to trigger this job again:\n"$END""
+    printf ""$RED"curl -u <CIRCLE_API_USER_TOKEN>: \\
         -d 'build_parameters[CIRCLE_JOB]=pull-request-checker' \\
-        https://circleci.com/api/v1.1/project/github/danlevy1/example-design-system/tree/main\n${END}"
+        https://circleci.com/api/v1.1/project/github/danlevy1/example-design-system/tree/main\n"$END""
 }
 
 function beginPackagePublish() {
     local packageName="$1"
 
-    printf "\n\n${CYAN_BRIGHT}======== PUBLISHING @x3r5e/"$packageName" ========\n${END}"
+    printf "\n\n"$CYAN_BRIGHT"======== PUBLISHING "$NPM_SCOPE""$packageName" ========\n"$END""
 
     cd ./packages/"$packageName"
 
@@ -74,7 +93,7 @@ function endSuccessfulPackagePublish() {
 
     cd ../..
 
-    printf "${GREEN}======== @x3r5e/"$packageName" PUBLISHED ========\n\n${END}"
+    printf ""$GREEN"======== "$NPM_SCOPE""$packageName" PUBLISHED ========\n\n"$END""
 }
 
 function publishGlobalWebStylesPackage() {
@@ -112,7 +131,7 @@ function publishIconsPackage() {
 
 #     beginPackagePublish "$packageName"
         
-#     npm install --save-exact @x3r5e/design-tokens@latest
+#     npm install --save-exact "$NPM_SCOPE"design-tokens@latest
 #     npm publish
     
 #     endSuccessfulPackagePublish "$packageName"
@@ -123,14 +142,14 @@ function publishReactComponentsPackage() {
 
     beginPackagePublish "$packageName"
     
-    npm install --save-exact @x3r5e/icons@latest @x3r5e/component-styles@latest
+    npm install --save-exact "$NPM_SCOPE"icons@latest "$NPM_SCOPE"component-styles@latest
     npm publish
     
     endSuccessfulPackagePublish "$packageName"
 }
 
 function publishReactComponentsDocs() {
-    printf "\n\n${CYAN_BRIGHT}======== PUBLISHING DOCS FOR @x3r5e/"$packageName" ========\n${END}"
+    printf "\n\n"$CYAN_BRIGHT"======== PUBLISHING DOCS FOR "$NPM_SCOPE""$packageName" ========\n"$END""
 
     cd packages/react-components
 
@@ -139,13 +158,13 @@ function publishReactComponentsDocs() {
     
     cd ../..
 
-    printf "${GREEN}======== @x3r5e/"$packageName" DOCS PUBLISHED ========\n\n${END}"
+    printf ""$GREEN"======== "$NPM_SCOPE""$packageName" DOCS PUBLISHED ========\n\n"$END""
 }
 
 # Publishes the global-web-styles package
 isNewVersionOfGlobalWebStylesBeingPublished=false;
 
-if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+if [[ $( getIsLocalVersionGreaterThanLatestVersion "global-web-styles" ) = "true" ]]
 then
     isNewVersionOfGlobalWebStylesBeingPublished=true;
     publishGlobalWebStylesPackage
@@ -154,7 +173,7 @@ fi
 # Publishes the design-tokens package
 isNewVersionOfDesignTokensBeingPublished=false;
 
-if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+if [[ $( getIsLocalVersionGreaterThanLatestVersion "design-tokens" ) = "true" ]]
 then
     isNewVersionOfDesignTokensBeingPublished=true;
     publishDesignTokensPackage
@@ -163,7 +182,7 @@ fi
 # Publishes the icons package
 isNewVersionOfIconsBeingPublished=false;
 
-if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true" ]]
+if [[ $( getIsLocalVersionGreaterThanLatestVersion "icons" ) = "true" ]]
 then
     isNewVersionOfIconsBeingPublished=true;
     publishIconsPackage
@@ -172,7 +191,7 @@ fi
 # Publishes the component-styles package if the latest version of the design-tokens package is available
 # isNewVersionOfComponentStylesBeingPublished=false;
 
-# if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "component-styles" ) = "true" ]]
+# if [[ $( getIsLocalVersionGreaterThanLatestVersion "component-styles" ) = "true" ]]
 # then
 #     isNewVersionOfComponentStylesBeingPublished=true;
 
@@ -181,9 +200,9 @@ fi
 #         sleepBetweenPublishCommands
 #     fi
 
-#     if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true" ]]
+#     if [[ $( getIsLocalVersionGreaterThanLatestVersion "design-tokens" ) = "true" ]]
 #     then
-#         printf "${RED}Skipping publish of ${BOLD}@x3r5e/component-styles${END}${RED} and ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available.\n${END}"
+#         printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE"component-styles"$END""$RED" and "$BOLD""$NPM_SCOPE"/react-components"$END""$RED" because the latest version of "$BOLD""$NPM_SCOPE"/design-tokens"$END""$RED" is not yet available.\n"$END""
 #         printManualJobTriggerInstructions design-tokens
 
 #         exit 1
@@ -195,7 +214,7 @@ fi
 # Publishes the react-components package if the latest version of the global-web-styles package, design-tokens package, and icons package is available
 isNewVersionOfReactComponentsBeingPublished=false;
 
-if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "react-components" ) = "true" ]]
+if [[ $( getIsLocalVersionGreaterThanLatestVersion "react-components" ) = "true" ]]
 then
     isNewVersionOfReactComponentsBeingPublished=true;
 
@@ -204,21 +223,21 @@ then
         sleepBetweenPublishCommands
     fi
 
-    if [[ $( isLocalPackageVersionDifferentThanPublishedVersion "global-web-styles" ) = "true"  ]]
+    if [[ $( getIsLocalVersionGreaterThanLatestVersion "global-web-styles" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/global-web-styles${END}${RED} is not yet available.\n${END}"
+        printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" because the latest version of "$BOLD""$NPM_SCOPE"/global-web-styles"$END""$RED" is not yet available.\n"$END""
         printManualJobTriggerInstructions global-web-styles
 
         exit 1
-    elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "design-tokens" ) = "true"  ]]
+    elif [[ $( getIsLocalVersionGreaterThanLatestVersion "design-tokens" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/design-tokens${END}${RED} is not yet available.\n${END}"
+        printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" because the latest version of "$BOLD""$NPM_SCOPE"/design-tokens"$END""$RED" is not yet available.\n"$END""
         printManualJobTriggerInstructions design-tokens
 
         exit 1
-    elif [[ $( isLocalPackageVersionDifferentThanPublishedVersion "icons" ) = "true"  ]]
+    elif [[ $( getIsLocalVersionGreaterThanLatestVersion "icons" ) = "true"  ]]
     then
-        printf "${RED}Skipping publish of ${BOLD}@x3r5e/react-components${END}${RED} because the latest version of ${BOLD}@x3r5e/icons${END}${RED} is not yet available.\n${END}"
+        printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" because the latest version of "$BOLD""$NPM_SCOPE"/icons"$END""$RED" is not yet available.\n"$END""
         printManualJobTriggerInstructions icons
 
         exit 1
@@ -239,5 +258,5 @@ git push --follow-tags
 
 if [[ $isNewVersionOfGlobalWebStylesBeingPublished = false && $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
-    printf "${GREEN}None of the packages have a version change. Nothing to publish.\n${END}"
+    printf ""$GREEN"None of the packages have a version change. Nothing to publish.\n"$END""
 fi
