@@ -3,7 +3,8 @@
     "private": true,
     "scripts": {
         "start": "npm run bootstrap && lerna run --parallel start",
-        "bootstrap": "npm install && lerna exec -- npm install && lerna link --force-local"
+        "bootstrap": "npm install && lerna exec -- npm install && lerna link --force-local",
+        "bootstrap:ci": "npm ci && lerna exec -- npm ci && lerna link --force-local"
     },
     "devDependencies": {
         "lerna": "^4.0.0",
