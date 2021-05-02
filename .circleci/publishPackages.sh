@@ -289,8 +289,13 @@ fi
 git push --follow-tags
 # ======== End updating GitHub repo ========
 
-# If none of the packages have a version greater than `@latest`, no packages were published
-if [[ $isNewVersionOfGlobalWebStylesBeingPublished = false && $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
+# If none of the packages have a valid version change, no packages were published
+if [[ $isNewVersionOfGlobalWebStylesBeingPublished = false && $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
-    printf ""$GREEN"None of the packages have a version change. Nothing to publish.\n"$END""
+    if [ "$IS_CUSTOM_RELEASE" = true ]
+    then
+        printf ""$GREEN"None of the packages have a version change. Nothing to publish.\n"$END""
+    else
+        printf ""$GREEN"None of the packages have a version greater than \`@latest\`. Nothing to publish.\n"$END""
+    fi
 fi
