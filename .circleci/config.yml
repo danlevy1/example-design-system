@@ -19,15 +19,7 @@ workflows:
                           ignore:
                               - main
                               - /^.+custom-release.*/
-
 jobs:
-    confirm-release:
-        docker:
-            - image: cimg/node:14.15.5
-        steps:
-            - run:
-                  name: Test
-                  command: echo "test"
     publish-packages-job:
         docker:
             - image: cimg/node:14.15.5
