@@ -188,11 +188,12 @@ function publishIconsPackage() {
 
 function publishReactComponentsPackage() {
     local packageName="react-components"
-    local localVersion=$( getLocalPackageVersion "$packageName" )
+    local localDesignTokensVersion=$( getLocalPackageVersion design-tokens )
+    local localIconsVersion=$( getLocalPackageVersion icons )
 
     beginPackagePublish "$packageName"
     
-    npm install --save-exact "$NPM_SCOPE"icons@"$localVersion" "$NPM_SCOPE"design-tokens@"$localVersion"
+    npm install --save-exact "$NPM_SCOPE"design-tokens@"$localDesignTokensVersion" "$NPM_SCOPE"icons@"$localIconsVersion"
     npm publish
     
     endSuccessfulPackagePublish "$packageName"

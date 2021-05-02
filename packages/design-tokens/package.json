@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/design-tokens",
-    "version": "0.18.0",
+    "version": "0.18.2",
     "description": "Design Tokens",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
