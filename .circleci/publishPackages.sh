@@ -290,7 +290,7 @@ git push --follow-tags
 # ======== End updating GitHub repo ========
 
 # If none of the packages have a valid version change, no packages were published
-if [[ $isNewVersionOfGlobalWebStylesBeingPublished = false && $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfComponentStylesBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
+if [[ $isNewVersionOfGlobalWebStylesBeingPublished = false && $isNewVersionOfDesignTokensBeingPublished = false && $isNewVersionOfIconsBeingPublished = false && $isNewVersionOfReactComponentsBeingPublished = false ]]
 then
     if [ "$IS_CUSTOM_RELEASE" = true ]
     then
