@@ -144,10 +144,12 @@ function runReactComponentsPRChecker() {
 
 if [[ ! -d node_modules ]]
 then
-    npm run bootstrap:ci
+    npm run install:all:ci
 else
     printf ""$GREEN"Using cache. No install needed.\n\n"$END""
 fi
+
+npm run link:all
 
 runGlobalWebStylesPRChecker
 runDesignTokensPRChecker
