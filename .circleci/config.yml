@@ -44,16 +44,17 @@ jobs:
             - checkout
             - run:
                   name: Concatenate package-lock.json Files for all Packages into combined-package-lock.txt File
-                  command: ls ./packages | awk -F packages '{printf "\"packages/%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
+                  command: ls ./packages | awk -F packages '{printf "\"packages/%s/package-lock.json\" ", $1}' | xargs cat > ./combined-package-lock.txt && cat ./package-lock.json >> ./combined-package-lock.txt
             - restore_cache:
-                  key: node-modules-all-packages-v1-{{ checksum "combined-package-lock.txt" }}
+                  key: node-modules-all-packages-v2-{{ checksum "combined-package-lock.txt" }}
             - run:
                   name: Pull Request Checker
                   command: chmod u+x ./.circleci/pullRequestChecker.sh && ./.circleci/pullRequestChecker.sh $NETLIFY_AUTH_TOKEN $NETLIFY_REACT_DOCS_ID
             - save_cache:
                   paths:
+                      - ./node_modules
                       - ./packages/design-tokens/node_modules
+                      - ./packages/global-web-styles/node_modules
                       - ./packages/icons/node_modules
-                      - ./packages/component-styles/node_modules
                       - ./packages/react-components/node_modules
-                  key: node-modules-all-packages-v1-{{ checksum "combined-package-lock.txt" }}
+                  key: node-modules-all-packages-v2-{{ checksum "combined-package-lock.txt" }}
