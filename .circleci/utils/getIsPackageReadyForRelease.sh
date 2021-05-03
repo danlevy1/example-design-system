@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+# Command line arguments
+ARGS=("$@")
+PACKAGE_NAME="${ARGS[0]}"
+IS_CUSTOM_RELEASE="${ARGS[1]}"
+
+if [[ "$IS_CUSTOM_RELEASE" = true ]]
+then
+    chmod u+x ./utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh
+    echo $( ./utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh "$PACKAGE_NAME" )
+else
+    chmod u+x ./utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh
+    echo $( ./utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh "$PACKAGE_NAME" )
+fi
+
