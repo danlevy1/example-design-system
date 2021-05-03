@@ -5,11 +5,11 @@ set -e
 ARGS=("$@")
 PACKAGE_NAME="${ARGS[0]}"
 
-chmod u+x ./utils/getLocalPackageVersion
-chmod u+x ./utils/getLatestPackageVersion
+chmod u+x ./.circleci/utils/getLocalPackageVersion
+chmod u+x ./.circleci/utils/getLatestPackageVersion
 
-localVersion=$( ./utils/getLocalPackageVersion.sh "$PACKAGE_NAME" )
-latestVersion=$( ./utils/getLatestPackageVersion.sh "$PACKAGE_NAME" )
+localVersion=$( ./.circleci/utils/getLocalPackageVersion.sh "$PACKAGE_NAME" )
+latestVersion=$( ./.circleci/utils/getLatestPackageVersion.sh "$PACKAGE_NAME" )
 
 if [[ $localVersion = $latestVersion ]]
 then

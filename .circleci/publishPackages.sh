@@ -24,9 +24,9 @@ then
     IS_CUSTOM_RELEASE=false
 fi
 
-chmod u+x ./utils/getLocalPackageVersion.sh
-chmod u+x ./utils/getIsPackageReadyForRelease.sh
-chmod u+x ./utils/getIsPackageLocalVersionPublished.sh
+chmod u+x ./.circleci/utils/getLocalPackageVersion.sh
+chmod u+x ./.circleci/utils/getIsPackageReadyForRelease.sh
+chmod u+x ./.circleci/utils/getIsPackageLocalVersionPublished.sh
 
 function waitForSleep() {
     printf "\n\n"$CYAN_BRIGHT"======== SLEEPING FOR THREE MINUTES ========\n"$END""
@@ -43,7 +43,7 @@ function printSkipReleaseInfo() {
     local skippedPackageName="$1"
     local causedPackageName="$2"
 
-    printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE""$skippedPackageName"@"$( ./utils/getLocalPackageVersion.sh "$skippedPackageName" )""$END""$RED" because the local version of "$BOLD""$NPM_SCOPE""$causedPackageName"@"$( ./getLocalPackageVersion.sh "$causedPackageName" )""$END""$RED" is not yet available on npm.\n"$END""
+    printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE""$skippedPackageName"@"$( ./.circleci/utils/getLocalPackageVersion.sh "$skippedPackageName" )""$END""$RED" because the local version of "$BOLD""$NPM_SCOPE""$causedPackageName"@"$( ./getLocalPackageVersion.sh "$causedPackageName" )""$END""$RED" is not yet available on npm.\n"$END""
 }
 
 function printManualJobTriggerInstructions() {
@@ -111,8 +111,8 @@ function publishIconsPackage() {
 
 function publishReactComponentsPackage() {
     local packageName="react-components"
-    local localDesignTokensVersion=$( ./utils/getLocalPackageVersion design-tokens.sh )
-    local localIconsVersion=$( ./utils/getLocalPackageVersion.sh icons )
+    local localDesignTokensVersion=$( ./.circleci/utils/getLocalPackageVersion design-tokens.sh )
+    local localIconsVersion=$( ./.circleci/utils/getLocalPackageVersion.sh icons )
 
     beginPackagePublish "$packageName"
     
@@ -138,7 +138,7 @@ function publishReactComponentsDocs() {
 # ======== Start publish of the global-web-styles package ========
 isNewVersionOfGlobalWebStylesBeingPublished=false;
 
-if [[ $( ./utils/getIsPackageReadyForRelease.sh "global-web-styles" ) = "true" ]]
+if [[ $( ./.circleci/utils/getIsPackageReadyForRelease.sh "global-web-styles" ) = "true" ]]
 then
     isNewVersionOfGlobalWebStylesBeingPublished=true;
     publishGlobalWebStylesPackage
@@ -150,7 +150,7 @@ fi
 # ======== Start publish of the design-tokens package ========
 isNewVersionOfDesignTokensBeingPublished=false;
 
-if [[ $( ./utils/getIsPackageReadyForRelease.sh "design-tokens" ) = "true" ]]
+if [[ $( ./.circleci/utils/getIsPackageReadyForRelease.sh "design-tokens" ) = "true" ]]
 then
     isNewVersionOfDesignTokensBeingPublished=true;
     publishDesignTokensPackage
@@ -162,7 +162,7 @@ fi
 # ======== Start publish of the icons package ========
 isNewVersionOfIconsBeingPublished=false;
 
-if [[ $( ./utils/getIsPackageReadyForRelease.sh "icons" ) = "true" ]]
+if [[ $( ./.circleci/utils/getIsPackageReadyForRelease.sh "icons" ) = "true" ]]
 then
     isNewVersionOfIconsBeingPublished=true;
     publishIconsPackage
@@ -175,7 +175,7 @@ fi
 # Publishes the react-components package if the latest version of the global-web-styles package, design-tokens package, and icons package is available
 isNewVersionOfReactComponentsBeingPublished=false;
 
-if [[ $( ./utils/getIsPackageReadyForRelease.sh "react-components" ) = "true" ]]
+if [[ $( ./.circleci/utils/getIsPackageReadyForRelease.sh "react-components" ) = "true" ]]
 then
     isNewVersionOfReactComponentsBeingPublished=true;
 
@@ -184,19 +184,19 @@ then
         waitForSleep
     fi
 
-    if [[ $( ./utils/getIsPackageLocalVersionPublished.sh "global-web-styles" ) = "false"  ]]
+    if [[ $( ./.circleci/utils/getIsPackageLocalVersionPublished.sh "global-web-styles" ) = "false"  ]]
     then
         printSkipReleaseInfo react-components global-web-styles
         printManualJobTriggerInstructions global-web-styles
 
         exit 1
-    elif [[ $( ./utils/getIsPackageLocalVersionPublished.sh "design-tokens" ) = "false"  ]]
+    elif [[ $( ./.circleci/utils/getIsPackageLocalVersionPublished.sh "design-tokens" ) = "false"  ]]
     then
         printSkipReleaseInfo react-components design-tokens
         printManualJobTriggerInstructions design-tokens
 
         exit 1
-    elif [[ $( ./utils/getIsPackageLocalVersionPublished.sh "icons" ) = "false"  ]]
+    elif [[ $( ./.circleci/utils/getIsPackageLocalVersionPublished.sh "icons" ) = "false"  ]]
     then
         printSkipReleaseInfo react-components icons
         printManualJobTriggerInstructions icons

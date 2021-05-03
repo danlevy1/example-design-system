@@ -21,12 +21,12 @@ then
     IS_CUSTOM_RELEASE=false
 fi
 
-chmod u+x ./utils/getIsPackageReadyForRelease.sh
+chmod u+x ./.circleci/utils/getIsPackageReadyForRelease.sh
 
-isDesignTokensReadyForRelease="$( ./utils/getIsPackageReadyForRelease.sh design-tokens )"
-isGlobalWebStylesReadyForRelease="$( ./utils/getIsPackageReadyForRelease.sh global-web-styles )"
-isIconsReadyForRelease="$( ./utils/getIsPackageReadyForRelease.sh icons )"
-isReactComponentsReadyForRelease="$( ./utils/getIsPackageReadyForRelease.sh react-components )"
+isDesignTokensReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh design-tokens )"
+isGlobalWebStylesReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh global-web-styles )"
+isIconsReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh icons )"
+isReactComponentsReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh react-components )"
 
 if [[ "$isReactComponentsReadyForRelease" = "false" && ("$isDesignTokensReadyForRelease" = "true" || "$isGlobalWebStylesReadyForRelease" = "true" || "$isIconsReadyForRelease" = "true") ]]
 then
