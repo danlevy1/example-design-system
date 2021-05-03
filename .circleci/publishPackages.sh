@@ -17,8 +17,8 @@ END='\e[0m'
 
 # Other constants
 NPM_SCOPE="@x3r5e/"
-IS_CUSTOM_RELEASE=true
 
+IS_CUSTOM_RELEASE=true
 if [[ "$CIRCLE_BRANCH" = "main" ]]
 then
     IS_CUSTOM_RELEASE=false
@@ -92,11 +92,11 @@ function getIsPackageLocalVersionGreaterThanLatestVersion() {
         local localVersionNumber="${localVersionSplit[versionNumberIndex]}"
         local latestVersionNumber="${latestVersionSplit[versionNumberIndex]}"
 
-        if [ "$localVersionNumber" -gt "$latestVersionNumber" ]
+        if [[ "$localVersionNumber" -gt "$latestVersionNumber" ]]
         then
             isPackageLocalVersionGreaterThanLatestVersion="true";
             break;
-        elif [ "$localVersionNumber" -lt "$latestVersionNumber" ]
+        elif [[ "$localVersionNumber" -lt "$latestVersionNumber" ]]
         then
             break;
         fi
@@ -108,7 +108,7 @@ function getIsPackageLocalVersionGreaterThanLatestVersion() {
 function isPackageReadyForRelease() {
     local packageName="$1"
 
-    if [ "$IS_CUSTOM_RELEASE" = true ]
+    if [[ "$IS_CUSTOM_RELEASE" = true ]]
     then
         echo $( getIsPackageLocalVersionDifferentThanLatestVersion "$packageName" )
     else
@@ -212,41 +212,80 @@ function publishReactComponentsDocs() {
     printf ""$GREEN"======== "$NPM_SCOPE""$packageName" DOCS PUBLISHED ========\n\n"$END""
 }
 
+# ======== Start package version checks ========
+isDesignTokensReadyForRelease="$( isPackageReadyForRelease design-tokens )"
+isGlobalWebStylesReadyForRelease="$( isPackageReadyForRelease global-web-styles )"
+isIconsReadyForRelease="$( isPackageReadyForRelease icons )"
+isReactComponentsReadyForRelease="$( isPackageReadyForRelease react-components )"
+
+if [[ "$isReactComponentsReadyForRelease" = "false" && ("$isDesignTokensReadyForRelease" = "true" || "$isGlobalWebStylesReadyForRelease" = "true" || "$isIconsReadyForRelease" = "true") ]]
+then
+    printf ""$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" has not been changed for release, but the following dependencies have their version changed for release:\n"$END""
+    
+    if [[ "$isDesignTokensReadyForRelease" = "true"  ]]
+    then
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"design-tokens\n"$END""
+    fi
+    
+    if [[ "$isGlobalWebStylesReadyForRelease" = "true" ]]
+    then
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"global-web-styles\n"$END""
+    fi
+
+    if [[ "$isIconsReadyForRelease" = "true" ]]
+    then
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"icons\n"$END""
+    fi
+
+    printf "\n"$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" needs to be changed before a release of the above packages can occur.\n"$END""
+
+    exit 1
+fi
+# ======== END check dependency versions ========
+
+
+
 # ======== Start publish of the global-web-styles package ========
 isNewVersionOfGlobalWebStylesBeingPublished=false;
 
-if [[ $( isPackageReadyForRelease "global-web-styles" ) = "true" ]]
+if [[ "$isGlobalWebStylesReadyForRelease" = "true" ]]
 then
     isNewVersionOfGlobalWebStylesBeingPublished=true;
     publishGlobalWebStylesPackage
 fi
 # ======== End publish of the global-web-styles package ========
 
+
+
 # ======== Start publish of the design-tokens package ========
 isNewVersionOfDesignTokensBeingPublished=false;
 
-if [[ $( isPackageReadyForRelease "design-tokens" ) = "true" ]]
+if [[ "$isDesignTokensReadyForRelease" = "true" ]]
 then
     isNewVersionOfDesignTokensBeingPublished=true;
     publishDesignTokensPackage
 fi
 # ======== End publish of the design-tokens package ========
 
+
+
 # ======== Start publish of the icons package ========
 isNewVersionOfIconsBeingPublished=false;
 
-if [[ $( isPackageReadyForRelease "icons" ) = "true" ]]
+if [[ "$isIconsReadyForRelease" = "true" ]]
 then
     isNewVersionOfIconsBeingPublished=true;
     publishIconsPackage
 fi
 # ======== End publish of the icons package ========
 
+
+
 # ======== Start publish of the react-components package ========
 # Publishes the react-components package if the latest version of the global-web-styles package, design-tokens package, and icons package is available
 isNewVersionOfReactComponentsBeingPublished=false;
 
-if [[ $( isPackageReadyForRelease "react-components" ) = "true" ]]
+if [[ "$isReactComponentsReadyForRelease" = "true" ]]
 then
     isNewVersionOfReactComponentsBeingPublished=true;
 
@@ -279,6 +318,8 @@ then
     fi
 fi
 # ======== End publish of the react-components package ========
+
+
 
 # ======== Start updating GitHub repo ========
 stagedFiles=$( git diff --cached )
