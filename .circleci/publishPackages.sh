@@ -24,6 +24,9 @@ then
     IS_CUSTOM_RELEASE=false
 fi
 
+chmod u+x ./utils/getLocalPackageVersion.sh
+chmod u+x ./utils/getIsPackageReadyForRelease.sh
+chmod u+x ./utils/getIsPackageLocalVersionPublished.sh
 
 function waitForSleep() {
     printf "\n\n"$CYAN_BRIGHT"======== SLEEPING FOR THREE MINUTES ========\n"$END""
@@ -36,96 +39,16 @@ function waitForSleep() {
     printf ""$CYAN_BRIGHT"======== THREE MINUTE SLEEP HAS ENDED ========\n"$END""
 }
 
-function getLocalPackageVersion() {
-    local packageName="$1"
-
-    echo $( jq -r .version ./packages/"$packageName"/package.json )
-}
-
-function getLatestPackageVersion() {
-    local packageName="$1"
-
-    echo $( npm view "$NPM_SCOPE""$packageName" version)
-}
-
-function getIsPackageLocalVersionPublished() {
-    local packageName="$1"
-
-    local localVersion=$( getLocalPackageVersion "$packageName" )
-    local latestVersion=$( getLatestPackageVersion "$packageName" )
-
-    if [[ $localVersion = $latestVersion ]]
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
-}
-
-function getIsPackageLocalVersionDifferentThanLatestVersion() {
-    local packageName="$1"
-
-    local localVersion=$( getLocalPackageVersion "$packageName" )
-    local latestVersion=$( getLatestPackageVersion "$packageName" )
-
-    if [[ $localVersion != $latestVersion ]]
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
-}
-
-function getIsPackageLocalVersionGreaterThanLatestVersion() {
-    local packageName="$1"
-
-    local localVersion=$( getLocalPackageVersion "$packageName" )
-    local latestVersion=$( getLatestPackageVersion "$packageName" )
-
-    IFS='.' read -ra localVersionSplit <<< "$localVersion"
-    IFS='.' read -ra latestVersionSplit <<< "$latestVersion"
-
-    local isPackageLocalVersionGreaterThanLatestVersion="false";
-
-    for versionNumberIndex in {0..2}
-    do
-        local localVersionNumber="${localVersionSplit[versionNumberIndex]}"
-        local latestVersionNumber="${latestVersionSplit[versionNumberIndex]}"
-
-        if [[ "$localVersionNumber" -gt "$latestVersionNumber" ]]
-        then
-            isPackageLocalVersionGreaterThanLatestVersion="true";
-            break;
-        elif [[ "$localVersionNumber" -lt "$latestVersionNumber" ]]
-        then
-            break;
-        fi
-    done
-
-    echo "$isPackageLocalVersionGreaterThanLatestVersion"
-}
-
-function isPackageReadyForRelease() {
-    local packageName="$1"
-
-    if [[ "$IS_CUSTOM_RELEASE" = true ]]
-    then
-        echo $( getIsPackageLocalVersionDifferentThanLatestVersion "$packageName" )
-    else
-        echo $( getIsPackageLocalVersionGreaterThanLatestVersion "$packageName" )
-    fi
-}
-
 function printSkipReleaseInfo() {
     local skippedPackageName="$1"
     local causedPackageName="$2"
 
-    printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE""$skippedPackageName"@"$( getLocalPackageVersion "$skippedPackageName" )""$END""$RED" because the local version of "$BOLD""$NPM_SCOPE""$causedPackageName"@"$( getLocalPackageVersion "$causedPackageName" )""$END""$RED" is not yet available on npm.\n"$END""
+    printf ""$RED"Skipping publish of "$BOLD""$NPM_SCOPE""$skippedPackageName"@"$( ./utils/getLocalPackageVersion.sh "$skippedPackageName" )""$END""$RED" because the local version of "$BOLD""$NPM_SCOPE""$causedPackageName"@"$( ./getLocalPackageVersion.sh "$causedPackageName" )""$END""$RED" is not yet available on npm.\n"$END""
 }
 
 function printManualJobTriggerInstructions() {
     local packageNameToWaitFor="$1"
-    local localVersion=$( getLocalPackageVersion "$packageNameToWaitFor" )
+    local localVersion=$( ./getLocalPackageVersion.sh "$packageNameToWaitFor" )
 
     printf ""$RED"After this pipeline completes, wait for "$BOLD""$NPM_SCOPE""$packageNameToWaitFor"@"$localVersion""$END""$RED" to become available using the command "$BOLD"'npm view "$NPM_SCOPE""$packageNameToWaitFor"@"$localVersion" version'"$END""$RED". When "$BOLD""$NPM_SCOPE""$packageNameToWaitFor"@"$localVersion""$END""$RED" becomes available, the command will return "$BOLD"\""$localVersion"\""$END""$RED". You can then run the following curl command to trigger this pipeline again:\n"$END""
     printf ""$RED"curl --request POST \\
@@ -188,8 +111,8 @@ function publishIconsPackage() {
 
 function publishReactComponentsPackage() {
     local packageName="react-components"
-    local localDesignTokensVersion=$( getLocalPackageVersion design-tokens )
-    local localIconsVersion=$( getLocalPackageVersion icons )
+    local localDesignTokensVersion=$( ./utils/getLocalPackageVersion design-tokens.sh )
+    local localIconsVersion=$( ./utils/getLocalPackageVersion.sh icons )
 
     beginPackagePublish "$packageName"
     
@@ -205,50 +128,17 @@ function publishReactComponentsDocs() {
     cd packages/react-components
 
     npm run build:docs
-    PATH=$(npm bin):$PATH netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_REACT_DOCS_ID --dir=./docs --prod
+    PATH=$( npm bin ):$PATH netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_REACT_DOCS_ID --dir=./docs --prod
     
     cd ../..
 
     printf ""$GREEN"======== "$NPM_SCOPE""$packageName" DOCS PUBLISHED ========\n\n"$END""
 }
 
-# ======== Start package version checks ========
-isDesignTokensReadyForRelease="$( isPackageReadyForRelease design-tokens )"
-isGlobalWebStylesReadyForRelease="$( isPackageReadyForRelease global-web-styles )"
-isIconsReadyForRelease="$( isPackageReadyForRelease icons )"
-isReactComponentsReadyForRelease="$( isPackageReadyForRelease react-components )"
-
-if [[ "$isReactComponentsReadyForRelease" = "false" && ("$isDesignTokensReadyForRelease" = "true" || "$isGlobalWebStylesReadyForRelease" = "true" || "$isIconsReadyForRelease" = "true") ]]
-then
-    printf ""$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" has not been changed for release, but the following dependencies have their version changed for release:\n"$END""
-    
-    if [[ "$isDesignTokensReadyForRelease" = "true"  ]]
-    then
-        printf ""$RED"-> "$BOLD""$NPM_SCOPE"design-tokens\n"$END""
-    fi
-    
-    if [[ "$isGlobalWebStylesReadyForRelease" = "true" ]]
-    then
-        printf ""$RED"-> "$BOLD""$NPM_SCOPE"global-web-styles\n"$END""
-    fi
-
-    if [[ "$isIconsReadyForRelease" = "true" ]]
-    then
-        printf ""$RED"-> "$BOLD""$NPM_SCOPE"icons\n"$END""
-    fi
-
-    printf "\n"$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" needs to be changed before a release of the above packages can occur.\n"$END""
-
-    exit 1
-fi
-# ======== END check dependency versions ========
-
-
-
 # ======== Start publish of the global-web-styles package ========
 isNewVersionOfGlobalWebStylesBeingPublished=false;
 
-if [[ "$isGlobalWebStylesReadyForRelease" = "true" ]]
+if [[ $( ./utils/getIsPackageReadyForRelease.sh "global-web-styles" ) = "true" ]]
 then
     isNewVersionOfGlobalWebStylesBeingPublished=true;
     publishGlobalWebStylesPackage
@@ -260,7 +150,7 @@ fi
 # ======== Start publish of the design-tokens package ========
 isNewVersionOfDesignTokensBeingPublished=false;
 
-if [[ "$isDesignTokensReadyForRelease" = "true" ]]
+if [[ $( ./utils/getIsPackageReadyForRelease.sh "design-tokens" ) = "true" ]]
 then
     isNewVersionOfDesignTokensBeingPublished=true;
     publishDesignTokensPackage
@@ -272,7 +162,7 @@ fi
 # ======== Start publish of the icons package ========
 isNewVersionOfIconsBeingPublished=false;
 
-if [[ "$isIconsReadyForRelease" = "true" ]]
+if [[ $( ./utils/getIsPackageReadyForRelease.sh "icons" ) = "true" ]]
 then
     isNewVersionOfIconsBeingPublished=true;
     publishIconsPackage
@@ -285,7 +175,7 @@ fi
 # Publishes the react-components package if the latest version of the global-web-styles package, design-tokens package, and icons package is available
 isNewVersionOfReactComponentsBeingPublished=false;
 
-if [[ "$isReactComponentsReadyForRelease" = "true" ]]
+if [[ $( ./utils/getIsPackageReadyForRelease.sh "react-components" ) = "true" ]]
 then
     isNewVersionOfReactComponentsBeingPublished=true;
 
@@ -294,19 +184,19 @@ then
         waitForSleep
     fi
 
-    if [[ $( getIsPackageLocalVersionPublished "global-web-styles" ) = "false"  ]]
+    if [[ $( ./utils/getIsPackageLocalVersionPublished.sh "global-web-styles" ) = "false"  ]]
     then
         printSkipReleaseInfo react-components global-web-styles
         printManualJobTriggerInstructions global-web-styles
 
         exit 1
-    elif [[ $( getIsPackageLocalVersionPublished "design-tokens" ) = "false"  ]]
+    elif [[ $( ./utils/getIsPackageLocalVersionPublished.sh "design-tokens" ) = "false"  ]]
     then
         printSkipReleaseInfo react-components design-tokens
         printManualJobTriggerInstructions design-tokens
 
         exit 1
-    elif [[ $( getIsPackageLocalVersionPublished "icons" ) = "false"  ]]
+    elif [[ $( ./utils/getIsPackageLocalVersionPublished.sh "icons" ) = "false"  ]]
     then
         printSkipReleaseInfo react-components icons
         printManualJobTriggerInstructions icons
