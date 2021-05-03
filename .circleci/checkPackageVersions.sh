@@ -16,70 +16,133 @@ END='\e[0m'
 NPM_SCOPE="@x3r5e/"
 
 IS_CUSTOM_RELEASE=true
-if [[ "$CIRCLE_BRANCH" = "main" ]]
+if [[ "$CIRCLE_BRANCH" =~ ^.*normal-release.* ]]
 then
     IS_CUSTOM_RELEASE=false
 fi
 
-chmod u+x ./.circleci/utils/getIsPackageReadyForRelease.sh
+chmod u+x ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh
+chmod u+x ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh
 
-isDesignTokensReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh design-tokens )"
-isGlobalWebStylesReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh global-web-styles )"
-isIconsReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh icons )"
-isReactComponentsReadyForRelease="$( ./.circleci/utils/getIsPackageReadyForRelease.sh react-components )"
+isDesignTokensLocalVersionDifferentThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh design-tokens )"
+isGlobalWebStylesLocalVersionDifferentThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh global-web-styles  )"
+isIconsLocalVersionDifferentThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh icons )"
+isReactComponentsLocalVersionDifferentThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh react-components )"
 
-if [[ "$isReactComponentsReadyForRelease" = "false" && ("$isDesignTokensReadyForRelease" = "true" || "$isGlobalWebStylesReadyForRelease" = "true" || "$isIconsReadyForRelease" = "true") ]]
+isDesignTokensLocalVersionGreaterThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh design-tokens )"
+isGlobalWebStylesLocalVersionGreaterThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh global-web-styles  )"
+isIconsLocalVersionGreaterThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh icons )"
+isReactComponentsLocalVersionGreaterThanLatestVersion="$( ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh react-components )"
+
+isDesignTokensVersionValidForNormalRelease="true"
+if [[ "$isDesignTokensLocalVersionDifferentThanLatestVersion" = "true" && "$isDesignTokensLocalVersionGreaterThanLatestVersion" = "false" ]]
 then
-    printf ""$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" has not been changed for release, but the following dependencies have their version changed for release:\n"$END""
-    
-    if [[ "$isDesignTokensReadyForRelease" = "true"  ]]
+    isDesignTokensVersionValidForNormalRelease="false"
+fi
+
+isGlobalWebStylesVersionValidForNormalRelease="true"
+if [[ "$isGlobalWebStylesLocalVersionDifferentThanLatestVersion" = "true" && "$isGlobalWebStylesLocalVersionGreaterThanLatestVersion" = "false" ]]
+then
+    isGlobalWebStylesVersionValidForNormalRelease="false"
+fi
+
+isIconsVersionValidForNormalRelease="true"
+if [[ "$isIconsLocalVersionDifferentThanLatestVersion" = "true" && "$isIconsLocalVersionGreaterThanLatestVersion" = "false" ]]
+then
+    isIconsVersionValidForNormalRelease="false"
+fi
+
+isReactComponentsVersionValidForNormalRelease="true"
+if [[ "$isReactComponentsLocalVersionDifferentThanLatestVersion" = "true" && "$isReactComponentsLocalVersionGreaterThanLatestVersion" = "false" ]]
+then
+    isReactComponentsVersionValidForNormalRelease="false"
+fi
+
+# Check if at least one package version has changed
+if [[ "$isDesignTokensLocalVersionDifferentThanLatestVersion" = "false" &&  "$isGlobalWebStylesLocalVersionDifferentThanLatestVersion" = "false" && "$isIconsLocalVersionDifferentThanLatestVersion" = "false" && "$isReactComponentsLocalVersionDifferentThanLatestVersion" = "false" ]]
+then
+    printf ""$RED"No package versions have changed. Branch names that include \"normal-relese\" or \"custom-release\" are only used for releases. Either change the name of this branch or change package version(s) for release.\n"$END""
+
+    exit 1;
+fi
+
+# Check if package version changes are valid for a normal release (i.e. not a custom release)
+if [[ "$IS_CUSTOM_RELEASE" = false && "$isDesignTokensVersionValidForNormalRelease" = "false" || "$isGlobalWebStylesVersionValidForNormalRelease" = "false" || "$isIconsVersionValidForNormalRelease" = "false" || "$isReactComponentsVersionValidForNormalRelease" = "false" ]]
+then
+    printf ""$RED"The following package versions have changed, but are not greater than the \`@latest\` version:\n"$END""
+
+    if [[ "$isDesignTokensVersionValidForNormalRelease" = "false" ]]
     then
         printf ""$RED"-> "$BOLD""$NPM_SCOPE"design-tokens\n"$END""
     fi
-    
-    if [[ "$isGlobalWebStylesReadyForRelease" = "true" ]]
+
+    if [[ "$isGlobalWebStylesVersionValidForNormalRelease" = "false"  ]]
     then
         printf ""$RED"-> "$BOLD""$NPM_SCOPE"global-web-styles\n"$END""
     fi
 
-    if [[ "$isIconsReadyForRelease" = "true" ]]
+    if [[ "$isIconsVersionValidForNormalRelease" = "false"  ]]
     then
         printf ""$RED"-> "$BOLD""$NPM_SCOPE"icons\n"$END""
     fi
 
-    printf "\n"$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" needs to be changed before a release of the above packages can occur.\n"$END""
-
-    exit 1
-elif [[ "$isDesignTokensReadyForRelease" = "false" && "$isGlobalWebStylesReadyForRelease" = "false" && "$isIconsReadyForRelease" = "false" && "$isReactComponentsReadyForRelease" = "false" ]]
-then
-    printf ""$RED"No packages will be released. Update package version(s) as needed before merging this PR.\n"$END""
-
-    if [[ "$IS_CUSTOM_RELEASE" = false ]]
+    if [[ "$isReactComponentsVersionValidForNormalRelease" = "false"  ]]
     then
-        printf ""$RED"Package versions need to be higher than their current \`@latest\` version to be released. To run a release of package(s) using a custom version change, follow the \"Custom Release\" guide.\n"$END""
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"react-components\n"$END""
     fi
 
-    exit 1
-else
-    printf ""$GREEN"The following packages are ready for release:\n"$END""
+    printf "\n"$RED"Since you are running a normal release, all package versions must be greater than or equal to the \`@latest\` version. To run a release of package(s) using a custom version change, follow the \"Custom Release\" guide.\n"$END""
+    
+    exit 1;
+fi
 
-    if [[ "$isDesignTokensReadyForRelease" = "true" ]]
+# Check if react-components doesn't have a version change.
+# If we have reached this line of code without failing, at least one package is ready for release.
+# If that one package is not react-components, we need to fail because the other package(s) are used inside of react-components.
+# If a dependency of react-components is released, react-components should also be released.
+if [[ "$isReactComponentsLocalVersionDifferentThanLatestVersion" = "false" ]]
+then
+    printf ""$RED"The version of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" has not been changed for release, but the following dependencies have a version change for release:\n"$END""
+    
+    if [[ "$isDesignTokensLocalVersionDifferentThanLatestVersion" = "true"  ]]
     then
-        printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"design-tokens\n"$END""
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"design-tokens\n"$END""
     fi
     
-    if [[ "$isGlobalWebStylesReadyForRelease" = "true" ]]
+    if [[ "$isGlobalWebStylesLocalVersionDifferentThanLatestVersion" = "true" ]]
     then
-        printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"global-web-styles\n"$END""
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"global-web-styles\n"$END""
     fi
 
-    if [[ "$isIconsReadyForRelease" = "true" ]]
+    if [[ "$isIconsLocalVersionDifferentThanLatestVersion" = "true" ]]
     then
-        printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"icons\n"$END""
+        printf ""$RED"-> "$BOLD""$NPM_SCOPE"icons\n"$END""
     fi
 
-    if [[ "$isReactComponentsReadyForRelease" = "true" ]]
-    then
-        printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"react-components\n"$END""
-    fi
+    printf "\n"$RED"When dependencies of "$BOLD""$NPM_SCOPE"react-components"$END""$RED" are released, "$BOLD""$NPM_SCOPE"react-components"$END""$RED" should also be released. To fix this error, change the version of "$BOLD""$NPM_SCOPE"react-components.\n"$END""
+
+    exit 1
+fi
+
+# Success Message
+printf ""$GREEN"The following packages are ready for release:\n"$END""
+
+if [[ "$isDesignTokensLocalVersionDifferentThanLatestVersion" = "true" ]]
+then
+    printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"design-tokens\n"$END""
+fi
+
+if [[ "$isGlobalWebStylesLocalVersionDifferentThanLatestVersion" = "true" ]]
+then
+    printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"global-web-styles\n"$END""
+fi
+
+if [[ "$isIconsLocalVersionDifferentThanLatestVersion" = "true" ]]
+then
+    printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"icons\n"$END""
+fi
+
+if [[ "$isReactComponentsLocalVersionDifferentThanLatestVersion" = "true" ]]
+then
+    printf ""$GREEN"-> "$BOLD""$NPM_SCOPE"react-components\n"$END""
 fi

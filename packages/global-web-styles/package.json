@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/global-web-styles",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Global Web Styles",
     "main": "dist/index.css",
     "files": [

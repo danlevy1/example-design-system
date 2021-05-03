@@ -18,17 +18,19 @@ workflows:
                               - /^.+custom-release.*/
     pull-request-checker:
         jobs:
-            - pull-request-checker-job:
-                  filters:
-                      branches:
-                          ignore:
-                              - main
-                              - /^.+custom-release.*/
             - check-package-versions-job:
                   filters:
                       branches:
                           only:
                               - /^.*normal-release.*/
+            - pull-request-checker-job:
+                  requires:
+                      - check-package-versions-job
+                  filters:
+                      branches:
+                          ignore:
+                              - main
+                              - /^.+custom-release.*/
 jobs:
     check-package-versions-job:
         docker:
