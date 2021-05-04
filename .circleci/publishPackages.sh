@@ -122,7 +122,7 @@ function publishIconsPackage() {
 
 function publishReactComponentsPackage() {
     local packageName="react-components"
-    local localDesignTokensVersion=$( ./.circleci/utils/getLocalPackageVersion design-tokens.sh )
+    local localDesignTokensVersion=$( ./.circleci/utils/getLocalPackageVersion.sh design-tokens.sh )
     local localIconsVersion=$( ./.circleci/utils/getLocalPackageVersion.sh icons )
 
     beginPackagePublish "$packageName"
@@ -195,19 +195,19 @@ then
         waitForSleep
     fi
 
-    if [[ $( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion "global-web-styles" ) = "true"  ]]
+    if [[ $( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh "global-web-styles" ) = "true"  ]]
     then
         printSkipReleaseInfo react-components global-web-styles
         printManualJobTriggerInstructions global-web-styles
 
         exit 1
-    elif [[ $( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion "design-tokens" ) = "true"  ]]
+    elif [[ $( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh "design-tokens" ) = "true"  ]]
     then
         printSkipReleaseInfo react-components design-tokens
         printManualJobTriggerInstructions design-tokens
 
         exit 1
-    elif [[ $( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion "icons" ) = "true"  ]]
+    elif [[ $( ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh "icons" ) = "true"  ]]
     then
         printSkipReleaseInfo react-components icons
         printManualJobTriggerInstructions icons
