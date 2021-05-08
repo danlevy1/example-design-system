@@ -145,6 +145,15 @@ function runReactComponentsPRChecker() {
 # Grant permission to other scripts
 chmod u+x ./.circleci/checkPackageVersions.sh
 
+# ======== Start package version checker ========
+if [[ "$CIRCLE_BRANCH" =~ ^.*normal-release.* ]]
+then
+    ./.circleci/checkPackageVersions.sh "$CIRCLE_BRANCH" false
+fi
+# ======== End package version checker ========
+
+
+
 # ======== Start installation of dependencies ========
 if [[ ! -d node_modules ]]
 then
@@ -158,11 +167,6 @@ fi
 npm run link:all
 
 # ======== Start package checkers ========
-if [[ "$CIRCLE_BRANCH" =~ ^.*normal-release.* ]]
-then
-    ./.circleci/checkPackageVersions.sh "$CIRCLE_BRANCH" false
-fi
-
 runGlobalWebStylesPRChecker
 runDesignTokensPRChecker
 runIconsPRChecker
