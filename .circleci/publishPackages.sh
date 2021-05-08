@@ -118,7 +118,7 @@ function publishIconsPackage() {
 
 function publishReactComponentsPackage() {
     local packageName="react-components"
-    local localDesignTokensVersion=$( ./.circleci/utils/getLocalPackageVersion.sh design-tokens.sh )
+    local localDesignTokensVersion=$( ./.circleci/utils/getLocalPackageVersion.sh design-tokens )
     local localIconsVersion=$( ./.circleci/utils/getLocalPackageVersion.sh icons )
 
     beginPackagePublish "$packageName"
