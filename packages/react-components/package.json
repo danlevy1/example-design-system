@@ -1,6 +1,6 @@
 {
     "name": "@x3r5e/react-components",
-    "version": "0.15.3",
+    "version": "0.15.4",
     "description": "React Components",
     "main": "dist/index.js",
     "module": "dist/index.es.js",
