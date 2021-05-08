@@ -24,10 +24,6 @@ then
     IS_CUSTOM_RELEASE=false
 fi
 
-chmod u+x ./.circleci/utils/getLocalPackageVersion.sh
-chmod u+x ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh
-chmod u+x ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh
-
 function waitForSleep() {
     printf "\n\n"$CYAN_BRIGHT"======== SLEEPING FOR THREE MINUTES ========\n"$END""
 
@@ -145,6 +141,19 @@ function publishReactComponentsDocs() {
 
     printf ""$GREEN"======== "$NPM_SCOPE""$packageName" DOCS PUBLISHED ========\n\n"$END""
 }
+
+# Grant permission to other scripts
+chmod u+x ./.circleci/checkPackageVersions.sh
+chmod u+x ./.circleci/utils/getLocalPackageVersion.sh
+chmod u+x ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh
+chmod u+x ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh
+
+# ======== Start package version checker ========
+if [[ "$IS_CUSTOM_RELEASE" ]]
+then
+    ./.circleci/checkPackageVersions.sh "$CIRCLE_BRANCH" true
+fi
+# ======== End package version checker ========
 
 # ======== Start publish of the global-web-styles package ========
 isNewVersionOfGlobalWebStylesBeingPublished=false;
