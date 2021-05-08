@@ -5,11 +5,6 @@ workflows:
     version: 2
     publish-packages:
         jobs:
-            - check-package-versions-job:
-                  filters:
-                      branches:
-                          only:
-                              - /^.+custom-release.*/
             - publish-packages-job:
                   filters:
                       branches:
@@ -18,28 +13,13 @@ workflows:
                               - /^.+custom-release.*/
     pull-request-checker:
         jobs:
-            - check-package-versions-job:
-                  filters:
-                      branches:
-                          only:
-                              - /^.*normal-release.*/
             - pull-request-checker-job:
-                  requires:
-                      - check-package-versions-job
                   filters:
                       branches:
                           ignore:
                               - main
                               - /^.+custom-release.*/
 jobs:
-    check-package-versions-job:
-        docker:
-            - image: cimg/node:14.15.5
-        steps:
-            - checkout
-            - run:
-                  name: Check package versions
-                  command: chmod u+x ./.circleci/checkPackageVersions.sh && ./.circleci/checkPackageVersions.sh $CIRCLE_BRANCH
     publish-packages-job:
         docker:
             - image: cimg/node:14.15.5

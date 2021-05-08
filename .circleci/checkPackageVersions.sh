@@ -4,6 +4,7 @@ set -e
 # Command line arguments
 ARGS=("$@")
 CIRCLE_BRANCH="${ARGS[0]}"
+IS_CUSTOM_RELEASE="${ARGS[1]}"
 
 # Command line output formats
 CYAN_BRIGHT='\033[0;96m'
@@ -14,12 +15,6 @@ END='\e[0m'
 
 # Other constants
 NPM_SCOPE="@x3r5e/"
-
-IS_CUSTOM_RELEASE=true
-if [[ "$CIRCLE_BRANCH" =~ ^.*normal-release.* ]]
-then
-    IS_CUSTOM_RELEASE=false
-fi
 
 chmod u+x ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh
 chmod u+x ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh

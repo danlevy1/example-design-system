@@ -142,16 +142,29 @@ function runReactComponentsPRChecker() {
     endPackagePRChecker
 }
 
+# Grant permission to other scripts
+chmod u+x ./.circleci/checkPackageVersions.sh
+
+# ======== Start installation of dependencies ========
 if [[ ! -d node_modules ]]
 then
     npm run install:all:ci
 else
     printf ""$GREEN"Using cache. No install needed.\n\n"$END""
 fi
+# ======== End installation of dependencies ========
 
+# Link all packages together
 npm run link:all
+
+# ======== Start package checkers ========
+if [[ "$CIRCLE_BRANCH" =~ ^.*normal-release.* ]]
+then
+    ./.circleci/checkPackageVersions.sh "$CIRCLE_BRANCH" false
+fi
 
 runGlobalWebStylesPRChecker
 runDesignTokensPRChecker
 runIconsPRChecker
 runReactComponentsPRChecker
+# ======== End package checkers ========
