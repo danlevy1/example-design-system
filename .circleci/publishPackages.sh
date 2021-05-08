@@ -148,12 +148,16 @@ chmod u+x ./.circleci/utils/getLocalPackageVersion.sh
 chmod u+x ./.circleci/utils/getIsPackageLocalVersionDifferentThanLatestVersion.sh
 chmod u+x ./.circleci/utils/getIsPackageLocalVersionGreaterThanLatestVersion.sh
 
+
+
 # ======== Start package version checker ========
-if [[ "$IS_CUSTOM_RELEASE" ]]
+if [[ "$IS_CUSTOM_RELEASE" = true ]]
 then
     ./.circleci/checkPackageVersions.sh "$CIRCLE_BRANCH" true
 fi
 # ======== End package version checker ========
+
+
 
 # ======== Start publish of the global-web-styles package ========
 isNewVersionOfGlobalWebStylesBeingPublished=false;
